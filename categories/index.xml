@@ -10,5 +10,14 @@
 	<atom:link href="http://flyingfang.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
+    <item>
+      <title>Sre</title>
+      <link>http://flyingfang.github.io/categories/sre/</link>
+      <pubDate>Sat, 24 Mar 2018 15:27:25 +0800</pubDate>
+      
+      <guid>http://flyingfang.github.io/categories/sre/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

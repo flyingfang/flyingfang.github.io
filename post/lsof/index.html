@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[每日一个Linux命令]——lsof详解 - xflying&#39;s Coding Road</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="flyingFang" /><meta name="description" content="lsof命令详解" />
+
+  <meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.37.1" />
+
+
+<link rel="canonical" href="http://flyingfang.github.io/post/lsof/" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" href="/favicon.ico" />
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=2.7.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+<meta property="og:title" content="[每日一个Linux命令]——lsof详解" />
+<meta property="og:description" content="lsof命令详解" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://flyingfang.github.io/post/lsof/" />
+
+
+
+<meta property="article:published_time" content="2018-04-03T00:33:58&#43;08:00"/>
+
+<meta property="article:modified_time" content="2018-04-03T00:33:58&#43;08:00"/>
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="[每日一个Linux命令]——lsof详解">
+<meta itemprop="description" content="lsof命令详解">
+
+
+<meta itemprop="datePublished" content="2018-04-03T00:33:58&#43;08:00" />
+<meta itemprop="dateModified" content="2018-04-03T00:33:58&#43;08:00" />
+<meta itemprop="wordCount" content="2167">
+
+
+
+<meta itemprop="keywords" content="Linux," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[每日一个Linux命令]——lsof详解"/>
+<meta name="twitter:description" content="lsof命令详解"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FLY</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FLY</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[每日一个Linux命令]——lsof详解</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-04-03 </span>
+        <div class="post-category">
+            
+              <a href="/categories/sre/"> SRE </a>
+            
+          </div>
+        <span class="more-meta"> 约 2167 字 </span>
+        <span class="more-meta"> 预计阅读 5 分钟 </span>
+        
+      </div>
+    </header>
+
+    
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-lsof一切皆文件">1. lsof一切皆文件</a></li>
+<li><a href="#2-输出信息详解">2. 输出信息详解</a></li>
+<li><a href="#3-命令参数">3.命令参数</a></li>
+<li><a href="#4-使用实例">4.使用实例</a>
+<ul>
+<li><a href="#实例1-通过lsof命令列出所有打开的文件">实例1：通过lsof命令列出所有打开的文件</a></li>
+<li><a href="#实例2-查找某个文件相关的进程">实例2：查找某个文件相关的进程</a></li>
+<li><a href="#实例3-列出某个用户打开的文件信息">实例3：列出某个用户打开的文件信息</a></li>
+<li><a href="#实例4-列出某个程序进程所打开的文件信息">实例4：列出某个程序进程所打开的文件信息</a></li>
+<li><a href="#实例5-列出某个用户以及某个进程所打开的文件信息">实例5：列出某个用户以及某个进程所打开的文件信息</a></li>
+<li><a href="#实例6-通过某个进程号显示该进程打开的文件">实例6：通过某个进程号显示该进程打开的文件</a></li>
+<li><a href="#实例7-列出所有的网络连接">实例7：列出所有的网络连接</a></li>
+<li><a href="#实例8-列出所有tcp-网络连接信息">实例8：列出所有tcp 网络连接信息</a></li>
+<li><a href="#实例9-列出谁在使用某个端口">实例9：列出谁在使用某个端口</a></li>
+<li><a href="#实例10-列出某个用户的所有活跃的网络端口">实例10：列出某个用户的所有活跃的网络端口</a></li>
+<li><a href="#实例11-根据文件描述列出对应的文件信息">实例11：根据文件描述列出对应的文件信息</a></li>
+<li><a href="#实例12-列出被进程号为1234的进程所打开的所有ipv4-network-files">实例12：列出被进程号为1234的进程所打开的所有IPV4 network files</a></li>
+<li><a href="#实例13-列出目前连接主机wannx01上端口为-20-21-80相关的所有文件信息-且每隔3秒重复执行">实例13：列出目前连接主机wannx01上端口为：20，21，80相关的所有文件信息，且每隔3秒重复执行</a></li>
+<li><a href="#实例14-查找特定端口运行的进程">实例14：查找特定端口运行的进程</a></li>
+<li><a href="#实例15-列出ipv4和ipv6的文件">实例15：列出ipv4和ipv6的文件</a></li>
+<li><a href="#实例16-列出tcp端口范围1-1024端口">实例16：列出TCP端口范围1-1024端口</a></li>
+<li><a href="#实例17-通过脱字符排除某个用户">实例17：通过脱字符排除某个用户</a></li>
+<li><a href="#实例18-查找特定用户使用文件和命令">实例18：查找特定用户使用文件和命令</a></li>
+<li><a href="#实例19-杀死某个特定用户的所有活动">实例19：杀死某个特定用户的所有活动</a></li>
+</ul></li>
+<li><a href="#备注">备注</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+
+    
+    <div class="post-content">
+      
+
+<h2 id="1-lsof一切皆文件">1. lsof一切皆文件</h2>
+
+<p><code>lsof</code>是<code>list open files</code>的简称，是一个查看当前系统文件的工具。乍一看不是一个特别强大的命令，但是由于unix系统的<code>everything is a file</code>的哲学，它常常被运用于查看进程和查看进程所操作的文件，可以查看网络使用，设备信息等，实则非常强大。</p>
+
+<pre><code class="language-shell">lsof  [ -?abChKlnNOPRtUvVX ] [ -A A ] [ -c c ] [ +c c ] [ +|-d d ] [ +|-D D ] [ +|-e s ] [ +|-f [cfgGn] ] [ -F [f] ] [ -g [s] ] [ -i [i] ] [ -k k ] [ +|-L [l] ] [ +|-m
+m ] [ +|-M ] [ -o [o] ] [ -p s ] [ +|-r [t[m&lt;fmt&gt;]] ] [ -s [p:s] ] [ -S [t] ] [ -T [t] ] [ -u s ] [ +|-w ] [ -x [fl] ] [ -z [z] ] [ -Z [Z] ] [ -- ] [names]
+</code></pre>
+
+<p><strong>lsof打开的文件可以是：</strong></p>
+
+<ul>
+<li>普通文件</li>
+<li>目录</li>
+<li>网络文件系统的文件</li>
+<li>字符或设备文件</li>
+<li>(函数)共享库</li>
+<li>管道，命名管道</li>
+<li>符号链接</li>
+<li>网络文件（例如：NFS file、网络socket，unix域名socket）</li>
+<li>还有其它类型的文件，等等</li>
+</ul>
+
+<h2 id="2-输出信息详解">2. 输出信息详解</h2>
+
+<pre><code class="language-shell">[root@VM_22_16_centos ~]# lsof | head
+COMMAND     PID  TID           USER   FD      TYPE             DEVICE  SIZE/OFF       NODE NAME
+systemd       1                root  cwd       DIR              253,1      4096          2 /
+systemd       1                root  rtd       DIR              253,1      4096          2 /
+systemd       1                root  txt       REG              253,1   1482272     143260 /usr/lib/systemd/systemd
+systemd       1                root  mem       REG              253,1     20040     140232 /usr/lib64/libuuid.so.1.3.0
+systemd       1                root  mem       REG              253,1    256960     142089 /usr/lib64/libblkid.so.1.1.0
+systemd       1                root  mem       REG              253,1     90632     140176 /usr/lib64/libz.so.1.2.7
+systemd       1                root  mem       REG              253,1    153192     140161 /usr/lib64/liblzma.so.5.0.99
+systemd       1                root  mem       REG              253,1     19888     140513 /usr/lib64/libattr.so.1.1.0
+systemd       1                root  mem       REG              253,1     19776     143496 /usr/lib64/libdl-2.17.so
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>列名</th>
+<th>描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>COMMAND</td>
+<td>命令名称</td>
+</tr>
+
+<tr>
+<td>PID</td>
+<td>进程ID</td>
+</tr>
+
+<tr>
+<td>TID</td>
+<td>线程ID</td>
+</tr>
+
+<tr>
+<td>USER</td>
+<td>用户名</td>
+</tr>
+
+<tr>
+<td>FD</td>
+<td>文件描述符</td>
+</tr>
+
+<tr>
+<td>TYPE</td>
+<td>文件类型</td>
+</tr>
+
+<tr>
+<td>DEVICE</td>
+<td>指定磁盘的名称</td>
+</tr>
+
+<tr>
+<td>SIZE/OFF</td>
+<td>文件的大小</td>
+</tr>
+
+<tr>
+<td>NODE</td>
+<td>索引节点（文件在磁盘上的标识）</td>
+</tr>
+
+<tr>
+<td>NAME</td>
+<td>打开文件的确切名称</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>FD参数</strong></p>
+
+<pre><code class="language-shell">（1）cwd：表示current work dirctory，即：应用程序的当前工作目录，这是该应用程序启动的目录，除非它本身对这个目录进行更改
+（2）txt ：该类型的文件是程序代码，如应用程序二进制文件本身或共享库，如上列表中显示的 /sbin/init 程序
+（3）lnn：library references (AIX);
+（4）er：FD information error (see NAME column);
+（5）jld：jail directory (FreeBSD);
+（6）ltx：shared library text (code and data);
+（7）mxx ：hex memory-mapped type number xx.
+（8）m86：DOS Merge mapped file;
+（9）mem：memory-mapped file;
+（10）mmap：memory-mapped device;
+（11）pd：parent directory;
+（12）rtd：root directory;
+（13）tr：kernel trace file (OpenBSD);
+（14）v86  VP/ix mapped file;
+（15）0：表示标准输入
+（16）1：表示标准输出
+（17）2：表示标准错误
+一般在标准输出、标准错误、标准输入后还跟着文件状态模式：r、w、u等
+（1）u：表示该文件被打开并处于读取/写入模式
+（2）r：表示该文件被打开并处于只读模式
+（3）w：表示该文件被打开并处于
+（4）空格：表示该文件的状态模式为unknow，且没有锁定
+（5）-：表示该文件的状态模式为unknow，且被锁定
+同时在文件状态模式后面，还跟着相关的锁
+（1）N：for a Solaris NFS lock of unknown type;
+（2）r：for read lock on part of the file;
+（3）R：for a read lock on the entire file;
+（4）w：for a write lock on part of the file;（文件的部分写锁）
+（5）W：for a write lock on the entire file;（整个文件的写锁）
+（6）u：for a read and write lock of any length;
+（7）U：for a lock of unknown type;
+（8）x：for an SCO OpenServer Xenix lock on part      of the file;
+（9）X：for an SCO OpenServer Xenix lock on the      entire file;
+（10）space：if there is no lock.
+</code></pre>
+
+<p><strong>TYPE参数</strong></p>
+
+<pre><code>（1）DIR：表示目录
+（2）CHR：表示字符类型
+（3）BLK：块设备类型
+（4）UNIX： UNIX 域套接字
+（5）FIFO：先进先出 (FIFO) 队列
+（6）IPv4：网际协议 (IP) 套接字
+</code></pre>
+
+<h2 id="3-命令参数">3.命令参数</h2>
+
+<ul>
+<li>-a 列出打开文件存在的进程</li>
+<li>-c&lt;进程名&gt; 列出指定进程所打开的文件</li>
+<li>-g 列出GID号进程详情</li>
+<li>-d&lt;文件号&gt; 列出占用该文件号的进程</li>
+<li>+d&lt;目录&gt; 列出目录下被打开的文件</li>
+<li>+D&lt;目录&gt; 递归列出目录下被打开的文件</li>
+<li>-n&lt;目录&gt; 列出使用NFS的文件</li>
+<li>-i&lt;条件&gt; 列出符合条件的进程。（4、6、协议、:端口、 @ip ）</li>
+<li>-p&lt;进程号&gt; 列出指定进程号所打开的文件</li>
+<li>-u 列出UID号进程详情</li>
+<li>-h 显示帮助信息</li>
+<li>-v 显示版本信息</li>
+</ul>
+
+<h2 id="4-使用实例">4.使用实例</h2>
+
+<h3 id="实例1-通过lsof命令列出所有打开的文件">实例1：通过lsof命令列出所有打开的文件</h3>
+
+<pre><code class="language-shell">$ lsof
+COMMAND     PID  TID           USER   FD      TYPE             DEVICE  SIZE/OFF       NODE NAME
+systemd       1                root  cwd       DIR              253,1      4096          2 /
+systemd       1                root  rtd       DIR              253,1      4096          2 /
+systemd       1                root  txt       REG              253,1   1482272     143260 /usr/lib/systemd/systemd
+systemd       1                root  mem       REG              253,1     20040     140232 /usr/lib64/libuuid.so.1.3.0
+systemd       1                root  mem       REG              253,1    256960     142089 /usr/lib64/libblkid.so.1.1.0
+systemd       1                root  mem       REG              253,1     90632     140176 /usr/lib64/libz.so.1.2.7
+systemd       1                root  mem       REG              253,1    153192     140161 /usr/lib64/liblzma.so.5.0.99
+systemd       1                root  mem       REG              253,1     19888     140513 /usr/lib64/libattr.so.1.1.0
+systemd       1                root  mem       REG              253,1     19776     143496 /usr/lib64/libdl-2.17.so
+</code></pre>
+
+<h3 id="实例2-查找某个文件相关的进程">实例2：查找某个文件相关的进程</h3>
+
+<pre><code class="language-shell">$ lsof /bin/bash
+</code></pre>
+
+<h3 id="实例3-列出某个用户打开的文件信息">实例3：列出某个用户打开的文件信息</h3>
+
+<pre><code class="language-shell">$ lsof -u work
+</code></pre>
+
+<h3 id="实例4-列出某个程序进程所打开的文件信息">实例4：列出某个程序进程所打开的文件信息</h3>
+
+<pre><code class="language-shell">$ lsof -c sshd
+</code></pre>
+
+<h3 id="实例5-列出某个用户以及某个进程所打开的文件信息">实例5：列出某个用户以及某个进程所打开的文件信息</h3>
+
+<pre><code class="language-shell">$ lsof -u work -c sshd
+</code></pre>
+
+<h3 id="实例6-通过某个进程号显示该进程打开的文件">实例6：通过某个进程号显示该进程打开的文件</h3>
+
+<pre><code class="language-shell">$ lsof -p 7227
+</code></pre>
+
+<h3 id="实例7-列出所有的网络连接">实例7：列出所有的网络连接</h3>
+
+<pre><code class="language-shell">$ lsof -i
+</code></pre>
+
+<h3 id="实例8-列出所有tcp-网络连接信息">实例8：列出所有tcp 网络连接信息</h3>
+
+<pre><code class="language-shell">$ lsof -i tcp
+$ lsof -n -i tcp
+</code></pre>
+
+<h3 id="实例9-列出谁在使用某个端口">实例9：列出谁在使用某个端口</h3>
+
+<pre><code class="language-shell">$ lsof -i :3306
+</code></pre>
+
+<h3 id="实例10-列出某个用户的所有活跃的网络端口">实例10：列出某个用户的所有活跃的网络端口</h3>
+
+<pre><code class="language-shell">$ lsof -a -u work -i
+</code></pre>
+
+<h3 id="实例11-根据文件描述列出对应的文件信息">实例11：根据文件描述列出对应的文件信息</h3>
+
+<pre><code class="language-shell">$ lsof -d 3
+</code></pre>
+
+<p><strong>说明：</strong> 0表示标准输入，1表示标准输出，2表示标准错误，从而可知：所以大多数应用程序所打开的文件的 FD 都是从 3 开始。</p>
+
+<h3 id="实例12-列出被进程号为1234的进程所打开的所有ipv4-network-files">实例12：列出被进程号为1234的进程所打开的所有IPV4 network files</h3>
+
+<pre><code class="language-shell">$ lsof -i 4 -a -p 1234
+</code></pre>
+
+<h3 id="实例13-列出目前连接主机wannx01上端口为-20-21-80相关的所有文件信息-且每隔3秒重复执行">实例13：列出目前连接主机wannx01上端口为：20，21，80相关的所有文件信息，且每隔3秒重复执行</h3>
+
+<pre><code class="language-shell">$ lsof -i @wannx01:20,21,80 -r 3
+</code></pre>
+
+<h3 id="实例14-查找特定端口运行的进程">实例14：查找特定端口运行的进程</h3>
+
+<pre><code class="language-shell">$ lsof -i TCP:53
+$ lsof -i UDP:53
+$ lsof -i :53
+</code></pre>
+
+<h3 id="实例15-列出ipv4和ipv6的文件">实例15：列出ipv4和ipv6的文件</h3>
+
+<pre><code class="language-shell">$ lsof -i 4
+$ lsof -i 6
+</code></pre>
+
+<h3 id="实例16-列出tcp端口范围1-1024端口">实例16：列出TCP端口范围1-1024端口</h3>
+
+<pre><code class="language-shell">$ lsof -i TCP:1-1024
+</code></pre>
+
+<h3 id="实例17-通过脱字符排除某个用户">实例17：通过脱字符排除某个用户</h3>
+
+<pre><code class="language-shell">$ lsof -u^root
+</code></pre>
+
+<h3 id="实例18-查找特定用户使用文件和命令">实例18：查找特定用户使用文件和命令</h3>
+
+<pre><code class="language-shell">$ lsof -i -u apache 
+</code></pre>
+
+<h3 id="实例19-杀死某个特定用户的所有活动">实例19：杀死某个特定用户的所有活动</h3>
+
+<pre><code class="language-shell">$ kill -9 `lsof -t -u named`
+</code></pre>
+
+<h2 id="备注">备注</h2>
+
+<p><strong>参考资料</strong></p>
+
+<p><a href="http://kumu-linux.github.io/blog/2013/04/08/lsof/">lsof在Linux中的10个例子</a></p>
+
+    </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">flyingFang</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">2018-04-03</span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+    
+    
+<div class="post-reward">
+  <input type="checkbox" name="reward" id="reward" hidden />
+  <label class="reward-button" for="reward">赞赏支持</label>
+  <div class="qr-code">
+    
+    
+      <label class="qr-code-image" for="reward">
+        <img class="image" src="http://p63664q8g.bkt.clouddn.com/wechatpay.jpg">
+        <span>微信打赏</span>
+      </label>
+    
+      <label class="qr-code-image" for="reward">
+        <img class="image" src="http://p63664q8g.bkt.clouddn.com/alipay.jpg">
+        <span>支付宝打赏</span>
+      </label>
+  </div>
+</div>
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/linux/">Linux</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/post/performance-test/">
+            <span class="next-text nav-default">性能测试- [腾讯云 2核4G]</span>
+            <span class="prev-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+  
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:flying.fangchn@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/flyingfang" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/1863612812/profile" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/casafly" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/171846250/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://www.instagram.com/xflying203/" class="iconfont icon-instagram" title="instagram"></a>
+  <a href="http://flyingfang.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">flyingFang</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+<script type="text/javascript" src="/dist/even.min.js?v=2.7.0"></script>
+
+
+
+
+</body>
+</html>

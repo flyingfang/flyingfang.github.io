@@ -6,10 +6,19 @@
     <description>Recent content on xflying&#39;s Coding Road</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 03 Apr 2018 00:33:58 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 04 Apr 2018 00:16:50 +0800</lastBuildDate>
     
 	<atom:link href="http://flyingfang.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[每日一个Linux命令]——ps详解</title>
+      <link>http://flyingfang.github.io/post/ps/</link>
+      <pubDate>Wed, 04 Apr 2018 00:16:50 +0800</pubDate>
+      
+      <guid>http://flyingfang.github.io/post/ps/</guid>
+      <description>1. ps ps是Process Status的简称，ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照，就是执行ps命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用t</description>
+    </item>
     
     <item>
       <title>[每日一个Linux命令]——lsof详解</title>

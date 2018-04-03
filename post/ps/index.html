@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[每日一个Linux命令]——ps详解 - xflying&#39;s Coding Road</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="flyingFang" />
+  <meta name="description" content="1. ps ps是Process Status的简称，ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照，就是执行ps命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用t" />
+
+  <meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.37.1" />
+
+
+<link rel="canonical" href="http://flyingfang.github.io/post/ps/" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" href="/favicon.ico" />
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=2.7.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+<meta property="og:title" content="[每日一个Linux命令]——ps详解" />
+<meta property="og:description" content="1. ps ps是Process Status的简称，ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照，就是执行ps命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用t" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://flyingfang.github.io/post/ps/" />
+
+
+
+<meta property="article:published_time" content="2018-04-04T00:16:50&#43;08:00"/>
+
+<meta property="article:modified_time" content="2018-04-04T00:16:50&#43;08:00"/>
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="[每日一个Linux命令]——ps详解">
+<meta itemprop="description" content="1. ps ps是Process Status的简称，ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照，就是执行ps命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用t">
+
+
+<meta itemprop="datePublished" content="2018-04-04T00:16:50&#43;08:00" />
+<meta itemprop="dateModified" content="2018-04-04T00:16:50&#43;08:00" />
+<meta itemprop="wordCount" content="1136">
+
+
+
+<meta itemprop="keywords" content="Linux," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[每日一个Linux命令]——ps详解"/>
+<meta name="twitter:description" content="1. ps ps是Process Status的简称，ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照，就是执行ps命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用t"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FLY</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FLY</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[每日一个Linux命令]——ps详解</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-04-04 </span>
+        <div class="post-category">
+            
+              <a href="/categories/sre/"> SRE </a>
+            
+          </div>
+        <span class="more-meta"> 约 1136 字 </span>
+        <span class="more-meta"> 预计阅读 3 分钟 </span>
+        
+      </div>
+    </header>
+
+    
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-ps">1. ps</a></li>
+<li><a href="#2-输出信息详解">2. 输出信息详解</a></li>
+<li><a href="#3-命令参数">3.命令参数</a></li>
+<li><a href="#4-使用实例">4.使用实例</a>
+<ul>
+<li><a href="#实例1-显示所有进程信息">实例1：显示所有进程信息</a></li>
+<li><a href="#实例2-显示指定用户信息">实例2：显示指定用户信息</a></li>
+<li><a href="#实例3-显示所有进程信息-连同命令行">实例3：显示所有进程信息，连同命令行</a></li>
+<li><a href="#实例4-ps-与grep-组合使用-查找特定进程">实例4： ps 与grep 组合使用，查找特定进程</a></li>
+<li><a href="#实例5-将与这次登入的-pid-与相关信息列示出来">实例5：将与这次登入的 PID 与相关信息列示出来</a></li>
+<li><a href="#实例6-列出目前所有的正在内存中的程序">实例6：列出目前所有的正在内存中的程序</a></li>
+</ul></li>
+<li><a href="#备注">备注</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+
+    
+    <div class="post-content">
+      
+
+<h2 id="1-ps">1. ps</h2>
+
+<p><code>ps</code>是<code>Process Status</code>的简称，ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照，就是执行ps命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用top命令。</p>
+
+<p>要对进程进行监测和控制，首先必须要了解当前进程的情况，也就是需要查看当前进程，而 ps 命令就是最基本同时也是非常强大的进程查看命令。使用该命令可以确定有哪些进程正在运行和运行的状态、进程是否结束、进程有没有僵死、哪些进程占用了过多的资源等等。总之大部分信息都是可以通过执行该命令得到的。</p>
+
+<p>ps 为我们提供了进程的一次性的查看，它所提供的查看结果并不动态连续的；如果想对进程时间监控，应该用 top 工具。</p>
+
+<p><strong>linux上进程有5种状态:</strong></p>
+
+<ol>
+<li>运行(正在运行或在运行队列中等待)</li>
+<li>中断(休眠中, 受阻, 在等待某个条件的形成或接受到信号)</li>
+<li>不可中断(收到信号不唤醒和不可运行, 进程必须等待直到有中断发生)</li>
+<li>僵死(进程已终止, 但进程描述符存在, 直到父进程调用wait4()系统调用后释放)</li>
+<li>停止(进程收到SIGSTOP, SIGTSTP, SIGTTIN, SIGTTOU信号后停止运行运行)</li>
+</ol>
+
+<p><strong>ps工具标识进程的5种状态码:</strong></p>
+
+<ul>
+<li>D 不可中断 uninterruptible sleep (usually IO)</li>
+<li>R 运行 runnable (on run queue)</li>
+<li>S 中断 sleeping</li>
+<li>T 停止 traced or stopped</li>
+<li>Z 僵死 a defunct (”zombie”) process</li>
+</ul>
+
+<h2 id="2-输出信息详解">2. 输出信息详解</h2>
+
+<ul>
+<li><p>F 代表这个程序的旗标 (flag)， 4 代表使用者为 super user</p></li>
+
+<li><p>S 代表这个程序的状态 (STAT)，关于各 STAT 的意义将在内文介绍</p></li>
+
+<li><p>UID 程序被该 UID 所拥有</p></li>
+
+<li><p>PID 进程的ID</p></li>
+
+<li><p>PPID 则是其上级父程序的ID</p></li>
+
+<li><p>C CPU 使用的资源百分比</p></li>
+
+<li><p>PRI 这个是 Priority (优先执行序) 的缩写，详细后面介绍</p></li>
+
+<li><p>NI 这个是 Nice 值，在下一小节我们会持续介绍</p></li>
+
+<li><p>ADDR 这个是 kernel function，指出该程序在内存的那个部分。如果是个 running的程序，一般就是 “-“</p></li>
+
+<li><p>SZ 使用掉的内存大小</p></li>
+
+<li><p>WCHAN 目前这个程序是否正在运作当中，若为 - 表示正在运作</p></li>
+
+<li><p>TTY 登入者的终端机位置</p></li>
+
+<li><p>TIME 使用掉的 CPU 时间。</p></li>
+
+<li><p>CMD 所下达的指令为何</p></li>
+</ul>
+
+<h2 id="3-命令参数">3.命令参数</h2>
+
+<ul>
+<li>a 显示所有进程</li>
+<li>-a 显示同一终端下的所有程序</li>
+<li>-A 显示所有进程</li>
+<li>c 显示进程的真实名称</li>
+<li>-N 反向选择</li>
+<li>-e 等于“-A”</li>
+<li>e 显示环境变量</li>
+<li>f 显示程序间的关系</li>
+<li>-H 显示树状结构</li>
+<li>r 显示当前终端的进程</li>
+<li>T 显示当前终端的所有程序</li>
+<li>u 指定用户的所有进程</li>
+<li>-au 显示较详细的资讯</li>
+<li>-aux 显示所有包含其他使用者的行程</li>
+<li>-C&lt;命令&gt; 列出指定命令的状况</li>
+<li>–lines&lt;行数&gt; 每页显示的行数</li>
+<li>–width&lt;字符数&gt; 每页显示的字符数</li>
+<li>–help 显示帮助信息</li>
+<li>–version 显示版本显示</li>
+</ul>
+
+<h2 id="4-使用实例">4.使用实例</h2>
+
+<h3 id="实例1-显示所有进程信息">实例1：显示所有进程信息</h3>
+
+<pre><code class="language-shell">$ ps -A
+</code></pre>
+
+<h3 id="实例2-显示指定用户信息">实例2：显示指定用户信息</h3>
+
+<pre><code class="language-shell">$ ps -u root
+</code></pre>
+
+<h3 id="实例3-显示所有进程信息-连同命令行">实例3：显示所有进程信息，连同命令行</h3>
+
+<pre><code class="language-shell">$ ps -ef
+</code></pre>
+
+<h3 id="实例4-ps-与grep-组合使用-查找特定进程">实例4： ps 与grep 组合使用，查找特定进程</h3>
+
+<pre><code class="language-shell">$ ps -ef | grep ssh
+</code></pre>
+
+<h3 id="实例5-将与这次登入的-pid-与相关信息列示出来">实例5：将与这次登入的 PID 与相关信息列示出来</h3>
+
+<pre><code class="language-shell">$ ps -l
+</code></pre>
+
+<h3 id="实例6-列出目前所有的正在内存中的程序">实例6：列出目前所有的正在内存中的程序</h3>
+
+<pre><code class="language-shell">$ ps aux
+</code></pre>
+
+<h2 id="备注">备注</h2>
+
+<p><strong>参考资料</strong></p>
+
+<p><a href="http://linuxtools-rst.readthedocs.io/zh_CN/latest/tool/ps.html">Linux Tools Quick Tutorial</a></p>
+
+    </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">flyingFang</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">2018-04-04</span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+    
+    
+<div class="post-reward">
+  <input type="checkbox" name="reward" id="reward" hidden />
+  <label class="reward-button" for="reward">赞赏支持</label>
+  <div class="qr-code">
+    
+    
+      <label class="qr-code-image" for="reward">
+        <img class="image" src="http://p63664q8g.bkt.clouddn.com/wechatpay.jpg">
+        <span>微信打赏</span>
+      </label>
+    
+      <label class="qr-code-image" for="reward">
+        <img class="image" src="http://p63664q8g.bkt.clouddn.com/alipay.jpg">
+        <span>支付宝打赏</span>
+      </label>
+  </div>
+</div>
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/linux/">Linux</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/post/lsof/">
+            <span class="next-text nav-default">[每日一个Linux命令]——lsof详解</span>
+            <span class="prev-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+  
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:flying.fangchn@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/flyingfang" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/1863612812/profile" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/casafly" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/171846250/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://www.instagram.com/xflying203/" class="iconfont icon-instagram" title="instagram"></a>
+  <a href="http://flyingfang.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">flyingFang</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+<script type="text/javascript" src="/dist/even.min.js?v=2.7.0"></script>
+
+
+
+
+</body>
+</html>

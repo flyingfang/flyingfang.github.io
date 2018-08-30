@@ -31,6 +31,13 @@
   </url>
   
   <url>
+    <loc>http://flyingfang.github.io/about/</loc>
+    <lastmod>2018-02-22T15:40:05+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>http://flyingfang.github.io/categories/</loc>
     <changefreq>weekly</changefreq>
     <priority>0</priority>

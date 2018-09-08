@@ -2,48 +2,57 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on xflying&#39;s Coding Road</title>
-    <link>http://flyingfang.github.io/post/</link>
+    <link>http://localhost:1313/post/</link>
     <description>Recent content in Posts on xflying&#39;s Coding Road</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 30 Aug 2018 13:05:14 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 08 Sep 2018 20:23:09 +0800</lastBuildDate>
     
-	<atom:link href="http://flyingfang.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>【笔记】Google高效工作法</title>
+      <link>http://localhost:1313/post/google-works/</link>
+      <pubDate>Sat, 08 Sep 2018 20:23:09 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/google-works/</guid>
+      <description>1. 选择管理 你的精力/时间有限，对一件事Say Yes，另一件Say No 选择管理的核心原则，把时间，精力集中在对职业发展，个人成长重要的事情上 用动态的眼光看选择管理，前半年没有选择的事情，也许后半年就是工作</description>
+    </item>
+    
+    <item>
       <title>设备唯一性标识知多少？</title>
-      <link>http://flyingfang.github.io/post/uuid/</link>
+      <link>http://localhost:1313/post/uuid/</link>
       <pubDate>Thu, 30 Aug 2018 13:05:14 +0800</pubDate>
       
-      <guid>http://flyingfang.github.io/post/uuid/</guid>
+      <guid>http://localhost:1313/post/uuid/</guid>
       <description>IMEI Android： 一串15位的号码。需要权限拿不到IMEI的情况： 某些魔改版rom 模拟器 iOS： iOS5之后已经废弃，苹果禁止APP获取IMEI号。 IDFA Android： 2014年Android2.3基于</description>
     </item>
     
     <item>
       <title>[每日一个Linux命令]——ps详解</title>
-      <link>http://flyingfang.github.io/post/ps/</link>
+      <link>http://localhost:1313/post/ps/</link>
       <pubDate>Wed, 04 Apr 2018 00:16:50 +0800</pubDate>
       
-      <guid>http://flyingfang.github.io/post/ps/</guid>
+      <guid>http://localhost:1313/post/ps/</guid>
       <description>1. ps ps是Process Status的简称，ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照，就是执行ps命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用t</description>
     </item>
     
     <item>
       <title>[每日一个Linux命令]——lsof详解</title>
-      <link>http://flyingfang.github.io/post/lsof/</link>
+      <link>http://localhost:1313/post/lsof/</link>
       <pubDate>Tue, 03 Apr 2018 00:33:58 +0800</pubDate>
       
-      <guid>http://flyingfang.github.io/post/lsof/</guid>
+      <guid>http://localhost:1313/post/lsof/</guid>
       <description>1. lsof一切皆文件 lsof是list open files的简称，是一个查看当前系统文件的工具。乍一看不是一个特别强大的命令，但是由于unix系统的everything is a file的哲学，它常常被运用于查看进</description>
     </item>
     
     <item>
       <title>性能测试- [腾讯云 2核4G]</title>
-      <link>http://flyingfang.github.io/post/performance-test/</link>
+      <link>http://localhost:1313/post/performance-test/</link>
       <pubDate>Sat, 24 Mar 2018 15:27:25 +0800</pubDate>
       
-      <guid>http://flyingfang.github.io/post/performance-test/</guid>
+      <guid>http://localhost:1313/post/performance-test/</guid>
       <description>前几天腾讯云活动，买了一台服务器用来折腾玩。也想乘机再次开个博客，再次记录一下自己的学习和娱乐。某日再回头看看自己走过的坑，也可能也是一种别样的乐趣。 一、CPU物理个数、内核、超线程、多核心 1. 查看CP</description>
     </item>
     

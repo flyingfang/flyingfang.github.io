@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>知识点 on xflying&#39;s Coding Road</title>
-    <link>http://flyingfang.github.io/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/</link>
+    <link>http://localhost:1313/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/</link>
     <description>Recent content in 知识点 on xflying&#39;s Coding Road</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Thu, 30 Aug 2018 13:05:14 +0800</lastBuildDate>
     
-	<atom:link href="http://flyingfang.github.io/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://localhost:1313/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>设备唯一性标识知多少？</title>
-      <link>http://flyingfang.github.io/post/uuid/</link>
+      <link>http://localhost:1313/post/uuid/</link>
       <pubDate>Thu, 30 Aug 2018 13:05:14 +0800</pubDate>
       
-      <guid>http://flyingfang.github.io/post/uuid/</guid>
+      <guid>http://localhost:1313/post/uuid/</guid>
       <description>IMEI Android： 一串15位的号码。需要权限拿不到IMEI的情况： 某些魔改版rom 模拟器 iOS： iOS5之后已经废弃，苹果禁止APP获取IMEI号。 IDFA Android： 2014年Android2.3基于</description>
     </item>
     

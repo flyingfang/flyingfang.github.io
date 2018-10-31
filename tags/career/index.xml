@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Career on xflying&#39;s Coding Road</title>
+    <link>http://localhost:1313/tags/career/</link>
+    <description>Recent content in Career on xflying&#39;s Coding Road</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 28 Oct 2018 22:38:40 +0800</lastBuildDate>
+    
+	<atom:link href="http://localhost:1313/tags/career/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[读书笔记] - 《软技能》</title>
+      <link>http://localhost:1313/post/soft-skills/</link>
+      <pubDate>Sun, 28 Oct 2018 22:38:40 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/soft-skills/</guid>
+      <description>一、简介 《软技能》是一本面向程序员又不仅限于程序员的职业生活指南。本书不光从职业发展上给予读者指导，还涵盖自我营销、学习方法、任务管理、身心健康和理财相关等。是一本大纲式的清单类书籍，适合给迷茫阶段的</description>
+    </item>
+    
+  </channel>
+</rss>

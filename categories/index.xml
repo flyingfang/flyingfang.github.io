@@ -30,6 +30,15 @@
     </item>
     
     <item>
+      <title>Faas</title>
+      <link>http://localhost:1313/categories/faas/</link>
+      <pubDate>Sun, 23 Dec 2018 21:38:13 +0800</pubDate>
+      
+      <guid>http://localhost:1313/categories/faas/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Network</title>
       <link>http://localhost:1313/categories/network/</link>
       <pubDate>Wed, 31 Oct 2018 22:38:40 +0800</pubDate>

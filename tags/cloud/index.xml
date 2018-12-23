@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cloud on xflying&#39;s Coding Road</title>
+    <link>http://localhost:1313/tags/cloud/</link>
+    <description>Recent content in Cloud on xflying&#39;s Coding Road</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 23 Dec 2018 21:38:13 +0800</lastBuildDate>
+    
+	<atom:link href="http://localhost:1313/tags/cloud/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>初探FaaS（一）——Serverless架构</title>
+      <link>http://localhost:1313/post/seek-faas-01/</link>
+      <pubDate>Sun, 23 Dec 2018 21:38:13 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/seek-faas-01/</guid>
+      <description>Serverless是什么 AWS的官方介绍如下： 在不考虑服务器的情况下构建并运行应用程序。 我的理解是Serverless就是云服务提供商提供给用户的更完美封装的一个产品。 Serverless无服务并不</description>
+    </item>
+    
+  </channel>
+</rss>

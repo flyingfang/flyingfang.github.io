@@ -17,7 +17,7 @@
       <pubDate>Wed, 31 Oct 2018 22:38:40 +0800</pubDate>
       
       <guid>http://localhost:1313/post/tcp-hello-bye/</guid>
-      <description>白话TCP协议的三次握手和四次分手 什么是三次握手？ 三次握手的实质就是两次请求+两次确认，从而保证了双工通信。 第一次握手：客户端向服务端发送连接请求（SYN）报文段，发送请求后，客户端会进入连接发送等待</description>
+      <description>什么是三次握手？ 三次握手的实质就是两次请求+两次确认，从而保证了双工通信。 第一次握手：客户端向服务端发送连接请求（SYN）报文段，发送请求后，客户端会进入连接发送等待回复（SYN_SENT）阶段。 第二</description>
     </item>
     
   </channel>

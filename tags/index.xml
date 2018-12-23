@@ -30,6 +30,24 @@
     </item>
     
     <item>
+      <title>Cloud</title>
+      <link>http://localhost:1313/tags/cloud/</link>
+      <pubDate>Sun, 23 Dec 2018 21:38:13 +0800</pubDate>
+      
+      <guid>http://localhost:1313/tags/cloud/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Faas</title>
+      <link>http://localhost:1313/tags/faas/</link>
+      <pubDate>Sun, 23 Dec 2018 21:38:13 +0800</pubDate>
+      
+      <guid>http://localhost:1313/tags/faas/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Linux</title>
       <link>http://localhost:1313/tags/linux/</link>
       <pubDate>Tue, 23 Oct 2018 18:38:40 +0800</pubDate>

@@ -6,10 +6,19 @@
     <description>Recent content on xflying&#39;s Coding Road</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 31 Oct 2018 22:38:40 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 23 Dec 2018 21:38:13 +0800</lastBuildDate>
     
 	<atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>初探FaaS（一）——Serverless架构</title>
+      <link>http://localhost:1313/post/seek-faas-01/</link>
+      <pubDate>Sun, 23 Dec 2018 21:38:13 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/seek-faas-01/</guid>
+      <description>Serverless是什么 AWS的官方介绍如下： 在不考虑服务器的情况下构建并运行应用程序。 我的理解是Serverless就是云服务提供商提供给用户的更完美封装的一个产品。 Serverless无服务并不</description>
+    </item>
     
     <item>
       <title>白话TCP协议的三次握手和四次分手</title>

@@ -6,31 +6,22 @@
     <description>Recent content in Categories on xflying&#39;s Coding Road</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 28 Oct 2018 22:38:40 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 30 Apr 2019 20:24:47 +0800</lastBuildDate>
     
 	<atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Books</title>
-      <link>http://localhost:1313/categories/books/</link>
-      <pubDate>Sun, 28 Oct 2018 22:38:40 +0800</pubDate>
+      <title>kubernetes</title>
+      <link>http://localhost:1313/categories/kubernetes/</link>
+      <pubDate>Tue, 30 Apr 2019 20:24:47 +0800</pubDate>
       
-      <guid>http://localhost:1313/categories/books/</guid>
+      <guid>http://localhost:1313/categories/kubernetes/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Dev</title>
-      <link>http://localhost:1313/categories/dev/</link>
-      <pubDate>Thu, 30 Aug 2018 13:05:14 +0800</pubDate>
-      
-      <guid>http://localhost:1313/categories/dev/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Faas</title>
+      <title>faas</title>
       <link>http://localhost:1313/categories/faas/</link>
       <pubDate>Sun, 23 Dec 2018 21:38:13 +0800</pubDate>
       
@@ -39,11 +30,29 @@
     </item>
     
     <item>
-      <title>Network</title>
+      <title>network</title>
       <link>http://localhost:1313/categories/network/</link>
       <pubDate>Wed, 31 Oct 2018 22:38:40 +0800</pubDate>
       
       <guid>http://localhost:1313/categories/network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>books</title>
+      <link>http://localhost:1313/categories/books/</link>
+      <pubDate>Sun, 28 Oct 2018 22:38:40 +0800</pubDate>
+      
+      <guid>http://localhost:1313/categories/books/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SRE</title>
+      <link>http://localhost:1313/categories/sre/</link>
+      <pubDate>Tue, 23 Oct 2018 18:38:40 +0800</pubDate>
+      
+      <guid>http://localhost:1313/categories/sre/</guid>
       <description></description>
     </item>
     
@@ -57,11 +66,11 @@
     </item>
     
     <item>
-      <title>Sre</title>
-      <link>http://localhost:1313/categories/sre/</link>
-      <pubDate>Tue, 23 Oct 2018 18:38:40 +0800</pubDate>
+      <title>DEV</title>
+      <link>http://localhost:1313/categories/dev/</link>
+      <pubDate>Thu, 30 Aug 2018 13:05:14 +0800</pubDate>
       
-      <guid>http://localhost:1313/categories/sre/</guid>
+      <guid>http://localhost:1313/categories/dev/</guid>
       <description></description>
     </item>
     

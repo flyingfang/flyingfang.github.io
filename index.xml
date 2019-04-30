@@ -6,10 +6,19 @@
     <description>Recent content on xflying&#39;s Coding Road</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 23 Dec 2018 21:38:13 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 30 Apr 2019 20:24:47 +0800</lastBuildDate>
     
 	<atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Etcd Operator初探</title>
+      <link>http://localhost:1313/post/etcd-operator/</link>
+      <pubDate>Tue, 30 Apr 2019 20:24:47 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/etcd-operator/</guid>
+      <description>etcd operator startup</description>
+    </item>
     
     <item>
       <title>初探FaaS（一）——Serverless架构</title>
@@ -17,7 +26,7 @@
       <pubDate>Sun, 23 Dec 2018 21:38:13 +0800</pubDate>
       
       <guid>http://localhost:1313/post/seek-faas-01/</guid>
-      <description>Serverless是什么 AWS的官方介绍如下： 在不考虑服务器的情况下构建并运行应用程序。 我的理解是Serverless就是云服务提供商提供给用户的更完美封装的一个产品。 Serverless无服务并不</description>
+      <description>本系列是对最近初探FaaS领域的一个总结，希望达到输出是最好的吸收的目的吧。</description>
     </item>
     
     <item>
@@ -26,7 +35,7 @@
       <pubDate>Wed, 31 Oct 2018 22:38:40 +0800</pubDate>
       
       <guid>http://localhost:1313/post/tcp-hello-bye/</guid>
-      <description>什么是三次握手？ 三次握手的实质就是两次请求+两次确认，从而保证了双工通信。 第一次握手：客户端向服务端发送连接请求（SYN）报文段，发送请求后，客户端会进入连接发送等待回复（SYN_SENT）阶段。 第二</description>
+      <description>知识的真正掌握，就是说人话，让小白都能听得懂。所以，写这篇文章力求用看得懂的人话总结TCP的三次握手和四次分手。</description>
     </item>
     
     <item>
@@ -35,7 +44,7 @@
       <pubDate>Sun, 28 Oct 2018 22:38:40 +0800</pubDate>
       
       <guid>http://localhost:1313/post/soft-skills/</guid>
-      <description>一、简介 《软技能》是一本面向程序员又不仅限于程序员的职业生活指南。本书不光从职业发展上给予读者指导，还涵盖自我营销、学习方法、任务管理、身心健康和理财相关等。是一本大纲式的清单类书籍，适合给迷茫阶段的</description>
+      <description>《软技能》——一本程序员的职业生活指南。</description>
     </item>
     
     <item>
@@ -44,7 +53,7 @@
       <pubDate>Tue, 23 Oct 2018 18:38:40 +0800</pubDate>
       
       <guid>http://localhost:1313/post/tcpdump/</guid>
-      <description>一、简介 tcpdump是一个在运行在命令行下的嗅探工具。它允许用户拦截和显示发送或收到过网络连接到该计算机的TCP/IP和其他数据包。 tcpdump能够分析网络行为，性能和应用产生或接收网络流量。它支</description>
+      <description>网络相关工具进阶系列之tcpdump详解</description>
     </item>
     
     <item>
@@ -53,7 +62,7 @@
       <pubDate>Sat, 08 Sep 2018 20:23:09 +0800</pubDate>
       
       <guid>http://localhost:1313/post/google-works/</guid>
-      <description>1. 选择管理 你的精力/时间有限，对一件事Say Yes，另一件Say No 选择管理的核心原则，把时间，精力集中在对职业发展，个人成长重要的事情上 用动态的眼光看选择管理，前半年没有选择的事情，也许后半年就是工作</description>
+      <description>周末看了个知乎私家课【Google高效法】，受益良多。特此附上笔记。</description>
     </item>
     
     <item>
@@ -62,7 +71,7 @@
       <pubDate>Thu, 30 Aug 2018 13:05:14 +0800</pubDate>
       
       <guid>http://localhost:1313/post/uuid/</guid>
-      <description>IMEI Android： 一串15位的号码。需要权限拿不到IMEI的情况： 某些魔改版rom 模拟器 iOS： iOS5之后已经废弃，苹果禁止APP获取IMEI号。 IDFA Android： 2014年Android2.3基于</description>
+      <description>最近接手公司的推送服务。刚接手时，对各种设备唯一标识很懵。特此梳理成一篇笔记。</description>
     </item>
     
     <item>
@@ -71,7 +80,7 @@
       <pubDate>Wed, 04 Apr 2018 00:16:50 +0800</pubDate>
       
       <guid>http://localhost:1313/post/ps/</guid>
-      <description>1. ps ps是Process Status的简称，ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照，就是执行ps命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用t</description>
+      <description>记录一下常用的linux命令的用法和实例。第二篇 —— ps。</description>
     </item>
     
     <item>
@@ -80,7 +89,7 @@
       <pubDate>Tue, 03 Apr 2018 00:33:58 +0800</pubDate>
       
       <guid>http://localhost:1313/post/lsof/</guid>
-      <description>1. lsof一切皆文件 lsof是list open files的简称，是一个查看当前系统文件的工具。乍一看不是一个特别强大的命令，但是由于unix系统的everything is a file的哲学，它常常被运用于查看进</description>
+      <description>记录一下常用的linux命令的用法和实例。第一篇 —— lsof。</description>
     </item>
     
     <item>
@@ -89,7 +98,7 @@
       <pubDate>Sat, 24 Mar 2018 15:27:25 +0800</pubDate>
       
       <guid>http://localhost:1313/post/performance-test/</guid>
-      <description>前几天腾讯云活动，买了一台服务器用来折腾玩。也想乘机再次开个博客，再次记录一下自己的学习和娱乐。某日再回头看看自己走过的坑，也可能也是一种别样的乐趣。 一、CPU物理个数、内核、超线程、多核心 1. 查看CP</description>
+      <description>前几天腾讯云活动，买了一台服务器用来折腾玩。也想乘机再次开个博客，再次记录一下自己的学习和娱乐。某日再回头看看自己走过的坑，也可能也是一种别样的乐趣。</description>
     </item>
     
     <item>

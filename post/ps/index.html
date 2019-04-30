@@ -17,7 +17,7 @@
 
 
 <meta name="author" content="flyingFang" />
-  <meta name="description" content="1. ps ps是Process Status的简称，ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照，就是执行ps命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用t" />
+  <meta name="description" content="记录一下常用的linux命令的用法和实例。第二篇 —— ps。" />
 
   <meta name="keywords" content="Hugo, theme, even" />
 
@@ -26,7 +26,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.52" />
+<meta name="generator" content="Hugo 0.55.2" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/ps/" />
@@ -48,13 +48,14 @@
 <link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
 
 <meta property="og:title" content="[每日一个Linux命令]——ps详解" />
-<meta property="og:description" content="1. ps ps是Process Status的简称，ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照，就是执行ps命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用t" />
+<meta property="og:description" content="记录一下常用的linux命令的用法和实例。第二篇 —— ps。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/ps/" /><meta property="article:published_time" content="2018-04-04T00:16:50&#43;08:00"/>
+<meta property="og:url" content="http://localhost:1313/post/ps/" />
+<meta property="article:published_time" content="2018-04-04T00:16:50&#43;08:00"/>
 <meta property="article:modified_time" content="2018-04-04T00:16:50&#43;08:00"/>
 
 <meta itemprop="name" content="[每日一个Linux命令]——ps详解">
-<meta itemprop="description" content="1. ps ps是Process Status的简称，ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照，就是执行ps命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用t">
+<meta itemprop="description" content="记录一下常用的linux命令的用法和实例。第二篇 —— ps。">
 
 
 <meta itemprop="datePublished" content="2018-04-04T00:16:50&#43;08:00" />
@@ -66,7 +67,7 @@
 <meta itemprop="keywords" content="Linux," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[每日一个Linux命令]——ps详解"/>
-<meta name="twitter:description" content="1. ps ps是Process Status的简称，ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照，就是执行ps命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用t"/>
+<meta name="twitter:description" content="记录一下常用的linux命令的用法和实例。第二篇 —— ps。"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -402,7 +403,9 @@
 
   <span class="copyright-year">
     &copy; 
-    2018
+    
+      2018 - 
+    2019
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>

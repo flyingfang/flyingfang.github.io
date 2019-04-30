@@ -17,7 +17,7 @@
       <pubDate>Thu, 30 Aug 2018 13:05:14 +0800</pubDate>
       
       <guid>http://localhost:1313/post/uuid/</guid>
-      <description>IMEI Android： 一串15位的号码。需要权限拿不到IMEI的情况： 某些魔改版rom 模拟器 iOS： iOS5之后已经废弃，苹果禁止APP获取IMEI号。 IDFA Android： 2014年Android2.3基于</description>
+      <description>最近接手公司的推送服务。刚接手时，对各种设备唯一标识很懵。特此梳理成一篇笔记。</description>
     </item>
     
   </channel>

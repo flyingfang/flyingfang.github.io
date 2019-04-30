@@ -17,7 +17,7 @@
 
 
 <meta name="author" content="flyingFang" />
-  <meta name="description" content="一、简介 tcpdump是一个在运行在命令行下的嗅探工具。它允许用户拦截和显示发送或收到过网络连接到该计算机的TCP/IP和其他数据包。 tcpdump能够分析网络行为，性能和应用产生或接收网络流量。它支" />
+  <meta name="description" content="网络相关工具进阶系列之tcpdump详解" />
 
   <meta name="keywords" content="Hugo, theme, even" />
 
@@ -26,7 +26,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.52" />
+<meta name="generator" content="Hugo 0.55.2" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/tcpdump/" />
@@ -48,13 +48,14 @@
 <link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
 
 <meta property="og:title" content="[网络工具进阶] - tcpdump详解" />
-<meta property="og:description" content="一、简介 tcpdump是一个在运行在命令行下的嗅探工具。它允许用户拦截和显示发送或收到过网络连接到该计算机的TCP/IP和其他数据包。 tcpdump能够分析网络行为，性能和应用产生或接收网络流量。它支" />
+<meta property="og:description" content="网络相关工具进阶系列之tcpdump详解" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/tcpdump/" /><meta property="article:published_time" content="2018-10-23T18:38:40&#43;08:00"/>
+<meta property="og:url" content="http://localhost:1313/post/tcpdump/" />
+<meta property="article:published_time" content="2018-10-23T18:38:40&#43;08:00"/>
 <meta property="article:modified_time" content="2018-10-23T18:38:40&#43;08:00"/>
 
 <meta itemprop="name" content="[网络工具进阶] - tcpdump详解">
-<meta itemprop="description" content="一、简介 tcpdump是一个在运行在命令行下的嗅探工具。它允许用户拦截和显示发送或收到过网络连接到该计算机的TCP/IP和其他数据包。 tcpdump能够分析网络行为，性能和应用产生或接收网络流量。它支">
+<meta itemprop="description" content="网络相关工具进阶系列之tcpdump详解">
 
 
 <meta itemprop="datePublished" content="2018-10-23T18:38:40&#43;08:00" />
@@ -66,7 +67,7 @@
 <meta itemprop="keywords" content="Linux,Networking," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[网络工具进阶] - tcpdump详解"/>
-<meta name="twitter:description" content="一、简介 tcpdump是一个在运行在命令行下的嗅探工具。它允许用户拦截和显示发送或收到过网络连接到该计算机的TCP/IP和其他数据包。 tcpdump能够分析网络行为，性能和应用产生或接收网络流量。它支"/>
+<meta name="twitter:description" content="网络相关工具进阶系列之tcpdump详解"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -623,7 +624,9 @@ tcpdump -i eth1 icmp
 
   <span class="copyright-year">
     &copy; 
-    2018
+    
+      2018 - 
+    2019
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>

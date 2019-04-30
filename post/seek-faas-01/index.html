@@ -17,7 +17,7 @@
 
 
 <meta name="author" content="flyingFang" />
-  <meta name="description" content="Serverless是什么 AWS的官方介绍如下： 在不考虑服务器的情况下构建并运行应用程序。 我的理解是Serverless就是云服务提供商提供给用户的更完美封装的一个产品。 Serverless无服务并不" />
+  <meta name="description" content="本系列是对最近初探FaaS领域的一个总结，希望达到输出是最好的吸收的目的吧。" />
 
   <meta name="keywords" content="Hugo, theme, even" />
 
@@ -26,7 +26,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.52" />
+<meta name="generator" content="Hugo 0.55.2" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/seek-faas-01/" />
@@ -48,13 +48,14 @@
 <link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
 
 <meta property="og:title" content="初探FaaS（一）——Serverless架构" />
-<meta property="og:description" content="Serverless是什么 AWS的官方介绍如下： 在不考虑服务器的情况下构建并运行应用程序。 我的理解是Serverless就是云服务提供商提供给用户的更完美封装的一个产品。 Serverless无服务并不" />
+<meta property="og:description" content="本系列是对最近初探FaaS领域的一个总结，希望达到输出是最好的吸收的目的吧。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/seek-faas-01/" /><meta property="article:published_time" content="2018-12-23T21:38:13&#43;08:00"/>
+<meta property="og:url" content="http://localhost:1313/post/seek-faas-01/" />
+<meta property="article:published_time" content="2018-12-23T21:38:13&#43;08:00"/>
 <meta property="article:modified_time" content="2018-12-23T21:38:13&#43;08:00"/>
 
 <meta itemprop="name" content="初探FaaS（一）——Serverless架构">
-<meta itemprop="description" content="Serverless是什么 AWS的官方介绍如下： 在不考虑服务器的情况下构建并运行应用程序。 我的理解是Serverless就是云服务提供商提供给用户的更完美封装的一个产品。 Serverless无服务并不">
+<meta itemprop="description" content="本系列是对最近初探FaaS领域的一个总结，希望达到输出是最好的吸收的目的吧。">
 
 
 <meta itemprop="datePublished" content="2018-12-23T21:38:13&#43;08:00" />
@@ -66,7 +67,7 @@
 <meta itemprop="keywords" content="faas,cloud," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="初探FaaS（一）——Serverless架构"/>
-<meta name="twitter:description" content="Serverless是什么 AWS的官方介绍如下： 在不考虑服务器的情况下构建并运行应用程序。 我的理解是Serverless就是云服务提供商提供给用户的更完美封装的一个产品。 Serverless无服务并不"/>
+<meta name="twitter:description" content="本系列是对最近初探FaaS领域的一个总结，希望达到输出是最好的吸收的目的吧。"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -298,6 +299,11 @@
       
       <nav class="post-nav">
         
+          <a class="prev" href="/post/etcd-operator/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Etcd Operator初探</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
         
           <a class="next" href="/post/tcp-hello-bye/">
             <span class="next-text nav-default">白话TCP协议的三次握手和四次分手</span>
@@ -342,7 +348,9 @@
 
   <span class="copyright-year">
     &copy; 
-    2018
+    
+      2018 - 
+    2019
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>

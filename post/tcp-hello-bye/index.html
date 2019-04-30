@@ -17,7 +17,7 @@
 
 
 <meta name="author" content="flyingFang" />
-  <meta name="description" content="什么是三次握手？ 三次握手的实质就是两次请求&#43;两次确认，从而保证了双工通信。 第一次握手：客户端向服务端发送连接请求（SYN）报文段，发送请求后，客户端会进入连接发送等待回复（SYN_SENT）阶段。 第二" />
+  <meta name="description" content="知识的真正掌握，就是说人话，让小白都能听得懂。所以，写这篇文章力求用看得懂的人话总结TCP的三次握手和四次分手。" />
 
   <meta name="keywords" content="Hugo, theme, even" />
 
@@ -26,7 +26,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.52" />
+<meta name="generator" content="Hugo 0.55.2" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/tcp-hello-bye/" />
@@ -48,13 +48,14 @@
 <link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
 
 <meta property="og:title" content="白话TCP协议的三次握手和四次分手" />
-<meta property="og:description" content="什么是三次握手？ 三次握手的实质就是两次请求&#43;两次确认，从而保证了双工通信。 第一次握手：客户端向服务端发送连接请求（SYN）报文段，发送请求后，客户端会进入连接发送等待回复（SYN_SENT）阶段。 第二" />
+<meta property="og:description" content="知识的真正掌握，就是说人话，让小白都能听得懂。所以，写这篇文章力求用看得懂的人话总结TCP的三次握手和四次分手。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/tcp-hello-bye/" /><meta property="article:published_time" content="2018-10-31T22:38:40&#43;08:00"/>
+<meta property="og:url" content="http://localhost:1313/post/tcp-hello-bye/" />
+<meta property="article:published_time" content="2018-10-31T22:38:40&#43;08:00"/>
 <meta property="article:modified_time" content="2018-10-31T22:38:40&#43;08:00"/>
 
 <meta itemprop="name" content="白话TCP协议的三次握手和四次分手">
-<meta itemprop="description" content="什么是三次握手？ 三次握手的实质就是两次请求&#43;两次确认，从而保证了双工通信。 第一次握手：客户端向服务端发送连接请求（SYN）报文段，发送请求后，客户端会进入连接发送等待回复（SYN_SENT）阶段。 第二">
+<meta itemprop="description" content="知识的真正掌握，就是说人话，让小白都能听得懂。所以，写这篇文章力求用看得懂的人话总结TCP的三次握手和四次分手。">
 
 
 <meta itemprop="datePublished" content="2018-10-31T22:38:40&#43;08:00" />
@@ -66,7 +67,7 @@
 <meta itemprop="keywords" content="network," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="白话TCP协议的三次握手和四次分手"/>
-<meta name="twitter:description" content="什么是三次握手？ 三次握手的实质就是两次请求&#43;两次确认，从而保证了双工通信。 第一次握手：客户端向服务端发送连接请求（SYN）报文段，发送请求后，客户端会进入连接发送等待回复（SYN_SENT）阶段。 第二"/>
+<meta name="twitter:description" content="知识的真正掌握，就是说人话，让小白都能听得懂。所以，写这篇文章力求用看得懂的人话总结TCP的三次握手和四次分手。"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -314,7 +315,9 @@
 
   <span class="copyright-year">
     &copy; 
-    2018
+    
+      2018 - 
+    2019
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>

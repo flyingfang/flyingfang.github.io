@@ -17,7 +17,7 @@
       <pubDate>Tue, 23 Oct 2018 18:38:40 +0800</pubDate>
       
       <guid>http://localhost:1313/post/tcpdump/</guid>
-      <description>一、简介 tcpdump是一个在运行在命令行下的嗅探工具。它允许用户拦截和显示发送或收到过网络连接到该计算机的TCP/IP和其他数据包。 tcpdump能够分析网络行为，性能和应用产生或接收网络流量。它支</description>
+      <description>网络相关工具进阶系列之tcpdump详解</description>
     </item>
     
     <item>
@@ -26,7 +26,7 @@
       <pubDate>Wed, 04 Apr 2018 00:16:50 +0800</pubDate>
       
       <guid>http://localhost:1313/post/ps/</guid>
-      <description>1. ps ps是Process Status的简称，ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照，就是执行ps命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用t</description>
+      <description>记录一下常用的linux命令的用法和实例。第二篇 —— ps。</description>
     </item>
     
     <item>
@@ -35,7 +35,7 @@
       <pubDate>Tue, 03 Apr 2018 00:33:58 +0800</pubDate>
       
       <guid>http://localhost:1313/post/lsof/</guid>
-      <description>1. lsof一切皆文件 lsof是list open files的简称，是一个查看当前系统文件的工具。乍一看不是一个特别强大的命令，但是由于unix系统的everything is a file的哲学，它常常被运用于查看进</description>
+      <description>记录一下常用的linux命令的用法和实例。第一篇 —— lsof。</description>
     </item>
     
   </channel>

@@ -17,7 +17,7 @@
       <pubDate>Tue, 23 Oct 2018 18:38:40 +0800</pubDate>
       
       <guid>http://localhost:1313/post/tcpdump/</guid>
-      <description>一、简介 tcpdump是一个在运行在命令行下的嗅探工具。它允许用户拦截和显示发送或收到过网络连接到该计算机的TCP/IP和其他数据包。 tcpdump能够分析网络行为，性能和应用产生或接收网络流量。它支</description>
+      <description>网络相关工具进阶系列之tcpdump详解</description>
     </item>
     
   </channel>

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>知识点 on xflying&#39;s Coding Road</title>
-    <link>http://localhost:1313/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/</link>
+    <link>http://flyingfang.github.io/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/</link>
     <description>Recent content in 知识点 on xflying&#39;s Coding Road</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Thu, 30 Aug 2018 13:05:14 +0800</lastBuildDate>
     
-	<atom:link href="http://localhost:1313/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://flyingfang.github.io/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>设备唯一性标识知多少？</title>
-      <link>http://localhost:1313/post/uuid/</link>
+      <link>http://flyingfang.github.io/post/uuid/</link>
       <pubDate>Thu, 30 Aug 2018 13:05:14 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/uuid/</guid>
+      <guid>http://flyingfang.github.io/post/uuid/</guid>
       <description>最近接手公司的推送服务。刚接手时，对各种设备唯一标识很懵。特此梳理成一篇笔记。</description>
     </item>
     

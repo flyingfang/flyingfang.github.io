@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>kubernetes on xflying&#39;s Coding Road</title>
-    <link>http://localhost:1313/categories/kubernetes/</link>
-    <description>Recent content in kubernetes on xflying&#39;s Coding Road</description>
+    <title>cgroup on xflying&#39;s Coding Road</title>
+    <link>http://localhost:1313/tags/cgroup/</link>
+    <description>Recent content in cgroup on xflying&#39;s Coding Road</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Tue, 23 Jul 2019 15:39:48 +0800</lastBuildDate>
     
-	<atom:link href="http://localhost:1313/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://localhost:1313/tags/cgroup/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,15 +18,6 @@
       
       <guid>http://localhost:1313/post/cgroup-leak/</guid>
       <description>记录一次线下环境遇到的cgroup泄漏问题，以及相关的解决方案。</description>
-    </item>
-    
-    <item>
-      <title>Etcd Operator使用笔记</title>
-      <link>http://localhost:1313/post/etcd-operator/</link>
-      <pubDate>Tue, 30 Apr 2019 20:24:47 +0800</pubDate>
-      
-      <guid>http://localhost:1313/post/etcd-operator/</guid>
-      <description>etcd operator startup</description>
     </item>
     
   </channel>

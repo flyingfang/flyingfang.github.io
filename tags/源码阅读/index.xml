@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>docker on xflying&#39;s Coding Road</title>
-    <link>http://localhost:1313/tags/docker/</link>
-    <description>Recent content in docker on xflying&#39;s Coding Road</description>
+    <title>源码阅读 on xflying&#39;s Coding Road</title>
+    <link>http://localhost:1313/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</link>
+    <description>Recent content in 源码阅读 on xflying&#39;s Coding Road</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Mon, 16 Sep 2019 21:38:53 +0800</lastBuildDate>
     
-	<atom:link href="http://localhost:1313/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://localhost:1313/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,15 +18,6 @@
       
       <guid>http://localhost:1313/post/docker-reading-01/</guid>
       <description>通过阅读源码理清dockerd、containerd、shim和runc之间的关系。</description>
-    </item>
-    
-    <item>
-      <title>Cgroup泄漏</title>
-      <link>http://localhost:1313/post/cgroup-leak/</link>
-      <pubDate>Tue, 23 Jul 2019 15:39:48 +0800</pubDate>
-      
-      <guid>http://localhost:1313/post/cgroup-leak/</guid>
-      <description>记录一次线下环境遇到的cgroup泄漏问题，以及相关的解决方案。</description>
     </item>
     
   </channel>

@@ -6,10 +6,19 @@
     <description>Recent content in Posts on xflying&#39;s Coding Road</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 16 Sep 2019 21:38:53 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 18 Sep 2019 01:17:53 +0800</lastBuildDate>
     
 	<atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>runc简明命令指南</title>
+      <link>http://localhost:1313/post/runc-cheat-sheet/</link>
+      <pubDate>Wed, 18 Sep 2019 01:17:53 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/runc-cheat-sheet/</guid>
+      <description>初探runc。</description>
+    </item>
     
     <item>
       <title>【源码分析】docker（一）之dockerd、containerd、shim、runc各组件关系</title>

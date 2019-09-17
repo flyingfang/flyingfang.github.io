@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>runc简明命令指南 - xflying&#39;s Coding Road</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="flyingFang" />
+  <meta name="description" content="初探runc。" />
+
+  <meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/runc-cheat-sheet/" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" href="/favicon.ico" />
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=2.7.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+<meta property="og:title" content="runc简明命令指南" />
+<meta property="og:description" content="初探runc。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/runc-cheat-sheet/" />
+<meta property="article:published_time" content="2019-09-18T01:17:53&#43;08:00"/>
+<meta property="article:modified_time" content="2019-09-18T01:17:53&#43;08:00"/>
+
+<meta itemprop="name" content="runc简明命令指南">
+<meta itemprop="description" content="初探runc。">
+
+
+<meta itemprop="datePublished" content="2019-09-18T01:17:53&#43;08:00" />
+<meta itemprop="dateModified" content="2019-09-18T01:17:53&#43;08:00" />
+<meta itemprop="wordCount" content="698">
+
+
+
+<meta itemprop="keywords" content="docker,runc," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="runc简明命令指南"/>
+<meta name="twitter:description" content="初探runc。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FLY</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FLY</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">runc简明命令指南</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-09-18 </span>
+        <div class="post-category">
+            
+              <a href="/categories/docker/"> docker </a>
+            
+          </div>
+        <span class="more-meta"> 约 698 字 </span>
+        <span class="more-meta"> 预计阅读 2 分钟 </span>
+        
+      </div>
+    </header>
+
+    
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#runc是什么">runc是什么</a></li>
+<li><a href="#安装">安装</a></li>
+<li><a href="#准备oci-bundle">准备OCI bundle</a></li>
+<li><a href="#简明示例">简明示例</a></li>
+<li><a href="#常用命令">常用命令</a></li>
+<li><a href="#参考">参考</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+
+    
+    <div class="post-content">
+      
+
+<h1 id="runc是什么">runc是什么</h1>
+
+<p><code>OCI</code>（Open Container Initiative）是由多家公司共同成立的项目，并由linux基金会进行管理，致力于容器运行时的标准的制定和runc的开发等工作。</p>
+
+<p><code>runc</code> 是一个根据OCI标准创建并运行容器的一个命令行工具。runc直接与容器所依赖的cgroup/linux kernel等进行交互，负责为容器配置cgroup/namespace等启动容器所需的环境，创建启动容器的相关进程。</p>
+
+<h1 id="安装">安装</h1>
+
+<ol>
+<li>安装相关依赖</li>
+</ol>
+
+<pre><code class="language-shell">$ sudo apt install libseccomp-dev pkg-config
+</code></pre>
+
+<ol>
+<li>下载源码</li>
+</ol>
+
+<pre><code class="language-shell">$ go get github.com/opencontainers/runc
+</code></pre>
+
+<ol>
+<li>安装<code>v1.0.0-rc8</code> 版本</li>
+</ol>
+
+<pre><code class="language-shell">$ cd ~/go/src/github.com/opencontainers/runc
+$ git checkout v1.0.0-rc8
+$ make
+$ sudo make install
+</code></pre>
+
+<ol>
+<li>验证runc安装成功</li>
+</ol>
+
+<pre><code class="language-sh">$ runc -v
+runc version 1.0.0-rc8
+commit: 425e105d5a03fabd737a126ad93d62a9eeede87f
+spec: 1.0.1-dev
+</code></pre>
+
+<h1 id="准备oci-bundle">准备OCI bundle</h1>
+
+<p>所谓的 OCI bundle 就是指容器的文件系统和一个 config.json 文件。有了容器的文件系统后我们可以通过 runc spec 命令来生成 config.json 文件。</p>
+
+<pre><code class="language-shell">$ docker pull busybox
+$ mkdir -p /tmp/mycontainer/rootfs
+$ cd /tmp/mycontainer
+$ docker export $(docker create busybox) | tar -C rootfs -xvf -
+</code></pre>
+
+<p>现在 rootfs 目录下就是 busybox 镜像的文件系统，然后生成 config.json 文件：</p>
+
+<pre><code class="language-shell">$ runc spec
+</code></pre>
+
+<h1 id="简明示例">简明示例</h1>
+
+<p>0.查看帮助</p>
+
+<pre><code class="language-shell">$ runc -h // 查看帮助
+$ runc help subcommand // 查看子命令帮助
+</code></pre>
+
+<p>1.利用之前准备好的OCI bundle，创建一个容器</p>
+
+<pre><code class="language-shell">$ runc create demo
+</code></pre>
+
+<p>2.查看当前所有的容器</p>
+
+<pre><code class="language-shell">$ runc list
+</code></pre>
+
+<p>3.查看容器的状态</p>
+
+<pre><code class="language-shell">$ runc state demo
+</code></pre>
+
+<p>4.启动容器</p>
+
+<pre><code class="language-shell">$ runc start demo
+</code></pre>
+
+<p>5.查看容器的进程</p>
+
+<pre><code class="language-shell">$ runc ps demo
+</code></pre>
+
+<p>6.在容器内执行命令</p>
+
+<pre><code class="language-shell">$ runc exec demo ls
+</code></pre>
+
+<p>7.终止容器</p>
+
+<pre><code class="language-shell">$ runc kill demo
+</code></pre>
+
+<p>8.删除容器</p>
+
+<pre><code class="language-shell">$ runc delete demo
+</code></pre>
+
+<h1 id="常用命令">常用命令</h1>
+
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>runc create [ -b &lt;bundle-dir&gt;]  &lt;container-id&gt;</td>
+<td>创建一个容器</td>
+</tr>
+
+<tr>
+<td>runc list</td>
+<td>查看容器列表</td>
+</tr>
+
+<tr>
+<td>runc ps &lt;container-id&gt;</td>
+<td>查看容器内进程</td>
+</tr>
+
+<tr>
+<td>runc exec &lt;container-id&gt; ls</td>
+<td>在容器内执行命令</td>
+</tr>
+
+<tr>
+<td>runc start [<container-id>]</td>
+<td>启动容器，不指定container-id则启动所有</td>
+</tr>
+
+<tr>
+<td>runc run  [ -b &lt;bundle-dir&gt;] &lt;container-id&gt;</td>
+<td>创建并运行容器</td>
+</tr>
+
+<tr>
+<td>runc kill &lt;container-id&gt; [<signal>]</td>
+<td>给容器发送终止信号，默认SIGTERM</td>
+</tr>
+
+<tr>
+<td>runc pause &lt;container-id&gt;</td>
+<td>暂停容器内所有进程</td>
+</tr>
+
+<tr>
+<td>runc resume &lt;container-id&gt;</td>
+<td>恢复容器内暂停的进程</td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="参考">参考</h1>
+
+<p><a href="https://www.infoq.cn/article/2017%2F02%2FDocker-Containerd-RunC">Docker、Containerd、RunC&hellip;：你应该知道的所有</a></p>
+
+<p><a href="https://www.cnblogs.com/sparkdev/p/9032209.html">runc简介</a></p>
+
+    </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">flyingFang</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">2019-09-18</span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+    
+    
+<div class="post-reward">
+  <input type="checkbox" name="reward" id="reward" hidden />
+  <label class="reward-button" for="reward">赞赏支持</label>
+  <div class="qr-code">
+    
+    
+      <label class="qr-code-image" for="reward">
+        <img class="image" src="http://xflying-blog.cdn.bcebos.com/wechatpay.jpg">
+        <span>微信打赏</span>
+      </label>
+    
+      <label class="qr-code-image" for="reward">
+        <img class="image" src="http://xflying-blog.cdn.bcebos.com/alipay.jpg">
+        <span>支付宝打赏</span>
+      </label>
+  </div>
+</div>
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/docker/">docker</a>
+          
+          <a href="/tags/runc/">runc</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/post/docker-reading-01/">
+            <span class="next-text nav-default">【源码分析】docker（一）之dockerd、containerd、shim、runc各组件关系</span>
+            <span class="prev-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+  
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:flying.fangchn@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/flyingfang" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/1863612812/profile" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/casafly" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/171846250/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://www.instagram.com/xflying203/" class="iconfont icon-instagram" title="instagram"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2018 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">flyingFang</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+<script type="text/javascript" src="/dist/even.min.js?v=2.7.0"></script>
+
+
+
+
+<script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
+</html>

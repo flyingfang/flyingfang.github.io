@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>容器存储驱动Device Mapper——原理解析 - xflying&#39;s Coding Road</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="flyingFang" />
+  <meta name="description" content="devicemapper技术是一种块设备映射技术框架，也是docker存储驱动的一种。" />
+
+  <meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/devicemapper-theory/" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" href="/favicon.ico" />
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=2.7.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+<meta property="og:title" content="容器存储驱动Device Mapper——原理解析" />
+<meta property="og:description" content="devicemapper技术是一种块设备映射技术框架，也是docker存储驱动的一种。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/devicemapper-theory/" />
+<meta property="article:published_time" content="2019-12-25T13:24:37&#43;08:00"/>
+<meta property="article:modified_time" content="2019-12-25T13:24:37&#43;08:00"/>
+
+<meta itemprop="name" content="容器存储驱动Device Mapper——原理解析">
+<meta itemprop="description" content="devicemapper技术是一种块设备映射技术框架，也是docker存储驱动的一种。">
+
+
+<meta itemprop="datePublished" content="2019-12-25T13:24:37&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-25T13:24:37&#43;08:00" />
+<meta itemprop="wordCount" content="1738">
+
+
+
+<meta itemprop="keywords" content="docker,devicemapper,kernel," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="容器存储驱动Device Mapper——原理解析"/>
+<meta name="twitter:description" content="devicemapper技术是一种块设备映射技术框架，也是docker存储驱动的一种。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FLY</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FLY</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">容器存储驱动Device Mapper——原理解析</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-12-25 </span>
+        <div class="post-category">
+            
+              <a href="/categories/docker/"> docker </a>
+            
+          </div>
+        <span class="more-meta"> 约 1738 字 </span>
+        <span class="more-meta"> 预计阅读 4 分钟 </span>
+        
+      </div>
+    </header>
+
+    
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#device-mapper">Device Mapper</a>
+<ul>
+<li><a href="#device-mapper简介">Device Mapper简介</a></li>
+<li><a href="#device-mapper架构">Device Mapper架构</a>
+<ul>
+<li><a href="#device-mapper-组成">Device Mapper 组成</a></li>
+<li><a href="#device-mapper对象结构">Device Mapper对象结构</a></li>
+</ul></li>
+<li><a href="#docker中的device-mapper">Docker中的Device Mapper</a>
+<ul>
+<li><a href="#docker中的device-mapper核心技术">Docker中的Device Mapper核心技术</a>
+<ul>
+<li><a href="#写时复制">写时复制</a></li>
+<li><a href="#快照技术">快照技术</a></li>
+<li><a href="#精简配置">精简配置</a></li>
+</ul></li>
+<li><a href="#docker中的device-mapper使用过程">Docker中的Device Mapper使用过程</a></li>
+</ul></li>
+<li><a href="#参考资料">参考资料</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+
+    
+    <div class="post-content">
+      
+
+<h1 id="device-mapper">Device Mapper</h1>
+
+<h2 id="device-mapper简介">Device Mapper简介</h2>
+
+<p><code>Device Mapper</code>是linux内核将物理块设备映射到虚拟块设备的一种框架，它是当下LVM (Linux Volume Manager 2 version) 、EVMS (Enterprise Volume Management System)、dmraid (Device Mapper Raid Tool) 等技术的基础。因此，<code>Device Mapper</code>是工作于块级别（block），并不是工作在文件级别（file）。</p>
+
+<h2 id="device-mapper架构">Device Mapper架构</h2>
+
+<h3 id="device-mapper-组成">Device Mapper 组成</h3>
+
+<p><code>Device Mapper</code> 主要分为用户空间部分和内核空间部分两部分。</p>
+
+<p>用户空间部分主要负责配置具体的策略和控制逻辑。包含device mapper 库以及 dmsetup 工具。</p>
+
+<p>内核空间部分主要提供完成这些用户空间策略所需要的机制。Device Mapper在内核中通过模块化的Target Driver插件实现了对 IO 请求的过滤或重定向等工作，这体现了linux内核设计中策略和机制分离的原则。如docker中使用的Thin Provisioning Snapshot功能，就是一个插件。</p>
+
+<p><img src="https://xflying-blog.bj.bcebos.com/xflying-blog%2Fdevicemapper-theory%2Fdevice-mapper-kernel-architecture.png" alt="Device Mapper架构图" /></p>
+
+<h3 id="device-mapper对象结构">Device Mapper对象结构</h3>
+
+<p><code>Device Mapper</code>有三个重要的对象概念：映射设备 (Mapped Device)，映射表 (Map Table)，目标设备 (Target Device)。</p>
+
+<ul>
+<li>映射设备：即逻辑设备，映射设备可向下寻找到对应支撑的目标设备。</li>
+<li>映射表：存储映射设备和目标设备的映射关系。映射表有映射设备的起始地址、范围和表示在目标设备的地址偏移量以及Target类型信息。（注：这些地址和偏移量都是以磁盘的扇区为单位的，即 512 个字节大小，所以，当你看到128的时候，其实表示的是128*512=64K）</li>
+<li>目标设备：可以是映射设备或者物理设备。这种映射关系是可以迭代下去的。</li>
+</ul>
+
+<p><img src="https://xflying-blog.bj.bcebos.com/xflying-blog%2Fdevicemapper-theory%2Fdevice-mapper-object-relation.png" alt="Device Mapper对象关系" /></p>
+
+<p>映射表，是由用户空间创建，传递到内核空间。映射驱动在内核空间是插件，已实现的映射驱动（Target Driver） 插件包括软 raid、软加密、逻辑卷条带、多路径（mulitpath）、镜像（mirror）、快照（snapshot）等。</p>
+
+<h2 id="docker中的device-mapper">Docker中的Device Mapper</h2>
+
+<h3 id="docker中的device-mapper核心技术">Docker中的Device Mapper核心技术</h3>
+
+<p>Docker的 <code>devicemapper</code>有三个核心概念：写时复制（copy on-write），精简配置（thin-provisioning），快照（snapshot）。</p>
+
+<h4 id="写时复制">写时复制</h4>
+
+<p>容器的镜像是分层的，每层称为一个 branch，除顶层 branch 具有读写（rw）权限，所有的 branch 均为只读（ro）权限。</p>
+
+<p>容器文件的读写：当我们需要修改一个底层 branch 的文件时，会将底层 branch 的文件复制到顶层 branch，再进行修改，此时底层 branch 的文件不变。</p>
+
+<p>容器文件的删除：当我们删除一个顶层 branch 的文件时，会在顶层 branch 创建一个 <code>.wh</code>前置的隐藏文件，从而实现文件的删除，实际并未真的删除文件。</p>
+
+<p>而 <code>devicemapper</code>支持在块级别（block）写时复制。</p>
+
+<h4 id="快照技术">快照技术</h4>
+
+<p>快照技术是对指定数据集合的一个完全可用拷贝，快照是指向保存在存储设备中的数据的引用标记或指针，它可以在不中断服务运行的情况下操作。</p>
+
+<p>接下来的文件修改或者增删动作，均不会覆盖原本数据所在的磁盘区块，而是将修改部分写入其它可用的磁盘区块中。</p>
+
+<p>快照只对变化的部分进行拷贝，所以在读多写少的场景下，对于磁盘空间占用不大。</p>
+
+<p>快照大小耗尽时，支持对快照大小进行调整。</p>
+
+<h4 id="精简配置">精简配置</h4>
+
+<p>Thin-Provisioning 是虚拟化技术的一种，实际上是一种超卖，以提高存储空间利用率。</p>
+
+<p>Fat-Provisioning 就是传统的存储分配方式，从一开始就固定分配了存储空间。而Thin-Provisioning是动态分配的，是一种使用时分配。</p>
+
+<p><img src="https://xflying-blog.bj.bcebos.com/xflying-blog%2Fdevicemapper-theory%2Ffat-provisioning.jpg" alt="Fat-Provisioning" /></p>
+
+<p><img src="https://xflying-blog.bj.bcebos.com/xflying-blog%2Fdevicemapper-theory%2Fthin-provisioning.jpg" alt="Thin-Provisioning" /></p>
+
+<p>再举一个例子：用户向服务器申请10TB 的存储资源，往往这个数值为峰值，根据使用情况估计，分配2TB 即可。因此系统管理员准备了 2TB 的物理存储，并给服务器分配 10TB 的虚拟卷。服务器即可基于占虚拟卷容量1/5的现有物理磁盘池开始运行。</p>
+
+<p><img src="https://xflying-blog.bj.bcebos.com/xflying-blog%2Fdevicemapper-theory%2Fthin-provisioning-example.jpg" alt="Thin-Provisioning-Example" /></p>
+
+<h3 id="docker中的device-mapper使用过程">Docker中的Device Mapper使用过程</h3>
+
+<p>基于docker v1.12.5，关键代码 <code>github.com/docker/docker/daemon/graphdriver/devmapper/deviceset.go::initDevmapper()</code></p>
+
+<ol>
+<li><p>先创建一个瘦资源池（thin pool，使用瘦供给技术，存储动态分配），瘦资源池使用2块设备，一个用于存储数据（data），一个用于存储元数据（meta），包括虚拟设备和目标设备的映射表。</p></li>
+
+<li><p>基于该瘦资源池创建基础设备（Base Image），Device Mapper中的逻辑设备。</p></li>
+
+<li><p>所有的镜像数据均基于该基础设备创建快照，容器层则基于镜像层创建快照。</p></li>
+</ol>
+
+<p><img src="https://xflying-blog.bj.bcebos.com/xflying-blog%2Fdevicemapper-theory%2Fdevice-mapper-in-docker.png" alt="Device-Mapper-in-Docker" /></p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<p><a href="https://www.ibm.com/developerworks/cn/linux/l-devmapper/index.html">Linux 内核中的 Device Mapper 机制</a></p>
+
+<p><a href="https://coolshell.cn/articles/17200.html">DOCKER基础技术：DEVICEMAPPER</a></p>
+
+<p><a href="https://robinle.github.io/docker/2017/03/13/Docker存储驱动之DeviceMapper/">Docker存储驱动DeviceMapper</a></p>
+
+<p><a href="https://www.infoq.cn/article/analysis-of-docker-file-system-aufs-and-devicemapper/">剖析 Docker 文件系统：Aufs 与 Devicemapper</a></p>
+
+    </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">flyingFang</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">2019-12-25</span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+    
+    
+<div class="post-reward">
+  <input type="checkbox" name="reward" id="reward" hidden />
+  <label class="reward-button" for="reward">赞赏支持</label>
+  <div class="qr-code">
+    
+    
+      <label class="qr-code-image" for="reward">
+        <img class="image" src="http://xflying-blog.cdn.bcebos.com/wechatpay.jpg">
+        <span>微信打赏</span>
+      </label>
+    
+      <label class="qr-code-image" for="reward">
+        <img class="image" src="http://xflying-blog.cdn.bcebos.com/alipay.jpg">
+        <span>支付宝打赏</span>
+      </label>
+  </div>
+</div>
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/docker/">docker</a>
+          
+          <a href="/tags/devicemapper/">devicemapper</a>
+          
+          <a href="/tags/kernel/">kernel</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/post/runc-cheat-sheet/">
+            <span class="next-text nav-default">runc简明命令指南</span>
+            <span class="prev-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+  
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:flying.fangchn@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/flyingfang" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/1863612812/profile" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/casafly" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/171846250/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://www.instagram.com/xflying203/" class="iconfont icon-instagram" title="instagram"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2018 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">flyingFang</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+<script type="text/javascript" src="/dist/even.min.js?v=2.7.0"></script>
+
+
+
+
+<script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
+</html>

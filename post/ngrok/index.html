@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-<head>
+<head><script src="/livereload.js?port=1313&mindelay=10&v=2" data-no-instant defer></script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>使用Ngrok搭建内网穿透环境 - xflying&#39;s Coding Road</title>
@@ -16,56 +16,44 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="flyingFang" />
-  <meta name="description" content="我们在工作学习生活中，难免有一些这样的需求：想要在外网访问家里的电脑/服务器；想要在家里访问公司的开发机&amp;hellip;这个时候，我们就需要采用内网穿透技术，而ngrok是一个老牌的内网穿透工具。" />
-
-  <meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="flyingFang" /><meta name="description" content="我们在工作学习生活中，难免有一些这样的需求：想要在外网访问家里的电脑/服务器；想要在家里访问公司的开发机&amp;hellip;这个时候，我们就需要采用内网穿透技术，而ngrok是一个老牌的内网穿透工具。" /><meta name="keywords" content="cloud Native, kubernetes, golang, linux" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/ngrok/" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="icon" href="/favicon.ico" />
 <link rel="manifest" href="/manifest.json">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
 
+<link href="/sass/main.min.564ac3b9fe418028b13effcb81f82fb70606e5f489f3b2b054656e6613d843d0.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
-
-
-
-<link href="/dist/even.min.css?v=2.7.0" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
 
 <meta property="og:title" content="使用Ngrok搭建内网穿透环境" />
 <meta property="og:description" content="我们在工作学习生活中，难免有一些这样的需求：想要在外网访问家里的电脑/服务器；想要在家里访问公司的开发机&hellip;这个时候，我们就需要采用内网穿透技术，而ngrok是一个老牌的内网穿透工具。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://localhost:1313/post/ngrok/" />
-<meta property="article:published_time" content="2019-09-05T14:43:50&#43;08:00"/>
-<meta property="article:modified_time" content="2019-09-05T14:43:50&#43;08:00"/>
-
+<meta property="article:published_time" content="2019-09-05T14:43:50+08:00" />
+<meta property="article:modified_time" content="2019-09-05T14:43:50+08:00" />
 <meta itemprop="name" content="使用Ngrok搭建内网穿透环境">
 <meta itemprop="description" content="我们在工作学习生活中，难免有一些这样的需求：想要在外网访问家里的电脑/服务器；想要在家里访问公司的开发机&hellip;这个时候，我们就需要采用内网穿透技术，而ngrok是一个老牌的内网穿透工具。">
-
-
 <meta itemprop="datePublished" content="2019-09-05T14:43:50&#43;08:00" />
 <meta itemprop="dateModified" content="2019-09-05T14:43:50&#43;08:00" />
-<meta itemprop="wordCount" content="667">
+<meta itemprop="wordCount" content="736">
 
 
 
-<meta itemprop="keywords" content="ngrok,内网穿透," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="ngrok,内网穿透," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="使用Ngrok搭建内网穿透环境"/>
 <meta name="twitter:description" content="我们在工作学习生活中，难免有一些这样的需求：想要在外网访问家里的电脑/服务器；想要在家里访问公司的开发机&hellip;这个时候，我们就需要采用内网穿透技术，而ngrok是一个老牌的内网穿透工具。"/>
 
@@ -139,187 +127,269 @@
       <div class="post-meta">
         <span class="post-time"> 2019-09-05 </span>
         <div class="post-category">
-            
-              <a href="/categories/tools/"> tools </a>
-            
-          </div>
-        <span class="more-meta"> 约 667 字 </span>
-        <span class="more-meta"> 预计阅读 2 分钟 </span>
+            <a href="/categories/tools/"> tools </a>
+            </div>
         
       </div>
     </header>
 
-    
-    
-<div class="post-toc" id="post-toc">
+    <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">文章目录</h2>
-  
   <div class="post-toc-content">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#ngrok简介">ngrok简介</a></li>
-<li><a href="#准备">准备</a></li>
-<li><a href="#搭建">搭建</a>
-<ul>
-<li><a href="#server端">Server端</a></li>
-<li><a href="#client端">Client端</a>
-<ul>
-<li><a href="#macos">macOS</a></li>
-<li><a href="#linux">Linux</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#server端">Server端</a></li>
+    <li><a href="#client端">Client端</a>
+      <ul>
+        <li><a href="#macos">macOS</a></li>
+        <li><a href="#linux">Linux</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
   </div>
 </div>
-
-    
     <div class="post-content">
-      
-
-<h1 id="ngrok简介">ngrok简介</h1>
-
+      <h1 id="ngrok简介">ngrok简介</h1>
 <p><a href="https://ngrok.com/">Ngrok</a>通过代理的方式实现两个不同的网络之间的通信。ngrok支持http隧道、tls隧道和tcp隧道，满足常用的隧道协议需求。并且它是一个跨平台产品，macOS、Linux、Windows都可使用。</p>
-
-<p><img src="https://luozm.github.io/images/ngrok/ngrok.png" alt="ngrok" /></p>
-
+<p><img src="https://luozm.github.io/images/ngrok/ngrok.png" alt="ngrok"></p>
 <h1 id="准备">准备</h1>
-
 <p>一台VPS：AWS免费申请的一个1核 1G的Ubuntu服务器。</p>
-
 <p>一个域名：自己有一个域名，新增了一条A记录 *.tun 指到了上述VPS的公网IP上。</p>
-
 <h1 id="搭建">搭建</h1>
-
 <h2 id="server端">Server端</h2>
-
 <p>1.准备环境</p>
-
-<pre><code class="language-shell">$ sudo apt-get update
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ sudo apt-get update
 $ sudo apt-get install build-essential golang mercurial git
-</code></pre>
+</code></pre></td></tr></table>
+</div>
+</div><p>2.源码编译ngrok</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ <span class="nb">cd</span> ~ <span class="o">&amp;&amp;</span> git clone https://09.git ngrok
+$ <span class="nb">cd</span> ~/ngrok <span class="o">&amp;&amp;</span> mkdir cert
+$ <span class="nb">cd</span> ~/ngrok/cert
 
-<p>2.源码编译ngrok</p>
+$ <span class="nb">export</span> <span class="nv">NGROK_DOMAIN</span><span class="o">=</span>&lt;你的域名 eg: <span class="s2">&#34;tun.xxx.com&#34;</span>&gt;
+$ openssl genrsa -out rootCA.key <span class="m">2048</span>
+$ openssl req -x509 -new -nodes -key rootCA.key -subj <span class="s2">&#34;/CN=</span><span class="nv">$NGROK_DOMAIN</span><span class="s2">&#34;</span> -days <span class="m">5000</span> -out rootCA.pem
+$ openssl genrsa -out server.key <span class="m">2048</span>
+$ openssl req -new -key server.key -subj <span class="s2">&#34;/CN=</span><span class="nv">$NGROK_DOMAIN</span><span class="s2">&#34;</span> -out server.csr
+$ openssl x509 -req -in server.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -days <span class="m">10000</span> -out server.crt
 
-<pre><code class="language-shell">$ cd ~ &amp;&amp; git clone https://09.git ngrok
-$ cd ~/ngrok &amp;&amp; mkdir cert
-$ cd ~/ngrok/cert
-
-$ export NGROK_DOMAIN=&lt;你的域名 eg: &quot;tun.xxx.com&quot;&gt;
-$ openssl genrsa -out rootCA.key 2048
-$ openssl req -x509 -new -nodes -key rootCA.key -subj &quot;/CN=$NGROK_DOMAIN&quot; -days 5000 -out rootCA.pem
-$ openssl genrsa -out server.key 2048
-$ openssl req -new -key server.key -subj &quot;/CN=$NGROK_DOMAIN&quot; -out server.csr
-$ openssl x509 -req -in server.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -days 10000 -out server.crt
-
-$ cd ~/ngrok
+$ <span class="nb">cd</span> ~/ngrok
 $ cp cert/rootCA.pem assets/client/tls/ngrokroot.crt
 $ cp cert/server.crt assets/server/tls/snakeoil.crt
 $ cp cert/server.key assets/server/tls/snakeoil.key
 
 $ sudo make release-server release-client
-</code></pre>
-
-<p>3.启动</p>
-
-<pre><code class="language-shell">$ ./bin/ngrokd -tlsKey=cert/server.key -tlsCrt=cert/server.crt -domain=&lt;你的域名 eg: &quot;tun.xxx.com&quot;&gt; -httpAddr=&quot;:8001&quot; -httpsAddr=&quot;:8002&quot; -tunnelAddr=&quot;:4443&quot;
-</code></pre>
-
-<p>4.注意设置VPS安全组</p>
-
+</code></pre></td></tr></table>
+</div>
+</div><p>3.启动</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ ./bin/ngrokd -tlsKey<span class="o">=</span>cert/server.key -tlsCrt<span class="o">=</span>cert/server.crt -domain<span class="o">=</span>&lt;你的域名 eg: <span class="s2">&#34;tun.xxx.com&#34;</span>&gt; -httpAddr<span class="o">=</span><span class="s2">&#34;:8001&#34;</span> -httpsAddr<span class="o">=</span><span class="s2">&#34;:8002&#34;</span> -tunnelAddr<span class="o">=</span><span class="s2">&#34;:4443&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>4.注意设置VPS安全组</p>
 <p>8001、8002、4443为ngrok必要端口，其余为自定义映射的端口</p>
-
-<p><img src="https://xflying-blog.cdn.bcebos.com/security.png" alt="安全组" /></p>
-
+<p><img src="https://xflying-blog.cdn.bcebos.com/security.png" alt="安全组"></p>
 <h2 id="client端">Client端</h2>
-
 <h3 id="macos">macOS</h3>
-
 <p>1.在ubuntu上交叉编译macOS的ngrok客户端</p>
-
-<pre><code class="language-shell">CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 make release-client
-</code></pre>
-
-<p>2.配置ngrok.yml</p>
-
-<pre><code class="language-yaml">server_addr: &quot;&lt;你的域名 eg: tun.xxx.com&gt;:4443&quot;
-trust_host_root_certs: false
-
-tunnels:
-  ssh:
-    subdomain: &quot;ssh&quot;
-    remote_port: 2222
-    proto:
-      tcp: 22
-</code></pre>
-
-<p>3.启动客户端</p>
-
-<pre><code class="language-shell">$ ./bin/ngrok -config=ngrok.cfg start-all
-</code></pre>
-
-<ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">CGO_ENABLED</span><span class="o">=</span><span class="m">0</span> <span class="nv">GOOS</span><span class="o">=</span>darwin <span class="nv">GOARCH</span><span class="o">=</span>amd64 make release-client
+</code></pre></td></tr></table>
+</div>
+</div><p>2.配置ngrok.yml</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">server_addr</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;&lt;你的域名 eg: tun.xxx.com&gt;:4443&#34;</span><span class="w">
+</span><span class="w"></span><span class="k">trust_host_root_certs</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="k">tunnels</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">ssh</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">subdomain</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;ssh&#34;</span><span class="w">
+</span><span class="w">    </span><span class="k">remote_port</span><span class="p">:</span><span class="w"> </span><span class="m">2222</span><span class="w">
+</span><span class="w">    </span><span class="k">proto</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="k">tcp</span><span class="p">:</span><span class="w"> </span><span class="m">22</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>3.启动客户端</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ ./bin/ngrok -config<span class="o">=</span>ngrok.cfg start-all
+</code></pre></td></tr></table>
+</div>
+</div><ol start="4">
 <li>制作为开机启动项（可选）：</li>
 </ol>
-
-<pre><code class="language-shell">$ touch ~/Library/LaunchAgents/com.flyingfang.ngrok.plist
-</code></pre>
-
-<p>内容如下：</p>
-
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
-&lt;plist version=&quot;1.0&quot;&gt;
-&lt;dict&gt;
-  &lt;key&gt;KeepAlive&lt;/key&gt;
-  &lt;true/&gt;
-  &lt;key&gt;Label&lt;/key&gt;
-  &lt;string&gt;com.xflying.ngrok&lt;/string&gt;
-  &lt;key&gt;ProgramArguments&lt;/key&gt;
-  &lt;array&gt;
-    &lt;string&gt;/Users/xflying/go/src/github.com/inconshreveable/ngrok/bin/ngrok&lt;/string&gt;
-    &lt;string&gt;-config=/Users/xflying/go/src/github.com/inconshreveable/ngrok/ngrok.cfg&lt;/string&gt;
-    &lt;string&gt;start-all&lt;/string&gt;
-  &lt;/array&gt;
-  &lt;key&gt;RunAtLoad&lt;/key&gt;
-  &lt;true/&gt;
-&lt;/dict&gt;
-&lt;/plist&gt;
-</code></pre>
-
-<p>装载并启动：</p>
-
-<pre><code class="language-shell">$ launchctl load -w  ~/Library/LaunchAgents/com.xflying.ngrok.plist
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ touch ~/Library/LaunchAgents/com.flyingfang.ngrok.plist
+</code></pre></td></tr></table>
+</div>
+</div><p>内容如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE plist PUBLIC &#34;-//Apple//DTD PLIST 1.0//EN&#34; &#34;http://www.apple.com/DTDs/PropertyList-1.0.dtd&#34;&gt;</span>
+<span class="nt">&lt;plist</span> <span class="na">version=</span><span class="s">&#34;1.0&#34;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;dict&gt;</span>
+  <span class="nt">&lt;key&gt;</span>KeepAlive<span class="nt">&lt;/key&gt;</span>
+  <span class="nt">&lt;true/&gt;</span>
+  <span class="nt">&lt;key&gt;</span>Label<span class="nt">&lt;/key&gt;</span>
+  <span class="nt">&lt;string&gt;</span>com.xflying.ngrok<span class="nt">&lt;/string&gt;</span>
+  <span class="nt">&lt;key&gt;</span>ProgramArguments<span class="nt">&lt;/key&gt;</span>
+  <span class="nt">&lt;array&gt;</span>
+    <span class="nt">&lt;string&gt;</span>/Users/xflying/go/src/github.com/inconshreveable/ngrok/bin/ngrok<span class="nt">&lt;/string&gt;</span>
+    <span class="nt">&lt;string&gt;</span>-config=/Users/xflying/go/src/github.com/inconshreveable/ngrok/ngrok.cfg<span class="nt">&lt;/string&gt;</span>
+    <span class="nt">&lt;string&gt;</span>start-all<span class="nt">&lt;/string&gt;</span>
+  <span class="nt">&lt;/array&gt;</span>
+  <span class="nt">&lt;key&gt;</span>RunAtLoad<span class="nt">&lt;/key&gt;</span>
+  <span class="nt">&lt;true/&gt;</span>
+<span class="nt">&lt;/dict&gt;</span>
+<span class="nt">&lt;/plist&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>装载并启动：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ launchctl load -w  ~/Library/LaunchAgents/com.xflying.ngrok.plist
 $ launchctl start com.xflying.ngrok
-$ launchctl list | grep &quot;ngrok&quot;
-</code></pre>
-
-<h3 id="linux">Linux</h3>
-
+$ launchctl list <span class="p">|</span> grep <span class="s2">&#34;ngrok&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="linux">Linux</h3>
 <p>1.配置ngrok.yml</p>
-
-<pre><code class="language-yaml">server_addr: &quot;&lt;你的域名 eg: tun.xxx.com&gt;:4443&quot;
-trust_host_root_certs: false
-
-tunnels:
-  ssh:
-    remote_port: 3222
-    proto:
-      tcp: 22
-  desktop:
-    remote_port: 35900
-    proto:
-      tcp: 5900
-</code></pre>
-
-<p>2.启动客户端</p>
-
-<pre><code class="language-shell">$./ngrok -log=stdout -config=ngrok.yml  start ssh desktop
-</code></pre>
-
-<p>3.使用supervisord管理ngrok （可选）</p>
-
-<pre><code>[program:ngrok]
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">server_addr</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;&lt;你的域名 eg: tun.xxx.com&gt;:4443&#34;</span><span class="w">
+</span><span class="w"></span><span class="k">trust_host_root_certs</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="k">tunnels</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">ssh</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">remote_port</span><span class="p">:</span><span class="w"> </span><span class="m">3222</span><span class="w">
+</span><span class="w">    </span><span class="k">proto</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="k">tcp</span><span class="p">:</span><span class="w"> </span><span class="m">22</span><span class="w">
+</span><span class="w">  </span><span class="k">desktop</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">remote_port</span><span class="p">:</span><span class="w"> </span><span class="m">35900</span><span class="w">
+</span><span class="w">    </span><span class="k">proto</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="k">tcp</span><span class="p">:</span><span class="w"> </span><span class="m">5900</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>2.启动客户端</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$./ngrok -log<span class="o">=</span>stdout -config<span class="o">=</span>ngrok.yml  start ssh desktop
+</code></pre></td></tr></table>
+</div>
+</div><p>3.使用supervisord管理ngrok （可选）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[program:ngrok]
 directory=/home/xflying/software/ngrok
 command=/home/xflying/software/ngrok/ngrok -log=stdout -config=ngrok.yml start ssh desktop
 autostart=true
@@ -327,70 +397,55 @@ autorestart=true
 startretries=10
 redirect_stderr=true
 stdout_logfile=/home/xflying/software/ngrok/ngrok.log
-environment=ASPNETCORE_ENVIRONMENT=&quot;Development&quot;
-</code></pre>
-
+environment=ASPNETCORE_ENVIRONMENT=&#34;Development&#34;
+</code></pre></td></tr></table>
+</div>
+</div>
     </div>
 
-    
-    
-<div class="post-copyright">
+    <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">文章作者</span>
     <span class="item-content">flyingFang</span>
   </p>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
-    <span class="item-content">2019-09-05</span>
+    <span class="item-content">
+        2019-09-05
+        
+    </span>
   </p>
   
-  <p class="copyright-item">
-    <span class="item-title">许可协议</span>
-    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
-  </p>
+  
 </div>
-
-    
-    
 <div class="post-reward">
   <input type="checkbox" name="reward" id="reward" hidden />
   <label class="reward-button" for="reward">赞赏支持</label>
   <div class="qr-code">
     
-    
-      <label class="qr-code-image" for="reward">
+    <label class="qr-code-image" for="reward">
         <img class="image" src="http://xflying-blog.cdn.bcebos.com/wechatpay.jpg">
         <span>微信打赏</span>
       </label>
-    
-      <label class="qr-code-image" for="reward">
+    <label class="qr-code-image" for="reward">
         <img class="image" src="http://xflying-blog.cdn.bcebos.com/alipay.jpg">
         <span>支付宝打赏</span>
       </label>
   </div>
-</div>
-
-    <footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/ngrok/">ngrok</a>
-          
           <a href="/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">内网穿透</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/post/docker-reading-01/">
+        <a class="prev" href="/post/docker-reading-01/">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">【源码分析】docker（一）之dockerd、containerd、shim、runc各组件关系</span>
             <span class="prev-text nav-mobile">上一篇</span>
           </a>
-        
-          <a class="next" href="/post/cgroup-leak/">
+        <a class="next" href="/post/cgroup-leak/">
             <span class="next-text nav-default">Cgroup泄漏</span>
-            <span class="prev-text nav-mobile">下一篇</span>
+            <span class="next-text nav-mobile">下一篇</span>
             <i class="iconfont icon-right"></i>
           </a>
       </nav>
@@ -398,11 +453,11 @@ environment=ASPNETCORE_ENVIRONMENT=&quot;Development&quot;
   </article>
         </div>
         
-  
 
   
 
   
+
       </div>
     </main>
 
@@ -431,9 +486,8 @@ environment=ASPNETCORE_ENVIRONMENT=&quot;Development&quot;
 
   <span class="copyright-year">
     &copy; 
-    
-      2018 - 
-    2019
+    2017 - 
+    2020
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
@@ -446,15 +500,21 @@ environment=ASPNETCORE_ENVIRONMENT=&quot;Development&quot;
       <i class="iconfont icon-up"></i>
     </div>
   </div>
-  
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
-<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-<script type="text/javascript" src="/dist/even.min.js?v=2.7.0"></script>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
 
 
 
 
-<script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
+
+
+
+
+</body>
 </html>

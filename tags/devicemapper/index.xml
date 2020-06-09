@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>devicemapper on xflying&#39;s Coding Road</title>
@@ -12,7 +12,7 @@
     
     
     <item>
-      <title>容器存储驱动Device Mapper——原理解析</title>
+      <title>容器存储驱动Device Mapper系列（一）：原理解析</title>
       <link>http://localhost:1313/post/devicemapper-theory/</link>
       <pubDate>Wed, 25 Dec 2019 13:24:37 +0800</pubDate>
       

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>kubernetes on xflying&#39;s Coding Road</title>
@@ -6,10 +6,19 @@
     <description>Recent content in kubernetes on xflying&#39;s Coding Road</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 23 Jul 2019 15:39:48 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 09 Jun 2020 15:21:48 +0800</lastBuildDate>
     
 	<atom:link href="http://localhost:1313/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>基于Kubernetes的动态扩缩容（一）：HPA源码分析</title>
+      <link>http://localhost:1313/post/kubernetes-autoscaling-01/</link>
+      <pubDate>Tue, 09 Jun 2020 15:21:48 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/kubernetes-autoscaling-01/</guid>
+      <description>最近调研了一些kubernetes-based的autoscaling方案，准备分几篇记录一下。</description>
+    </item>
     
     <item>
       <title>Cgroup泄漏</title>

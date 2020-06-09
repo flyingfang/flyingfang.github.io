@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head><script src="/livereload.js?port=1313&mindelay=10&v=2" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>基于Kubernetes的动态扩缩容（一）：HPA源码分析 - xflying&#39;s Coding Road</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="flyingFang" /><meta name="description" content="最近调研了一些kubernetes-based的autoscaling方案，准备分几篇记录一下。" /><meta name="keywords" content="cloud Native, kubernetes, golang, linux" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/kubernetes-autoscaling-01/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.564ac3b9fe418028b13effcb81f82fb70606e5f489f3b2b054656e6613d843d0.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="基于Kubernetes的动态扩缩容（一）：HPA源码分析" />
+<meta property="og:description" content="最近调研了一些kubernetes-based的autoscaling方案，准备分几篇记录一下。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/kubernetes-autoscaling-01/" />
+<meta property="article:published_time" content="2020-06-09T15:21:48+08:00" />
+<meta property="article:modified_time" content="2020-06-09T15:21:48+08:00" />
+<meta itemprop="name" content="基于Kubernetes的动态扩缩容（一）：HPA源码分析">
+<meta itemprop="description" content="最近调研了一些kubernetes-based的autoscaling方案，准备分几篇记录一下。">
+<meta itemprop="datePublished" content="2020-06-09T15:21:48&#43;08:00" />
+<meta itemprop="dateModified" content="2020-06-09T15:21:48&#43;08:00" />
+<meta itemprop="wordCount" content="3967">
+
+
+
+<meta itemprop="keywords" content="kubernetes,autoscaling," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="基于Kubernetes的动态扩缩容（一）：HPA源码分析"/>
+<meta name="twitter:description" content="最近调研了一些kubernetes-based的autoscaling方案，准备分几篇记录一下。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FLY</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FLY</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">基于Kubernetes的动态扩缩容（一）：HPA源码分析</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-06-09 </span>
+        <div class="post-category">
+            <a href="/categories/kubernetes/"> kubernetes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#hpa">HPA</a>
+      <ul>
+        <li><a href="#架构及主要流程">架构及主要流程</a></li>
+        <li><a href="#概念">概念</a></li>
+        <li><a href="#扩缩容算法">扩缩容算法</a></li>
+        <li><a href="#参考文档">参考文档</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="基于kubernetes的动态扩缩容一hpa源码分析">基于Kubernetes的动态扩缩容（一）：HPA源码分析</h1>
+<h2 id="hpa">HPA</h2>
+<p>HPA（Horizontal Pod Autoscaler）：自动水平扩缩容模块。</p>
+<p>HPA有两个大版本v1、v2。v1版本仅支持基于CPU使用率的动态扩缩容，v2版本支持根据自定义指标进行动态扩缩容。</p>
+<p>HPA最小的副本数为1，未来有望支持scale to zero。市面上的三方产品多支持scale to zero。</p>
+<p><img src="http://pic.flyingfang.com/notes/image-20200605132252547.png" alt="image-20200605132252547"></p>
+<p>HPA不支持不可扩展的资源，例如daemonset等。</p>
+<h3 id="架构及主要流程">架构及主要流程</h3>
+<p>HPA由kubernetes的controller manager控制，整体流程如下图：</p>
+<p><img src="http://pic.flyingfang.com/notes/v2-935967c7cf69718563e24f29e725fbd5_1440w-20200609111652330.jpg" alt="img"></p>
+<p>控制器从metrics-server 模块获取资源指标（支持自定义metrics-server模块），控制器会从每个metrics-server获取指标进行计算最终副本。</p>
+<h3 id="概念">概念</h3>
+<p>指标API种类：</p>
+<p>metrics.k8s.io：由metric-server提供。示例：<a href="https://github.com/kubernetes-retired/heapster">heapster</a></p>
+<p>custom.metrics.k8s.io：由云厂商的adapter提供。示例：<a href="https://github.com/DirectXMan12/k8s-prometheus-adapter">k8s-prometheus-adapter</a></p>
+<p>external.metrics.k8s.io：由用户指标适配器提供。示例：<a href="https://github.com/GoogleCloudPlatform/k8s-stackdriver">k8s-stackdriver</a></p>
+<h3 id="扩缩容算法">扩缩容算法</h3>
+<h4 id="算法概述">算法概述</h4>
+<p>算法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">desiredReplicas</span> <span class="o">=</span> ceil<span class="o">[</span>currentReplicas * <span class="o">(</span> currentMetricValue / desiredMetricValue <span class="o">)]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>特殊情况：</p>
+<ol>
+<li>正在关闭的Pod或失败的Pod不会被纳入计算。</li>
+<li>在Pod指标信息缺失时，会被搁置，在最终确定伸缩值的时候再纳入计算。</li>
+<li>使用CPU指标计算时，会有一个可设定的等待时间，未就绪和刚就绪的Pod也会被搁置。</li>
+<li>指标信息缺失的Pod，会被更保守的计算，以降低伸缩的幅度。在需要缩容时，pod被当作100%占用计算；在需要扩容时，pod被当作0%占用计算。</li>
+<li>未就绪和刚就绪的Pod，会被假定为占用0%计算。</li>
+</ol>
+<h4 id="伸缩基本规则">伸缩基本规则</h4>
+<p>自动伸缩控制器流程：</p>
+<p>每隔1个同步周期（可配置，horizontal-pod-autoscaler-sync-period）,检查所有的HPA。进入伸缩计算流程。</p>
+<p>伸缩基本流程：</p>
+<p>相关代码：<a href="https://github.com/kubernetes/kubernetes/blob/1bc526aa6c310b915e7ad57b4442deec7328aad2/pkg/controller/podautoscaler/horizontal.go#L539">pkg/controller/podautoscaler/horizontal.go::reconcileAutoscaler</a></p>
+<p>参与计算的变量说明：</p>
+<ul>
+<li>currentReplicas 表示目标资源（eg Deployment）的当前副本数（Spec.Replicas）。</li>
+<li>minReplicas 表示HPA配置的目标资源最小副本数。</li>
+<li>maxReplicas 表示HPA配置的目标资源最大副本数。</li>
+<li>desiredReplicas 表示目标资源本次伸缩的期望副本数。</li>
+</ul>
+<ol>
+<li>currentReplicas为0，且设置的minReplicas不等于0，则会跳过该资源的自动伸缩。</li>
+<li>如果currentReplicas &gt; maxReplicas，则desiredReplicas = maxReplicas。</li>
+<li>如果currentReplicas &lt; minReplicas，则desiredReplicas = minReplicas。</li>
+<li>不满足上述条件，则通过metrics计算所期望的副本数（按指标类型进行相应的伸缩算法计算，见<a href="#%E5%90%84%E6%8C%87%E6%A0%87%E7%B1%BB%E5%9E%8B%E4%BC%B8%E7%BC%A9%E8%AE%A1%E7%AE%97%E7%AE%97%E6%B3%95">各指标类型伸缩计算算法</a>）。</li>
+<li>当通过metrics计算的所期望的副本数与当前副本数不同，则判定是否配置了缩放行为，如果未指定行为，则按照标准的缩放建议计算最终期望副本数。</li>
+<li>当配置了缩放行为，会按照配置的行为进行计算最终的期望副本数。</li>
+<li>按照最终期望副本数更新目标资源。</li>
+</ol>
+<h4 id="各指标类型伸缩计算算法">各指标类型伸缩计算算法</h4>
+<p>相关代码：<a href="https://github.com/kubernetes/kubernetes/blob/1bc526aa6c310b915e7ad57b4442deec7328aad2/pkg/controller/podautoscaler/horizontal.go#L302">pkg/controller/podautoscaler/horizontal.go::computeReplicasForMetric</a></p>
+<p>目前支持四种指标类型：</p>
+<ul>
+<li>Object（v2beta1/2）：k8s内置对象的指标，例如ingress对象的hits-per-second指标。代码细节：<a href="https://github.com/kubernetes/kubernetes/blob/1bc526aa6c310b915e7ad57b4442deec7328aad2/pkg/controller/podautoscaler/horizontal.go#L368">pkg/controller/podautoscaler/horizontal.go::computeStatusForObjectMetric</a></li>
+<li>Pods（v2beta1/2）：当前扩容目标中每个pod的指标，例如每秒处理的事务数（transactions-processed-per-second）指标。代码细节：<a href="https://github.com/kubernetes/kubernetes/blob/1bc526aa6c310b915e7ad57b4442deec7328aad2/pkg/controller/podautoscaler/horizontal.go#L416">pkg/controller/podautoscaler/horizontal.go::computeStatusForPodsMetric</a></li>
+<li>Resource（v2beta1/2）：已知的系统资源指标，例如CPU、内存等。代码细节：<a href="https://github.com/kubernetes/kubernetes/blob/1bc526aa6c310b915e7ad57b4442deec7328aad2/pkg/controller/podautoscaler/horizontal.go#L439">pkg/controller/podautoscaler/horizontal.go::computeStatusForResourceMetric</a></li>
+<li>External（v2beta1/2）：与kubernetes对象无关的指标，例如队列长度等。代码细节：<a href="https://github.com/kubernetes/kubernetes/blob/1bc526aa6c310b915e7ad57b4442deec7328aad2/pkg/controller/podautoscaler/horizontal.go#L486">pkg/controller/podautoscaler/horizontal.go::computeStatusForExternalMetric</a></li>
+</ul>
+<h5 id="object">Object：</h5>
+<p><strong>Object</strong>类型指标支持数值及平均值类型，会从metric server获取相关的指标。依据当前值与目标值计算出比率，结合当前副本数计算出期望副本数。</p>
+<h5 id="podresources">Pod&amp;Resources：</h5>
+<p><strong>Pod</strong>类型与Resource类型指标底层计算方法相似：</p>
+<ol>
+<li>从metric server获取指定指标值。</li>
+<li>获取资源的Pod列表，将Pod进行分组（ignore、missing·、normal）其中Pending的Pod会被忽略，未获得指标的Pod也会被排除计算。如果是进行CPU利用率的计算，刚启动的Pod也会被忽略和Not Ready的Pod都会被忽略。</li>
+<li>将Ready的Pod相关的指标和目标值进行计算，计算出利用率。</li>
+<li>利用率小于容忍比率的，忽略扩缩容行为。</li>
+<li>当存在指标缺失的Pod （missing）时，计算规则会更趋于保守。缩容时，将缺失指标的Pod算作100%目标利用率。扩容时，将缺失指标的Pod算作0%利用率。并进行重新计算，获得最终的期望值。</li>
+</ol>
+<p><strong>Resource</strong>类型中CPU 利用率计算方法：</p>
+<ol>
+<li>平均 CPU 利用率 = 所有 Pod 使用的 CPU mCore / 所有 Pod 请求的 CPU mCore</li>
+<li>利用率比例 = 平均 CPU 利用率 / 目标 CPU 利用率</li>
+<li>伸缩到的数量 = ceil( 利用率比例 * Status.Replicas )
+<ul>
+<li>当容忍度设置为0.1时，利用率比例不在 [0.9, 1.1] 区间，才能进行伸缩，防止抖动</li>
+</ul>
+</li>
+<li>本次可以伸缩到的数量 = min( 伸缩到的数量, max( Status.Replicas * 2, 4 ) )</li>
+</ol>
+<h5 id="external">External：</h5>
+<p>External类型指标支持数值及平均值类型，会从metric server获取相关的指标。依据当前值与目标值计算出比率，结合当前副本数计算出期望副本数。</p>
+<h4 id="防抖动设计">防抖动设计</h4>
+<p>缩容的冷却时间窗口：</p>
+<p>缩容有一个缩容冷却时间窗口。在缩容冷却时间窗口内，不会触发缩容行为。防止一段时间内因为指标翻动造成的频繁扩缩容。缩容稳定窗口不仅是一个全局配置，也可以在HPA的扩缩容行为中配置。</p>
+<p>最小缩放容忍度：</p>
+<p>缩放容忍度指在缩放过程中目标值与当前值差距不大时，可以忽略相应的缩放行为。计算公式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">（1-当前值/目标值）&lt; 容忍度
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="标准缩放建议">标准缩放建议</h4>
+<p>标准缩放建议为按照指标计算出相应期望值后，提供一定的规则进行再次校准，以达到削峰和去抖动的作用。</p>
+<p>相关代码：<a href="https://github.com/kubernetes/kubernetes/blob/1bc526aa6c310b915e7ad57b4442deec7328aad2/pkg/controller/podautoscaler/horizontal.go#L701">pkg/controller/podautoscaler/horizontal.go::normalizeDesiredReplicas</a></p>
+<ol>
+<li>在稳定时间窗口内（通过horizontal-pod-autoscaler-downscale-stabilization配置），期望值会被校准为上一次期望值（及原值）。以达到去抖动。</li>
+<li>最大扩容限制数 = max(scaleUpLimitFactor*currentReplicas, scaleUpLimitMinimum)。其中扩容限制步长（scaleUpLimitFactor）为2，最小扩容限制（scaleUpLimitMinimum）为4。最大扩容限制可以防止指标激增导致扩容数过多。</li>
+<li>此次的最大扩容数=max(最大扩容限制数, 配置的maxReplicas)，当前期望值&lt;配置的minReplicas时，期望值校准为配置的minReplicas。当前期望值&gt;此次的最大扩容数时，期望值校准为此次的最大扩容数。</li>
+</ol>
+<h4 id="可配置的扩缩容行为">可配置的扩缩容行为</h4>
+<p>支持在hpa的配置文件中指定扩容和缩容的行为策略。</p>
+<p><strong>多条扩缩容策略的处理规则</strong>：最终确定的扩缩容期望副本数会依据多个策略综合考量，按照指定的选取策略决定最终的期望值。默认的缩容选取策略为Max（取最大值），故会选取多个策略期望值中的最大值。</p>
+<p>示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">behavior</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">scaleDown</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">policies</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="k">type</span><span class="p">:</span><span class="w"> </span>Pods<span class="w">
+</span><span class="w">      </span><span class="k">value</span><span class="p">:</span><span class="w"> </span><span class="m">4</span><span class="w">
+</span><span class="w">      </span><span class="k">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">60</span><span class="w">
+</span><span class="w">    </span>- <span class="k">type</span><span class="p">:</span><span class="w"> </span>Percent<span class="w">
+</span><span class="w">      </span><span class="k">value</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w">
+</span><span class="w">      </span><span class="k">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">60</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>当总副本数大于40时，此时第二条缩容策略显然更大，故按照第二条策略缩容；当总副本数小于等于40时，按照第一条策略，每次缩容4个。<code>periodSeconds</code>表示缩容周期。</p>
+<p><strong>选取策略</strong>可以通过 <code>selectPolicy</code>设定，可以为Max（最大值）、Min（最小值）、Disabled（关闭此方向扩缩容）。扩容时默认的策略为Max，缩容时默认的策略为Min。</p>
+<p><strong>伸缩策略</strong>类型可以选择Pods、Percent。</p>
+<p><strong>稳定时间：</strong></p>
+<p>支持在配置文件中指定稳定窗口时间，示例指定稳定窗口为300s：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">scaleDown</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">stabilizationWindowSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">300</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>默认的扩缩容行为yaml：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">behavior</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">scaleDown</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">stabilizationWindowSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">300</span><span class="w">
+</span><span class="w">    </span><span class="k">policies</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="k">type</span><span class="p">:</span><span class="w"> </span>Percent<span class="w">
+</span><span class="w">      </span><span class="k">value</span><span class="p">:</span><span class="w"> </span><span class="m">100</span><span class="w">
+</span><span class="w">      </span><span class="k">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">15</span><span class="w">
+</span><span class="w">  </span><span class="k">scaleUp</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">stabilizationWindowSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span><span class="w">    </span><span class="k">policies</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="k">type</span><span class="p">:</span><span class="w"> </span>Percent<span class="w">
+</span><span class="w">      </span><span class="k">value</span><span class="p">:</span><span class="w"> </span><span class="m">100</span><span class="w">
+</span><span class="w">      </span><span class="k">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">15</span><span class="w">
+</span><span class="w">    </span>- <span class="k">type</span><span class="p">:</span><span class="w"> </span>Pods<span class="w">
+</span><span class="w">      </span><span class="k">value</span><span class="p">:</span><span class="w"> </span><span class="m">4</span><span class="w">
+</span><span class="w">      </span><span class="k">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">15</span><span class="w">
+</span><span class="w">    </span><span class="k">selectPolicy</span><span class="p">:</span><span class="w"> </span>Max<span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="可配置参数说明">可配置参数说明</h4>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>horizontal-pod-autoscaler-sync-period</td>
+<td>15s</td>
+<td>controller同步HPA信息的同步周期</td>
+</tr>
+<tr>
+<td>horizontal-pod-autoscaler-downscale-stabilization</td>
+<td>5m</td>
+<td>缩容稳定窗口，缩容间隔时间（v1.12支持）</td>
+</tr>
+<tr>
+<td>horizontal-pod-autoscaler-tolerance</td>
+<td>0.1</td>
+<td>最小缩放容忍度：计算出的期望值和实际值的比率&lt;最小容忍比率，则不进行扩缩容</td>
+</tr>
+<tr>
+<td>horizontal-pod-autoscaler-cpu-initialization-period</td>
+<td>5m</td>
+<td>pod刚启动时，一定时间内的CPU使用率数据不参与计算。</td>
+</tr>
+<tr>
+<td>horizontal-pod-autoscaler-initial-readiness-delay</td>
+<td>30s</td>
+<td>扩容等待pod ready的时间（无法得知pod何时就绪）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="参考文档">参考文档</h3>
+<p>设计文档（旧）：<a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/autoscaling/horizontal-pod-autoscaler.md">Horizontal Pod Autoscaling</a></p>
+<p>1.0设计文档：<a href="https://github.com/kubernetes/kubernetes/blob/release-1.0/docs/proposals/autoscaling.md">autoscaling</a></p>
+<p>2.0设计提案：<a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/autoscaling/hpa-v2.md">Horizontal Pod Autoscaler with Arbitrary Metrics</a></p>
+<p>官网：<a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/">Horizontal Pod Autoscaler</a></p>
+<p>官网演练：<a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/">Horizontal Pod Autoscaler Walkthrough</a></p>
+<p>自定义指标服务 GitHub：<a href="https://github.com/kubernetes-sigs/custom-metrics-apiserver">custom-metrics-apiserver</a></p>
+<p>external metrics提案：<a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/external-metrics-api.md">External Metrics API</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">flyingFang</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-06-09
+        
+    </span>
+  </p>
+  
+  
+</div>
+<div class="post-reward">
+  <input type="checkbox" name="reward" id="reward" hidden />
+  <label class="reward-button" for="reward">赞赏支持</label>
+  <div class="qr-code">
+    
+    <label class="qr-code-image" for="reward">
+        <img class="image" src="http://xflying-blog.cdn.bcebos.com/wechatpay.jpg">
+        <span>微信打赏</span>
+      </label>
+    <label class="qr-code-image" for="reward">
+        <img class="image" src="http://xflying-blog.cdn.bcebos.com/alipay.jpg">
+        <span>支付宝打赏</span>
+      </label>
+  </div>
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/kubernetes/">kubernetes</a>
+          <a href="/tags/autoscaling/">autoscaling</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/devicemapper-theory/">
+            <span class="next-text nav-default">容器存储驱动Device Mapper系列（一）：原理解析</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:flying.fangchn@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/flyingfang" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/1863612812/profile" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/casafly" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/171846250/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://www.instagram.com/xflying203/" class="iconfont icon-instagram" title="instagram"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">flyingFang</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

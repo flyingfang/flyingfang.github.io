@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-<head>
+<head><script src="/livereload.js?port=1313&mindelay=10&v=2" data-no-instant defer></script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>性能测试- [腾讯云 2核4G] - xflying&#39;s Coding Road</title>
@@ -16,55 +16,44 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="flyingFang" /><meta name="description" content="腾讯云服务器测试" />
-
-  <meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="flyingFang" /><meta name="description" content="腾讯云服务器测试" /><meta name="keywords" content="cloud Native, kubernetes, golang, linux" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/performance-test/" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="icon" href="/favicon.ico" />
 <link rel="manifest" href="/manifest.json">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
 
+<link href="/sass/main.min.564ac3b9fe418028b13effcb81f82fb70606e5f489f3b2b054656e6613d843d0.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
-
-
-
-<link href="/dist/even.min.css?v=2.7.0" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
 
 <meta property="og:title" content="性能测试- [腾讯云 2核4G]" />
 <meta property="og:description" content="腾讯云服务器测试" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://localhost:1313/post/performance-test/" />
-<meta property="article:published_time" content="2018-03-24T15:27:25&#43;08:00"/>
-<meta property="article:modified_time" content="2018-03-24T15:27:25&#43;08:00"/>
-
+<meta property="article:published_time" content="2018-03-24T15:27:25+08:00" />
+<meta property="article:modified_time" content="2018-03-24T15:27:25+08:00" />
 <meta itemprop="name" content="性能测试- [腾讯云 2核4G]">
 <meta itemprop="description" content="腾讯云服务器测试">
-
-
 <meta itemprop="datePublished" content="2018-03-24T15:27:25&#43;08:00" />
 <meta itemprop="dateModified" content="2018-03-24T15:27:25&#43;08:00" />
-<meta itemprop="wordCount" content="1358">
+<meta itemprop="wordCount" content="1518">
 
 
 
-<meta itemprop="keywords" content="Ops," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Ops," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="性能测试- [腾讯云 2核4G]"/>
 <meta name="twitter:description" content="腾讯云服务器测试"/>
 
@@ -138,337 +127,495 @@
       <div class="post-meta">
         <span class="post-time"> 2018-03-24 </span>
         <div class="post-category">
-            
-              <a href="/categories/sre/"> SRE </a>
-            
-          </div>
-        <span class="more-meta"> 约 1358 字 </span>
-        <span class="more-meta"> 预计阅读 3 分钟 </span>
+            <a href="/categories/sre/"> SRE </a>
+            </div>
         
       </div>
     </header>
 
-    
-    
-<div class="post-toc" id="post-toc">
+    <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">文章目录</h2>
-  
   <div class="post-toc-content">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#一-cpu物理个数-内核-超线程-多核心">一、CPU物理个数、内核、超线程、多核心</a>
-<ul>
-<li><a href="#1-查看cpu物理个数">1. 查看CPU物理个数</a></li>
-<li><a href="#2-查看cpu内核数">2. 查看CPU内核数</a></li>
-<li><a href="#3-查看cpu的型号">3.查看CPU的型号</a></li>
-<li><a href="#4-查看cpu的线程数">4. 查看CPU的线程数</a></li>
-</ul></li>
-<li><a href="#二-内存大小-交换空间-高速缓存-实际使用内存">二、内存大小、交换空间、高速缓存、实际使用内存</a>
-<ul>
-<li><a href="#1-查看主机的内存信息">1. 查看主机的内存信息</a></li>
-<li><a href="#2-实际占用的内存">2.实际占用的内存</a></li>
-</ul></li>
-<li><a href="#三-磁盘io读写速度测试">三、磁盘IO读写速度测试</a>
-<ul>
-<li><a href="#1-磁盘io读写测试">1.磁盘IO读写测试</a></li>
-</ul></li>
-<li><a href="#四-网络测试-上传下载速度-服务器带宽">四、网络测试：上传下载速度、服务器带宽</a>
-<ul>
-<li><a href="#1-speedtest">1.speedtest</a></li>
-</ul></li>
-<li><a href="#五-综合性能测试">五、综合性能测试</a></li>
-<li><a href="#备注">备注</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#一cpu物理个数内核超线程多核心">一、CPU物理个数、内核、超线程、多核心</a>
+      <ul>
+        <li><a href="#1-查看cpu物理个数">1. 查看CPU物理个数</a></li>
+        <li><a href="#2-查看cpu内核数">2. 查看CPU内核数</a></li>
+        <li><a href="#3查看cpu的型号">3.查看CPU的型号</a></li>
+        <li><a href="#4-查看cpu的线程数">4. 查看CPU的线程数</a></li>
+      </ul>
+    </li>
+    <li><a href="#二内存大小交换空间高速缓存实际使用内存">二、内存大小、交换空间、高速缓存、实际使用内存</a>
+      <ul>
+        <li><a href="#1-查看主机的内存信息">1. 查看主机的内存信息</a></li>
+        <li><a href="#2实际占用的内存">2.实际占用的内存</a></li>
+      </ul>
+    </li>
+    <li><a href="#三磁盘io读写速度测试">三、磁盘IO读写速度测试</a>
+      <ul>
+        <li><a href="#1磁盘io读写测试">1.磁盘IO读写测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#四网络测试上传下载速度服务器带宽">四、网络测试：上传下载速度、服务器带宽</a>
+      <ul>
+        <li><a href="#1speedtest">1.speedtest</a></li>
+      </ul>
+    </li>
+    <li><a href="#五综合性能测试">五、综合性能测试</a></li>
+    <li><a href="#备注">备注</a></li>
+  </ul>
 </nav>
   </div>
 </div>
-
-    
     <div class="post-content">
-      
-
-<p>前几天腾讯云活动，买了一台服务器用来折腾玩。也想乘机再次开个博客，再次记录一下自己的学习和娱乐。某日再回头看看自己走过的坑，也可能也是一种别样的乐趣。</p>
-
-<!-- more -->
-
-<h2 id="一-cpu物理个数-内核-超线程-多核心">一、CPU物理个数、内核、超线程、多核心</h2>
-
+      <p>前几天腾讯云活动，买了一台服务器用来折腾玩。也想乘机再次开个博客，再次记录一下自己的学习和娱乐。某日再回头看看自己走过的坑，也可能也是一种别样的乐趣。</p>
+<!-- raw HTML omitted -->
+<h2 id="一cpu物理个数内核超线程多核心">一、CPU物理个数、内核、超线程、多核心</h2>
 <h3 id="1-查看cpu物理个数">1. 查看CPU物理个数</h3>
-
-<pre><code class="language-shell">$ cat /proc/cpuinfo | grep &quot;physical id&quot; | sort | uniq | wc -l
-1
-</code></pre>
-
-<h3 id="2-查看cpu内核数">2. 查看CPU内核数</h3>
-
-<pre><code class="language-shell">$ cat /proc/cpuinfo | grep &quot;core id&quot; | sort | uniq | wc -l
-2
-</code></pre>
-
-<p>或者</p>
-
-<pre><code class="language-shell">$ cat /proc/cpuinfo | grep &quot;cpu cores&quot; | sort | uniq
-cpu cores	: 2
-</code></pre>
-
-<h3 id="3-查看cpu的型号">3.查看CPU的型号</h3>
-
-<pre><code class="language-shell">$ cat /proc/cpuinfo | grep &quot;name&quot; | uniq
-model name	: Intel(R) Xeon(R) CPU E5-26xx v4
-</code></pre>
-
-<h3 id="4-查看cpu的线程数">4. 查看CPU的线程数</h3>
-
-<pre><code class="language-shell">$ cat /proc/cpuinfo | grep &quot;processor&quot;
-processor	: 0
-processor	: 1
-</code></pre>
-
-<h2 id="二-内存大小-交换空间-高速缓存-实际使用内存">二、内存大小、交换空间、高速缓存、实际使用内存</h2>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ cat /proc/cpuinfo <span class="p">|</span> grep <span class="s2">&#34;physical id&#34;</span> <span class="p">|</span> sort <span class="p">|</span> uniq <span class="p">|</span> wc -l
+<span class="m">1</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="2-查看cpu内核数">2. 查看CPU内核数</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ cat /proc/cpuinfo <span class="p">|</span> grep <span class="s2">&#34;core id&#34;</span> <span class="p">|</span> sort <span class="p">|</span> uniq <span class="p">|</span> wc -l
+<span class="m">2</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>或者</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ cat /proc/cpuinfo <span class="p">|</span> grep <span class="s2">&#34;cpu cores&#34;</span> <span class="p">|</span> sort <span class="p">|</span> uniq
+cpu cores	: <span class="m">2</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="3查看cpu的型号">3.查看CPU的型号</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ cat /proc/cpuinfo <span class="p">|</span> grep <span class="s2">&#34;name&#34;</span> <span class="p">|</span> uniq
+model name	: Intel<span class="o">(</span>R<span class="o">)</span> Xeon<span class="o">(</span>R<span class="o">)</span> CPU E5-26xx v4
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="4-查看cpu的线程数">4. 查看CPU的线程数</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ cat /proc/cpuinfo <span class="p">|</span> grep <span class="s2">&#34;processor&#34;</span>
+processor	: <span class="m">0</span>
+processor	: <span class="m">1</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="二内存大小交换空间高速缓存实际使用内存">二、内存大小、交换空间、高速缓存、实际使用内存</h2>
 <h3 id="1-查看主机的内存信息">1. 查看主机的内存信息</h3>
-
-<pre><code class="language-shell">MemTotal:        3882032 kB  # 所有可用的RAM大小
-MemFree:         3247784 kB	 # 系统留着未使用的内存
-MemAvailable:    3551692 kB
-Buffers:          100464 kB	 # 给文件做缓冲的大小
-Cached:           389504 kB	 # 告诉缓冲存储器内存
-SwapCached:            0 kB
-Active:           119048 kB	 # 在活跃使用中的缓冲或高速缓冲存储器页面文件的大小
-Inactive:         425532 kB
-Active(anon):      54780 kB
-Inactive(anon):      168 kB
-Active(file):      64268 kB
-Inactive(file):   425364 kB
-Unevictable:           0 kB
-Mlocked:               0 kB
-SwapTotal:             0 kB	 # 交换空间的总大小
-SwapFree:              0 kB	 # 未被使用交换空间的大小
-Dirty:               248 kB
-Writeback:             0 kB
-AnonPages:         54620 kB
-Mapped:            19704 kB
-Shmem:               340 kB
-Slab:              43580 kB
-SReclaimable:      33968 kB
-SUnreclaim:         9612 kB
-KernelStack:        1344 kB
-PageTables:         2788 kB
-NFS_Unstable:          0 kB
-Bounce:                0 kB
-WritebackTmp:          0 kB
-CommitLimit:     1941016 kB
-Committed_AS:     189684 kB
-VmallocTotal:   34359738367 kB	# 可以vmalloc虚拟内存大小
-VmallocUsed:       14000 kB  # 已经被使用的虚拟内存大小
-VmallocChunk:   34359715580 kB
-HardwareCorrupted:     0 kB
-AnonHugePages:      2048 kB
-HugePages_Total:       0
-HugePages_Free:        0
-HugePages_Rsvd:        0
-HugePages_Surp:        0
-Hugepagesize:       2048 kB
-DirectMap4k:       26616 kB
-DirectMap2M:     4167680 kB
-</code></pre>
-
-<h3 id="2-实际占用的内存">2.实际占用的内存</h3>
-
-<pre><code class="language-shell">$ free -m
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">MemTotal:        <span class="m">3882032</span> kB  <span class="c1"># 所有可用的RAM大小</span>
+MemFree:         <span class="m">3247784</span> kB	 <span class="c1"># 系统留着未使用的内存</span>
+MemAvailable:    <span class="m">3551692</span> kB
+Buffers:          <span class="m">100464</span> kB	 <span class="c1"># 给文件做缓冲的大小</span>
+Cached:           <span class="m">389504</span> kB	 <span class="c1"># 告诉缓冲存储器内存</span>
+SwapCached:            <span class="m">0</span> kB
+Active:           <span class="m">119048</span> kB	 <span class="c1"># 在活跃使用中的缓冲或高速缓冲存储器页面文件的大小</span>
+Inactive:         <span class="m">425532</span> kB
+Active<span class="o">(</span>anon<span class="o">)</span>:      <span class="m">54780</span> kB
+Inactive<span class="o">(</span>anon<span class="o">)</span>:      <span class="m">168</span> kB
+Active<span class="o">(</span>file<span class="o">)</span>:      <span class="m">64268</span> kB
+Inactive<span class="o">(</span>file<span class="o">)</span>:   <span class="m">425364</span> kB
+Unevictable:           <span class="m">0</span> kB
+Mlocked:               <span class="m">0</span> kB
+SwapTotal:             <span class="m">0</span> kB	 <span class="c1"># 交换空间的总大小</span>
+SwapFree:              <span class="m">0</span> kB	 <span class="c1"># 未被使用交换空间的大小</span>
+Dirty:               <span class="m">248</span> kB
+Writeback:             <span class="m">0</span> kB
+AnonPages:         <span class="m">54620</span> kB
+Mapped:            <span class="m">19704</span> kB
+Shmem:               <span class="m">340</span> kB
+Slab:              <span class="m">43580</span> kB
+SReclaimable:      <span class="m">33968</span> kB
+SUnreclaim:         <span class="m">9612</span> kB
+KernelStack:        <span class="m">1344</span> kB
+PageTables:         <span class="m">2788</span> kB
+NFS_Unstable:          <span class="m">0</span> kB
+Bounce:                <span class="m">0</span> kB
+WritebackTmp:          <span class="m">0</span> kB
+CommitLimit:     <span class="m">1941016</span> kB
+Committed_AS:     <span class="m">189684</span> kB
+VmallocTotal:   <span class="m">34359738367</span> kB	<span class="c1"># 可以vmalloc虚拟内存大小</span>
+VmallocUsed:       <span class="m">14000</span> kB  <span class="c1"># 已经被使用的虚拟内存大小</span>
+VmallocChunk:   <span class="m">34359715580</span> kB
+HardwareCorrupted:     <span class="m">0</span> kB
+AnonHugePages:      <span class="m">2048</span> kB
+HugePages_Total:       <span class="m">0</span>
+HugePages_Free:        <span class="m">0</span>
+HugePages_Rsvd:        <span class="m">0</span>
+HugePages_Surp:        <span class="m">0</span>
+Hugepagesize:       <span class="m">2048</span> kB
+DirectMap4k:       <span class="m">26616</span> kB
+DirectMap2M:     <span class="m">4167680</span> kB
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="2实际占用的内存">2.实际占用的内存</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ free -m
               total        used        free      shared  buff/cache   available
-Mem:           3791         100        3161           0         529        3466
-Swap:             0           0           0
-</code></pre>
-
-<h2 id="三-磁盘io读写速度测试">三、磁盘IO读写速度测试</h2>
-
-<h3 id="1-磁盘io读写测试">1.磁盘IO读写测试</h3>
-
-<pre><code class="language-shell">$ dd if=/dev/zero of=test bs=64k count=4k oflag=dsync
+Mem:           <span class="m">3791</span>         <span class="m">100</span>        <span class="m">3161</span>           <span class="m">0</span>         <span class="m">529</span>        <span class="m">3466</span>
+Swap:             <span class="m">0</span>           <span class="m">0</span>           <span class="m">0</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="三磁盘io读写速度测试">三、磁盘IO读写速度测试</h2>
+<h3 id="1磁盘io读写测试">1.磁盘IO读写测试</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span><span class="nb">test</span> <span class="nv">bs</span><span class="o">=</span>64k <span class="nv">count</span><span class="o">=</span>4k <span class="nv">oflag</span><span class="o">=</span>dsync
 记录了4096+0 的读入
 记录了4096+0 的写出
-268435456字节(268 MB)已复制，149.135 秒，1.8 MB/秒
-$ dd if=/dev/zero of=test bs=8k count=256k conv=fdatasync
+268435456字节<span class="o">(</span><span class="m">268</span> MB<span class="o">)</span>已复制，149.135 秒，1.8 MB/秒
+$ dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span><span class="nb">test</span> <span class="nv">bs</span><span class="o">=</span>8k <span class="nv">count</span><span class="o">=</span>256k <span class="nv">conv</span><span class="o">=</span>fdatasync
 记录了262144+0 的读入
 记录了262144+0 的写出
-2147483648字节(2.1 GB)已复制，22.196 秒，96.8 MB/秒
-</code></pre>
-
-<h2 id="四-网络测试-上传下载速度-服务器带宽">四、网络测试：上传下载速度、服务器带宽</h2>
-
-<h3 id="1-speedtest">1.speedtest</h3>
-
-<pre><code class="language-shell">$ wget -O speedtest-cli https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
+2147483648字节<span class="o">(</span>2.1 GB<span class="o">)</span>已复制，22.196 秒，96.8 MB/秒
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="四网络测试上传下载速度服务器带宽">四、网络测试：上传下载速度、服务器带宽</h2>
+<h3 id="1speedtest">1.speedtest</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ wget -O speedtest-cli https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
 $ chmod +x speedtest-cli
 $ ./speedtest-cli --share
 Retrieving speedtest.net configuration...
-Testing from Tencent cloud computing (XX.XX.XX.XX)...
+Testing from Tencent cloud computing <span class="o">(</span>XX.XX.XX.XX<span class="o">)</span>...
 Retrieving speedtest.net server list...
 Selecting best server based on ping...
-Hosted by China Mobile, shandong Branch (Jinan) [366.43 km]: 20.617 ms
+Hosted by China Mobile, shandong Branch <span class="o">(</span>Jinan<span class="o">)</span> <span class="o">[</span>366.43 km<span class="o">]</span>: 20.617 ms
 Testing download speed................................................................................
 Download: 21.01 Mbit/s
 Testing upload speed................................................................................................
 Upload: 1.25 Mbit/s
 Share results: http://www.speedtest.net/result/7155233924.png
-</code></pre>
-
-<h2 id="五-综合性能测试">五、综合性能测试</h2>
-
-<pre><code>$ wget --no-check-certificate https://github.com/teddysun/across/raw/master/unixbench.sh
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="五综合性能测试">五、综合性能测试</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ wget --no-check-certificate https://github.com/teddysun/across/raw/master/unixbench.sh
 $ chmod +x unixbench.sh
 $ ./unixbench.sh
-</code></pre>
-
-<pre><code class="language-shell">========================================================================
-   BYTE UNIX Benchmarks (Version 5.1.3)
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">========================================================================</span>
+   BYTE UNIX Benchmarks <span class="o">(</span>Version 5.1.3<span class="o">)</span>
 
    System: VM_22_16_centos: GNU/Linux
-   OS: GNU/Linux -- 3.10.0-514.26.2.el7.x86_64 -- #1 SMP Tue Jul 4 15:04:05 UTC 2017
-   Machine: x86_64 (x86_64)
-   Language: en_US.utf8 (charmap=&quot;UTF-8&quot;, collate=&quot;UTF-8&quot;)
-   CPU 0: Intel(R) Xeon(R) CPU E5-26xx v4 (4788.9 bogomips)
+   OS: GNU/Linux -- 3.10.0-514.26.2.el7.x86_64 -- <span class="c1">#1 SMP Tue Jul 4 15:04:05 UTC 2017</span>
+   Machine: x86_64 <span class="o">(</span>x86_64<span class="o">)</span>
+   Language: en_US.utf8 <span class="o">(</span><span class="nv">charmap</span><span class="o">=</span><span class="s2">&#34;UTF-8&#34;</span>, <span class="nv">collate</span><span class="o">=</span><span class="s2">&#34;UTF-8&#34;</span><span class="o">)</span>
+   CPU 0: Intel<span class="o">(</span>R<span class="o">)</span> Xeon<span class="o">(</span>R<span class="o">)</span> CPU E5-26xx v4 <span class="o">(</span>4788.9 bogomips<span class="o">)</span>
           Hyper-Threading, x86-64, MMX, Physical Address Ext, SYSENTER/SYSEXIT, SYSCALL/SYSRET
-   CPU 1: Intel(R) Xeon(R) CPU E5-26xx v4 (4788.9 bogomips)
+   CPU 1: Intel<span class="o">(</span>R<span class="o">)</span> Xeon<span class="o">(</span>R<span class="o">)</span> CPU E5-26xx v4 <span class="o">(</span>4788.9 bogomips<span class="o">)</span>
           Hyper-Threading, x86-64, MMX, Physical Address Ext, SYSENTER/SYSEXIT, SYSCALL/SYSRET
-   14:38:58 up  3:20,  2 users,  load average: 0.41, 0.12, 0.13; runlevel 3
+   14:38:58 up  3:20,  <span class="m">2</span> users,  load average: 0.41, 0.12, 0.13<span class="p">;</span> runlevel <span class="m">3</span>
 
 ------------------------------------------------------------------------
-Benchmark Run: 二 3月 20 2018 14:38:58 - 15:08:10
-2 CPUs in system; running 1 parallel copy of tests
+Benchmark Run: 二 3月 <span class="m">20</span> <span class="m">2018</span> 14:38:58 - 15:08:10
+<span class="m">2</span> CPUs in system<span class="p">;</span> running <span class="m">1</span> parallel copy of tests
 
-Dhrystone 2 using register variables       34359445.8 lps   (10.0 s, 7 samples)
-Double-Precision Whetstone                     3063.8 MWIPS (16.6 s, 7 samples)
-Execl Throughput                               4137.5 lps   (30.0 s, 2 samples)
-File Copy 1024 bufsize 2000 maxblocks        932031.7 KBps  (30.0 s, 2 samples)
-File Copy 256 bufsize 500 maxblocks          249781.5 KBps  (30.0 s, 2 samples)
-File Copy 4096 bufsize 8000 maxblocks       2621504.9 KBps  (30.0 s, 2 samples)
-Pipe Throughput                             1624396.8 lps   (10.0 s, 7 samples)
-Pipe-based Context Switching                 359410.0 lps   (10.0 s, 7 samples)
-Process Creation                              11579.6 lps   (30.0 s, 2 samples)
-Shell Scripts (1 concurrent)                   7879.6 lpm   (60.0 s, 2 samples)
-Shell Scripts (8 concurrent)                   1674.6 lpm   (60.0 s, 2 samples)
-System Call Overhead                        2769294.4 lps   (10.0 s, 7 samples)
+Dhrystone <span class="m">2</span> using register variables       34359445.8 lps   <span class="o">(</span>10.0 s, <span class="m">7</span> samples<span class="o">)</span>
+Double-Precision Whetstone                     3063.8 MWIPS <span class="o">(</span>16.6 s, <span class="m">7</span> samples<span class="o">)</span>
+Execl Throughput                               4137.5 lps   <span class="o">(</span>30.0 s, <span class="m">2</span> samples<span class="o">)</span>
+File Copy <span class="m">1024</span> bufsize <span class="m">2000</span> maxblocks        932031.7 KBps  <span class="o">(</span>30.0 s, <span class="m">2</span> samples<span class="o">)</span>
+File Copy <span class="m">256</span> bufsize <span class="m">500</span> maxblocks          249781.5 KBps  <span class="o">(</span>30.0 s, <span class="m">2</span> samples<span class="o">)</span>
+File Copy <span class="m">4096</span> bufsize <span class="m">8000</span> maxblocks       2621504.9 KBps  <span class="o">(</span>30.0 s, <span class="m">2</span> samples<span class="o">)</span>
+Pipe Throughput                             1624396.8 lps   <span class="o">(</span>10.0 s, <span class="m">7</span> samples<span class="o">)</span>
+Pipe-based Context Switching                 359410.0 lps   <span class="o">(</span>10.0 s, <span class="m">7</span> samples<span class="o">)</span>
+Process Creation                              11579.6 lps   <span class="o">(</span>30.0 s, <span class="m">2</span> samples<span class="o">)</span>
+Shell Scripts <span class="o">(</span><span class="m">1</span> concurrent<span class="o">)</span>                   7879.6 lpm   <span class="o">(</span>60.0 s, <span class="m">2</span> samples<span class="o">)</span>
+Shell Scripts <span class="o">(</span><span class="m">8</span> concurrent<span class="o">)</span>                   1674.6 lpm   <span class="o">(</span>60.0 s, <span class="m">2</span> samples<span class="o">)</span>
+System Call Overhead                        2769294.4 lps   <span class="o">(</span>10.0 s, <span class="m">7</span> samples<span class="o">)</span>
 
 System Benchmarks Index Values               BASELINE       RESULT    INDEX
-Dhrystone 2 using register variables         116700.0   34359445.8   2944.3
+Dhrystone <span class="m">2</span> using register variables         116700.0   34359445.8   2944.3
 Double-Precision Whetstone                       55.0       3063.8    557.1
 Execl Throughput                                 43.0       4137.5    962.2
-File Copy 1024 bufsize 2000 maxblocks          3960.0     932031.7   2353.6
-File Copy 256 bufsize 500 maxblocks            1655.0     249781.5   1509.3
-File Copy 4096 bufsize 8000 maxblocks          5800.0    2621504.9   4519.8
+File Copy <span class="m">1024</span> bufsize <span class="m">2000</span> maxblocks          3960.0     932031.7   2353.6
+File Copy <span class="m">256</span> bufsize <span class="m">500</span> maxblocks            1655.0     249781.5   1509.3
+File Copy <span class="m">4096</span> bufsize <span class="m">8000</span> maxblocks          5800.0    2621504.9   4519.8
 Pipe Throughput                               12440.0    1624396.8   1305.8
 Pipe-based Context Switching                   4000.0     359410.0    898.5
 Process Creation                                126.0      11579.6    919.0
-Shell Scripts (1 concurrent)                     42.4       7879.6   1858.4
-Shell Scripts (8 concurrent)                      6.0       1674.6   2791.0
+Shell Scripts <span class="o">(</span><span class="m">1</span> concurrent<span class="o">)</span>                     42.4       7879.6   1858.4
+Shell Scripts <span class="o">(</span><span class="m">8</span> concurrent<span class="o">)</span>                      6.0       1674.6   2791.0
 System Call Overhead                          15000.0    2769294.4   1846.2
-                                                                   ========
+                                                                   <span class="o">========</span>
 System Benchmarks Index Score                                        1590.3
 
 ------------------------------------------------------------------------
-Benchmark Run: 二 3月 20 2018 15:08:10 - 15:37:25
-2 CPUs in system; running 2 parallel copies of tests
+Benchmark Run: 二 3月 <span class="m">20</span> <span class="m">2018</span> 15:08:10 - 15:37:25
+<span class="m">2</span> CPUs in system<span class="p">;</span> running <span class="m">2</span> parallel copies of tests
 
-Dhrystone 2 using register variables       68444775.0 lps   (10.0 s, 7 samples)
-Double-Precision Whetstone                     6177.0 MWIPS (16.5 s, 7 samples)
-Execl Throughput                               8976.3 lps   (30.0 s, 2 samples)
-File Copy 1024 bufsize 2000 maxblocks       1160379.5 KBps  (30.0 s, 2 samples)
-File Copy 256 bufsize 500 maxblocks          321113.0 KBps  (30.0 s, 2 samples)
-File Copy 4096 bufsize 8000 maxblocks       3506583.5 KBps  (30.0 s, 2 samples)
-Pipe Throughput                             3217651.0 lps   (10.0 s, 7 samples)
-Pipe-based Context Switching                 656926.7 lps   (10.0 s, 7 samples)
-Process Creation                              30308.5 lps   (30.0 s, 2 samples)
-Shell Scripts (1 concurrent)                  12182.9 lpm   (60.0 s, 2 samples)
-Shell Scripts (8 concurrent)                   1709.3 lpm   (60.0 s, 2 samples)
-System Call Overhead                        4107364.7 lps   (10.0 s, 7 samples)
+Dhrystone <span class="m">2</span> using register variables       68444775.0 lps   <span class="o">(</span>10.0 s, <span class="m">7</span> samples<span class="o">)</span>
+Double-Precision Whetstone                     6177.0 MWIPS <span class="o">(</span>16.5 s, <span class="m">7</span> samples<span class="o">)</span>
+Execl Throughput                               8976.3 lps   <span class="o">(</span>30.0 s, <span class="m">2</span> samples<span class="o">)</span>
+File Copy <span class="m">1024</span> bufsize <span class="m">2000</span> maxblocks       1160379.5 KBps  <span class="o">(</span>30.0 s, <span class="m">2</span> samples<span class="o">)</span>
+File Copy <span class="m">256</span> bufsize <span class="m">500</span> maxblocks          321113.0 KBps  <span class="o">(</span>30.0 s, <span class="m">2</span> samples<span class="o">)</span>
+File Copy <span class="m">4096</span> bufsize <span class="m">8000</span> maxblocks       3506583.5 KBps  <span class="o">(</span>30.0 s, <span class="m">2</span> samples<span class="o">)</span>
+Pipe Throughput                             3217651.0 lps   <span class="o">(</span>10.0 s, <span class="m">7</span> samples<span class="o">)</span>
+Pipe-based Context Switching                 656926.7 lps   <span class="o">(</span>10.0 s, <span class="m">7</span> samples<span class="o">)</span>
+Process Creation                              30308.5 lps   <span class="o">(</span>30.0 s, <span class="m">2</span> samples<span class="o">)</span>
+Shell Scripts <span class="o">(</span><span class="m">1</span> concurrent<span class="o">)</span>                  12182.9 lpm   <span class="o">(</span>60.0 s, <span class="m">2</span> samples<span class="o">)</span>
+Shell Scripts <span class="o">(</span><span class="m">8</span> concurrent<span class="o">)</span>                   1709.3 lpm   <span class="o">(</span>60.0 s, <span class="m">2</span> samples<span class="o">)</span>
+System Call Overhead                        4107364.7 lps   <span class="o">(</span>10.0 s, <span class="m">7</span> samples<span class="o">)</span>
 
 System Benchmarks Index Values               BASELINE       RESULT    INDEX
-Dhrystone 2 using register variables         116700.0   68444775.0   5865.0
+Dhrystone <span class="m">2</span> using register variables         116700.0   68444775.0   5865.0
 Double-Precision Whetstone                       55.0       6177.0   1123.1
 Execl Throughput                                 43.0       8976.3   2087.5
-File Copy 1024 bufsize 2000 maxblocks          3960.0    1160379.5   2930.3
-File Copy 256 bufsize 500 maxblocks            1655.0     321113.0   1940.3
-File Copy 4096 bufsize 8000 maxblocks          5800.0    3506583.5   6045.8
+File Copy <span class="m">1024</span> bufsize <span class="m">2000</span> maxblocks          3960.0    1160379.5   2930.3
+File Copy <span class="m">256</span> bufsize <span class="m">500</span> maxblocks            1655.0     321113.0   1940.3
+File Copy <span class="m">4096</span> bufsize <span class="m">8000</span> maxblocks          5800.0    3506583.5   6045.8
 Pipe Throughput                               12440.0    3217651.0   2586.5
 Pipe-based Context Switching                   4000.0     656926.7   1642.3
 Process Creation                                126.0      30308.5   2405.4
-Shell Scripts (1 concurrent)                     42.4      12182.9   2873.3
-Shell Scripts (8 concurrent)                      6.0       1709.3   2848.9
+Shell Scripts <span class="o">(</span><span class="m">1</span> concurrent<span class="o">)</span>                     42.4      12182.9   2873.3
+Shell Scripts <span class="o">(</span><span class="m">8</span> concurrent<span class="o">)</span>                      6.0       1709.3   2848.9
 System Call Overhead                          15000.0    4107364.7   2738.2
-                                                                   ========
+                                                                   <span class="o">========</span>
 System Benchmarks Index Score                                        2627.5
-</code></pre>
-
-<h2 id="备注">备注</h2>
-
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="备注">备注</h2>
 <p><strong>参考资料</strong></p>
-
 <p><a href="http://blog.csdn.net/panjican/article/details/51189587">基于Linux系统的性能测试</a></p>
-
 <p><a href="http://yangfannie.com/360.html">VPS主机性能测试</a></p>
-
 <p><a href="https://github.com/sivel/speedtest-cli">speedtest</a></p>
-
 <p><a href="https://github.com/cloudharmony/unixbench">UnixBench</a></p>
-
 <p><a href="https://www.iamle.com/archives/2335.html">Linux系统性能测试脚本合集</a></p>
 
     </div>
 
-    
-    
-<div class="post-copyright">
+    <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">文章作者</span>
     <span class="item-content">flyingFang</span>
   </p>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
-    <span class="item-content">2018-03-24</span>
+    <span class="item-content">
+        2018-03-24
+        
+    </span>
   </p>
   
-  <p class="copyright-item">
-    <span class="item-title">许可协议</span>
-    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
-  </p>
+  
 </div>
-
-    
-    
 <div class="post-reward">
   <input type="checkbox" name="reward" id="reward" hidden />
   <label class="reward-button" for="reward">赞赏支持</label>
   <div class="qr-code">
     
-    
-      <label class="qr-code-image" for="reward">
+    <label class="qr-code-image" for="reward">
         <img class="image" src="http://xflying-blog.cdn.bcebos.com/wechatpay.jpg">
         <span>微信打赏</span>
       </label>
-    
-      <label class="qr-code-image" for="reward">
+    <label class="qr-code-image" for="reward">
         <img class="image" src="http://xflying-blog.cdn.bcebos.com/alipay.jpg">
         <span>支付宝打赏</span>
       </label>
   </div>
-</div>
-
-    <footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/ops/">Ops</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/post/lsof/">
+        <a class="prev" href="/post/lsof/">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">[每日一个Linux命令]——lsof详解</span>
             <span class="prev-text nav-mobile">上一篇</span>
@@ -479,11 +626,11 @@ System Benchmarks Index Score                                        2627.5
   </article>
         </div>
         
-  
 
   
 
   
+
       </div>
     </main>
 
@@ -512,9 +659,8 @@ System Benchmarks Index Score                                        2627.5
 
   <span class="copyright-year">
     &copy; 
-    
-      2018 - 
-    2019
+    2017 - 
+    2020
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
@@ -527,15 +673,21 @@ System Benchmarks Index Score                                        2627.5
       <i class="iconfont icon-up"></i>
     </div>
   </div>
-  
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
-<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-<script type="text/javascript" src="/dist/even.min.js?v=2.7.0"></script>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
 
 
 
 
-<script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
+
+
+
+
+</body>
 </html>

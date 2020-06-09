@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-<head>
+<head><script src="/livereload.js?port=1313&mindelay=10&v=2" data-no-instant defer></script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Etcd Operator使用笔记 - xflying&#39;s Coding Road</title>
@@ -16,56 +16,44 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="flyingFang" />
-  <meta name="description" content="etcd operator startup" />
-
-  <meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="flyingFang" /><meta name="description" content="etcd operator startup" /><meta name="keywords" content="cloud Native, kubernetes, golang, linux" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/etcd-operator/" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="icon" href="/favicon.ico" />
 <link rel="manifest" href="/manifest.json">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
 
+<link href="/sass/main.min.564ac3b9fe418028b13effcb81f82fb70606e5f489f3b2b054656e6613d843d0.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
-
-
-
-<link href="/dist/even.min.css?v=2.7.0" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
 
 <meta property="og:title" content="Etcd Operator使用笔记" />
 <meta property="og:description" content="etcd operator startup" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://localhost:1313/post/etcd-operator/" />
-<meta property="article:published_time" content="2019-04-30T20:24:47&#43;08:00"/>
-<meta property="article:modified_time" content="2019-04-30T20:24:47&#43;08:00"/>
-
+<meta property="article:published_time" content="2019-04-30T20:24:47+08:00" />
+<meta property="article:modified_time" content="2019-04-30T20:24:47+08:00" />
 <meta itemprop="name" content="Etcd Operator使用笔记">
 <meta itemprop="description" content="etcd operator startup">
-
-
 <meta itemprop="datePublished" content="2019-04-30T20:24:47&#43;08:00" />
 <meta itemprop="dateModified" content="2019-04-30T20:24:47&#43;08:00" />
-<meta itemprop="wordCount" content="1567">
+<meta itemprop="wordCount" content="1619">
 
 
 
-<meta itemprop="keywords" content="kubernetes,etcd,helm," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="kubernetes,etcd,helm," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Etcd Operator使用笔记"/>
 <meta name="twitter:description" content="etcd operator startup"/>
 
@@ -139,101 +127,132 @@
       <div class="post-meta">
         <span class="post-time"> 2019-04-30 </span>
         <div class="post-category">
-            
-              <a href="/categories/kubernetes/"> kubernetes </a>
-            
-          </div>
-        <span class="more-meta"> 约 1567 字 </span>
-        <span class="more-meta"> 预计阅读 4 分钟 </span>
+            <a href="/categories/kubernetes/"> kubernetes </a>
+            </div>
         
       </div>
     </header>
 
-    
-    
-<div class="post-toc" id="post-toc">
+    <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">文章目录</h2>
-  
   <div class="post-toc-content">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#etcd-operator">etcd-operator</a>
-<ul>
-<li><a href="#能力">能力</a></li>
-<li><a href="#创建-销毁">创建/销毁</a>
-<ul>
-<li><a href="#安装">安装</a></li>
-<li><a href="#卸载">卸载</a></li>
-</ul></li>
-<li><a href="#容量控制">容量控制</a></li>
-<li><a href="#故障恢复">故障恢复</a></li>
-<li><a href="#备份恢复">备份恢复</a></li>
-<li><a href="#helm-charts">Helm Charts</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#能力">能力</a></li>
+    <li><a href="#创建销毁">创建/销毁</a>
+      <ul>
+        <li><a href="#安装">安装</a></li>
+        <li><a href="#卸载">卸载</a></li>
+      </ul>
+    </li>
+    <li><a href="#容量控制">容量控制</a></li>
+    <li><a href="#故障恢复">故障恢复</a></li>
+    <li><a href="#备份恢复">备份恢复</a></li>
+    <li><a href="#helm-charts">Helm Charts</a></li>
+  </ul>
 </nav>
   </div>
 </div>
-
-    
     <div class="post-content">
-      
-
-<h1 id="etcd-operator">etcd-operator</h1>
-
+      <h1 id="etcd-operator">etcd-operator</h1>
 <h2 id="能力">能力</h2>
-
 <ul>
 <li>创建/销毁：用户只需最小限度地指定集群的大小，而不是为每个 etcd 成员指定繁琐的设置。</li>
 <li>调整大小：用户只需要按规范修改大小，etcd Operator 将负责部署，销毁或重新配置集群成员，例如，从 3 到 5，或从 5 到 3。</li>
 <li>备份：etcd Operator 自动并透明地执行备份。用户只需指定备份策略，例如每 30 分钟备份一次，并保留最后 3 次备份。</li>
 <li>升级：在不停机地情况下升级 etcd 是一项重要而艰巨地任务。使用 etcd Operator 不仅可以简化操作，还可以避免常见地升级缺陷和错误。</li>
 </ul>
-
-<h2 id="创建-销毁">创建/销毁</h2>
-
+<h2 id="创建销毁">创建/销毁</h2>
 <h3 id="安装">安装</h3>
-
 <p>1.设置RBAC规则，因为etcd operator需要访问Kubernetes 的 Apiserver 来创建对象。</p>
-
-<pre><code class="language-shell">$ example/rbac/create_role.sh
-</code></pre>
-
-<p>上述脚本为 Etcd Operator 定义了如下所示的权限：</p>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ example/rbac/create_role.sh
+</code></pre></td></tr></table>
+</div>
+</div><p>上述脚本为 Etcd Operator 定义了如下所示的权限：</p>
 <ul>
 <li>对 Pod、Service、PVC、Deployment、Secret 等 API 对象，有所有权限；</li>
 <li>对 CRD 对象，有所有权限；</li>
 <li>对属于 etcd.database.coreos.com 这个 API Group 的 CR（Custom Resource）对象，有所有权限。</li>
 </ul>
-
-<pre><code class="language-shell">Name:         etcd-operator
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">Name:         etcd-operator
 Labels:       &lt;none&gt;
 Annotations:  &lt;none&gt;
 PolicyRule:
   Resources                                       Non-Resource URLs  Resource Names  Verbs
   ---------                                       -----------------  --------------  -----
-  endpoints                                       []                 []              [*]
-  events                                          []                 []              [*]
-  persistentvolumeclaims                          []                 []              [*]
-  pods                                            []                 []              [*]
-  services                                        []                 []              [*]
-  customresourcedefinitions.apiextensions.k8s.io  []                 []              [*]
-  deployments.apps                                []                 []              [*]
-  etcdbackups.etcd.database.coreos.com            []                 []              [*]
-  etcdclusters.etcd.database.coreos.com           []                 []              [*]
-  etcdrestores.etcd.database.coreos.com           []                 []              [*]
-  secrets                                         []                 []              [get]
-</code></pre>
-
-<p>2.安装etcd-operator deployments。</p>
-
-<pre><code class="language-shell">$ kubectl create -f example/deployment.yaml
-</code></pre>
-
-<p>etcd-operator会创建一个CRD资源(etcdclusters.etcd.database.coreos.com)。之后用户可以创建一个EtcdCluster类型的资源。</p>
-
-<pre><code class="language-shell">kubectl describe crd etcdclusters.etcd.database.coreos.com
+  endpoints                                       <span class="o">[]</span>                 <span class="o">[]</span>              <span class="o">[</span>*<span class="o">]</span>
+  events                                          <span class="o">[]</span>                 <span class="o">[]</span>              <span class="o">[</span>*<span class="o">]</span>
+  persistentvolumeclaims                          <span class="o">[]</span>                 <span class="o">[]</span>              <span class="o">[</span>*<span class="o">]</span>
+  pods                                            <span class="o">[]</span>                 <span class="o">[]</span>              <span class="o">[</span>*<span class="o">]</span>
+  services                                        <span class="o">[]</span>                 <span class="o">[]</span>              <span class="o">[</span>*<span class="o">]</span>
+  customresourcedefinitions.apiextensions.k8s.io  <span class="o">[]</span>                 <span class="o">[]</span>              <span class="o">[</span>*<span class="o">]</span>
+  deployments.apps                                <span class="o">[]</span>                 <span class="o">[]</span>              <span class="o">[</span>*<span class="o">]</span>
+  etcdbackups.etcd.database.coreos.com            <span class="o">[]</span>                 <span class="o">[]</span>              <span class="o">[</span>*<span class="o">]</span>
+  etcdclusters.etcd.database.coreos.com           <span class="o">[]</span>                 <span class="o">[]</span>              <span class="o">[</span>*<span class="o">]</span>
+  etcdrestores.etcd.database.coreos.com           <span class="o">[]</span>                 <span class="o">[]</span>              <span class="o">[</span>*<span class="o">]</span>
+  secrets                                         <span class="o">[]</span>                 <span class="o">[]</span>              <span class="o">[</span>get<span class="o">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>2.安装etcd-operator deployments。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ kubectl create -f example/deployment.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>etcd-operator会创建一个CRD资源(etcdclusters.etcd.database.coreos.com)。之后用户可以创建一个EtcdCluster类型的资源。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">kubectl describe crd etcdclusters.etcd.database.coreos.com
 Name:         etcdclusters.etcd.database.coreos.com
 Kind:         CustomResourceDefinition
 ...
@@ -249,35 +268,51 @@ Kind:         CustomResourceDefinition
   Version:     v1beta2
   Versions:
     Name:     v1beta2
-    Served:   true
-    Storage:  true
+    Served:   <span class="nb">true</span>
+    Storage:  <span class="nb">true</span>
 ...
-</code></pre>
-
-<p>3.安装etcd-cluster deployments。</p>
-
-<pre><code class="language-shell">$ kubectl apply -f example/example-etcd-cluster.yaml
-</code></pre>
-
-<p>以下是 <code>example/example-etcd-cluster.yaml</code> 的具体内容：</p>
-
-<pre><code class="language-yaml">apiVersion: &quot;etcd.database.coreos.com/v1beta2&quot;
-kind: &quot;EtcdCluster&quot;
-metadata:
-  name: &quot;example-etcd-cluster&quot;
-  ## Adding this annotation make this cluster managed by clusterwide operators
-  ## namespaced operators ignore it
-  # annotations:
-  #   etcd.database.coreos.com/scope: clusterwide
-spec:
-  size: 3
-  version: &quot;3.2.13&quot;
-</code></pre>
-
-<p>这时会创建一个版本为3.2.13的3节点etcd集群。</p>
-
+</code></pre></td></tr></table>
+</div>
+</div><p>3.安装etcd-cluster deployments。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ kubectl apply -f example/example-etcd-cluster.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>以下是 <code>example/example-etcd-cluster.yaml</code> 的具体内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;etcd.database.coreos.com/v1beta2&#34;</span><span class="w">
+</span><span class="w"></span><span class="k">kind</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;EtcdCluster&#34;</span><span class="w">
+</span><span class="w"></span><span class="k">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;example-etcd-cluster&#34;</span><span class="w">
+</span><span class="w">  </span><span class="c">## Adding this annotation make this cluster managed by clusterwide operators</span><span class="w">
+</span><span class="w">  </span><span class="c">## namespaced operators ignore it</span><span class="w">
+</span><span class="w">  </span><span class="c"># annotations:</span><span class="w">
+</span><span class="w">  </span><span class="c">#   etcd.database.coreos.com/scope: clusterwide</span><span class="w">
+</span><span class="w"></span><span class="k">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">size</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span><span class="w">  </span><span class="k">version</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;3.2.13&#34;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>这时会创建一个版本为3.2.13的3节点etcd集群。</p>
 <p>4.总结一下：一个由operator控制的etcd集群包括以下资源：（可选，创建一个serviceAccount）</p>
-
 <table>
 <thead>
 <tr>
@@ -286,32 +321,27 @@ spec:
 <th>描述</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>ClusterRole</td>
 <td>etcd-operator</td>
 <td>etcd operator规则</td>
 </tr>
-
 <tr>
 <td>ClusterRoleBinding</td>
 <td>etcd-operator</td>
 <td>绑定serviceAccount和clusterRole</td>
 </tr>
-
 <tr>
 <td>Deployment</td>
 <td>etcd-operator</td>
 <td>etcd集群operator</td>
 </tr>
-
 <tr>
 <td>CustomResourceDefinition</td>
 <td>etcdclusters.etcd.database.coreos.com</td>
 <td>由etcd-operator创建的EtcdCluster资源</td>
 </tr>
-
 <tr>
 <td>EtcdCluster</td>
 <td>example-etcd-cluster</td>
@@ -319,58 +349,72 @@ spec:
 </tr>
 </tbody>
 </table>
-
 <h3 id="卸载">卸载</h3>
-
 <p>官方建议在uninstall之前，先删除相关的用户自定义（CR）资源。</p>
-
-<pre><code class="language-shell">kubectl delete -f example/deployment.yaml
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">kubectl delete -f example/deployment.yaml
 kubectl delete endpoints etcd-operator
 kubectl delete crd etcdclusters.etcd.database.coreos.com
 kubectl delete clusterrole etcd-operator
 kubectl delete clusterrolebinding etcd-operator
-</code></pre>
-
-<h2 id="容量控制">容量控制</h2>
-
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="容量控制">容量控制</h2>
 <p>1.扩容：修改cluster deployment yaml文件，将size从3改至5。</p>
-
-<pre><code class="language-shell">$ kubectl apply -f example/example-etcd-cluster.yaml
-</code></pre>
-
-<pre><code class="language-shell">apiVersion: &quot;etcd.database.coreos.com/v1beta2&quot;
-kind: &quot;EtcdCluster&quot;
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ kubectl apply -f example/example-etcd-cluster.yaml
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">apiVersion: <span class="s2">&#34;etcd.database.coreos.com/v1beta2&#34;</span>
+kind: <span class="s2">&#34;EtcdCluster&#34;</span>
 metadata:
-  name: &quot;example-etcd-cluster&quot;
-  ## Adding this annotation make this cluster managed by clusterwide operators
-  ## namespaced operators ignore it
-  # annotations:
-  #   etcd.database.coreos.com/scope: clusterwide
+  name: <span class="s2">&#34;example-etcd-cluster&#34;</span>
+  <span class="c1">## Adding this annotation make this cluster managed by clusterwide operators</span>
+  <span class="c1">## namespaced operators ignore it</span>
+  <span class="c1"># annotations:</span>
+  <span class="c1">#   etcd.database.coreos.com/scope: clusterwide</span>
 spec:
-  size: 5
-  version: &quot;3.2.13&quot;
-</code></pre>
-
-<p>2.缩容：同理，修改size。</p>
-
+  size: <span class="m">5</span>
+  version: <span class="s2">&#34;3.2.13&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>2.缩容：同理，修改size。</p>
 <h2 id="故障恢复">故障恢复</h2>
-
 <p>Case1: etcd cluster单点故障：由etcd-operator维护故障恢复，无需用户关心。</p>
-
 <p>Case2: etcd-operator故障：由于etcd-operator为deployment资源，会自动拉起新的pod。不会影响etcd集群。</p>
-
 <p>Case3: etcd-operator Deployment被删除：会重新接管EtcdCluster资源，按照配置维护集群状态。不会影响etcd集群。</p>
-
 <h2 id="备份恢复">备份恢复</h2>
-
 <p>备份模块：etcd backup operator</p>
-
 <p>恢复模块：etcd restore operator</p>
-
 <h2 id="helm-charts">Helm Charts</h2>
-
 <p>etcd-operator的官方Helm charts提供整套方案，包括etcd的集群模块，etcd的备份模块及etcd的恢复模块。总共包括以下资源：</p>
-
 <table>
 <thead>
 <tr>
@@ -379,98 +423,82 @@ spec:
 <th>描述</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>ClusterRole</td>
 <td>etcd-operator-etcd-operator-etcd-operator</td>
 <td>etcd operator规则</td>
 </tr>
-
 <tr>
 <td>ServiceAccount</td>
 <td>etcd-operator-etcd-operator-etcd-operator</td>
 <td>etcd集群operator</td>
 </tr>
-
 <tr>
 <td>ClusterRoleBinding</td>
 <td>etcd-operator-etcd-operator-etcd-operator</td>
 <td>etcd集群operator</td>
 </tr>
-
 <tr>
 <td>CustomResourceDefinition</td>
 <td>etcdclusters.etcd.database.coreos.com</td>
 <td>etcd集群operator</td>
 </tr>
-
 <tr>
 <td>Deployment</td>
 <td>etcd-operator-etcd-operator-etcd-operator</td>
 <td>etcd集群operator</td>
 </tr>
-
 <tr>
 <td></td>
 <td></td>
 <td></td>
 </tr>
-
 <tr>
 <td>ServiceAccount</td>
 <td>etcd-operator-etcd-operator-etcd-backup-operator</td>
 <td>etcd备份operator</td>
 </tr>
-
 <tr>
 <td>ClusterRoleBinding</td>
 <td>etcd-operator-etcd-operator-etcd-backup-operator</td>
 <td>etcd备份operator</td>
 </tr>
-
 <tr>
 <td>CustomResourceDefinition</td>
 <td>etcdbackups.etcd.database.coreos.com</td>
 <td>etcd备份operator</td>
 </tr>
-
 <tr>
 <td>Deployment</td>
 <td>etcd-operator-etcd-operator-etcd-backup-operator</td>
 <td>etcd备份operator</td>
 </tr>
-
 <tr>
 <td></td>
 <td></td>
 <td></td>
 </tr>
-
 <tr>
 <td>ServiceAccount</td>
 <td>etcd-operator-etcd-operator-etcd-restore-operator</td>
 <td>etcd恢复operator</td>
 </tr>
-
 <tr>
 <td>ClusterRoleBinding</td>
 <td>etcd-operator-etcd-operator-etcd-restore-operator</td>
 <td>etcd恢复operator</td>
 </tr>
-
 <tr>
 <td>CustomResourceDefinition</td>
 <td>etcdrestores.etcd.database.coreos.com</td>
 <td>etcd恢复operator</td>
 </tr>
-
 <tr>
 <td>Deployment</td>
 <td>etcd-operator-etcd-operator-etcd-restore-operator</td>
 <td>etcd恢复operator</td>
 </tr>
-
 <tr>
 <td>Service</td>
 <td>etcd-restore-operator</td>
@@ -478,82 +506,59 @@ spec:
 </tr>
 </tbody>
 </table>
-
 <p><strong>参考资料</strong></p>
-
 <p><a href="https://coreos.com/blog/introducing-operators.html">coreOS关于operator的介绍</a></p>
-
 <p><a href="https://coreos.com/blog/introducing-the-etcd-operator.html">coreOS关于etcd-operator的介绍</a></p>
-
 <p><a href="https://github.com/coreos/etcd-operator">github仓库 etcd-operator</a></p>
-
 <p><a href="https://github.com/helm/charts/tree/master/stable/etcd-operator">helm charts etcd-operator</a></p>
-
 <p><a href="https://coreos.com/operators/">Operator FrameWork By.coreOS</a></p>
 
     </div>
 
-    
-    
-<div class="post-copyright">
+    <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">文章作者</span>
     <span class="item-content">flyingFang</span>
   </p>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
-    <span class="item-content">2019-04-30</span>
+    <span class="item-content">
+        2019-04-30
+        
+    </span>
   </p>
   
-  <p class="copyright-item">
-    <span class="item-title">许可协议</span>
-    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
-  </p>
+  
 </div>
-
-    
-    
 <div class="post-reward">
   <input type="checkbox" name="reward" id="reward" hidden />
   <label class="reward-button" for="reward">赞赏支持</label>
   <div class="qr-code">
     
-    
-      <label class="qr-code-image" for="reward">
+    <label class="qr-code-image" for="reward">
         <img class="image" src="http://xflying-blog.cdn.bcebos.com/wechatpay.jpg">
         <span>微信打赏</span>
       </label>
-    
-      <label class="qr-code-image" for="reward">
+    <label class="qr-code-image" for="reward">
         <img class="image" src="http://xflying-blog.cdn.bcebos.com/alipay.jpg">
         <span>支付宝打赏</span>
       </label>
   </div>
-</div>
-
-    <footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/kubernetes/">kubernetes</a>
-          
           <a href="/tags/etcd/">etcd</a>
-          
           <a href="/tags/helm/">helm</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/post/cgroup-leak/">
+        <a class="prev" href="/post/cgroup-leak/">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">Cgroup泄漏</span>
             <span class="prev-text nav-mobile">上一篇</span>
           </a>
-        
-          <a class="next" href="/post/seek-faas-01/">
+        <a class="next" href="/post/seek-faas-01/">
             <span class="next-text nav-default">初探FaaS（一）——Serverless架构</span>
-            <span class="prev-text nav-mobile">下一篇</span>
+            <span class="next-text nav-mobile">下一篇</span>
             <i class="iconfont icon-right"></i>
           </a>
       </nav>
@@ -561,11 +566,11 @@ spec:
   </article>
         </div>
         
-  
 
   
 
   
+
       </div>
     </main>
 
@@ -594,9 +599,8 @@ spec:
 
   <span class="copyright-year">
     &copy; 
-    
-      2018 - 
-    2019
+    2017 - 
+    2020
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
@@ -609,15 +613,21 @@ spec:
       <i class="iconfont icon-up"></i>
     </div>
   </div>
-  
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
-<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-<script type="text/javascript" src="/dist/even.min.js?v=2.7.0"></script>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
 
 
 
 
-<script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
+
+
+
+
+</body>
 </html>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>容器存储驱动Device Mapper系列（二）：操作实战 - xflying&#39;s Coding Road</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="flyingFang" /><meta name="description" content="此文从Device Mapper的操作实践切入，力求快速掌握 dmsetup 工具，并创建一个Thin-Provisioning资源池，模拟Snapshot过程。" /><meta name="keywords" content="cloud Native, kubernetes, golang, linux" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="http://flyingfang.github.io/post/devicemapper-practice/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.564ac3b9fe418028b13effcb81f82fb70606e5f489f3b2b054656e6613d843d0.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="容器存储驱动Device Mapper系列（二）：操作实战" />
+<meta property="og:description" content="此文从Device Mapper的操作实践切入，力求快速掌握 dmsetup 工具，并创建一个Thin-Provisioning资源池，模拟Snapshot过程。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://flyingfang.github.io/post/devicemapper-practice/" />
+<meta property="article:published_time" content="2019-12-25T17:09:11+08:00" />
+<meta property="article:modified_time" content="2019-12-25T17:09:11+08:00" />
+<meta itemprop="name" content="容器存储驱动Device Mapper系列（二）：操作实战">
+<meta itemprop="description" content="此文从Device Mapper的操作实践切入，力求快速掌握 dmsetup 工具，并创建一个Thin-Provisioning资源池，模拟Snapshot过程。">
+<meta itemprop="datePublished" content="2019-12-25T17:09:11&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-25T17:09:11&#43;08:00" />
+<meta itemprop="wordCount" content="1124">
+
+
+
+<meta itemprop="keywords" content="docker,devicemapper,kernel," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="容器存储驱动Device Mapper系列（二）：操作实战"/>
+<meta name="twitter:description" content="此文从Device Mapper的操作实践切入，力求快速掌握 dmsetup 工具，并创建一个Thin-Provisioning资源池，模拟Snapshot过程。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FLY</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FLY</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">容器存储驱动Device Mapper系列（二）：操作实战</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-12-25 </span>
+        <div class="post-category">
+            <a href="/categories/docker/"> docker </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#thin-provisioning-snapshot实践">Thin-Provisioning Snapshot实践</a></li>
+    <li><a href="#dmsetup常用命令">dmsetup常用命令</a></li>
+    <li><a href="#参考文档">参考文档</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>上一篇<a href="http://blog.flyingfang.com/post/devicemapper-theory/">《容器存储驱动Device Mapper系列（一）：原理解析》</a>总结了 Device Mapper的基本概念与核心原理，这一篇就让我们使用 dmsetup 工具操作体验一下Device Mapper。</p>
+<p><img src="https://xflying-blog.bj.bcebos.com/xflying-blog%2Fdevicemapper-theory%2Fdevice-mapper-in-docker.png" alt="thin-provisioning-in-docker"></p>
+<h2 id="thin-provisioning-snapshot实践">Thin-Provisioning Snapshot实践</h2>
+<ol>
+<li>创建稀疏文件，并将其虚拟成循环设备</li>
+</ol>
+<p>稀疏文件：以简短的元数据表示空数据块，并不实际占用磁盘存储空间。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ sudo dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/tmp/data.img <span class="nv">bs</span><span class="o">=</span>1K <span class="nv">count</span><span class="o">=</span><span class="m">1</span> <span class="nv">seek</span><span class="o">=</span>10M
+1+0 records in
+1+0 records out
+<span class="m">1024</span> bytes <span class="o">(</span>1.0 kB, 1.0 KiB<span class="o">)</span> copied, 0.000133755 s, 7.7 MB/s
+$ sudo dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/tmp/meta.data.img <span class="nv">bs</span><span class="o">=</span>1K <span class="nv">count</span><span class="o">=</span><span class="m">1</span> <span class="nv">seek</span><span class="o">=</span>100K
+1+0 records in
+1+0 records out
+<span class="m">1024</span> bytes <span class="o">(</span>1.0 kB, 1.0 KiB<span class="o">)</span> copied, 0.00014924 s, 6.9 MB/s
+
+$ ls -lsh /tmp/*img
+4.0K -rw-r--r-- <span class="m">1</span> root root  11G Dec <span class="m">18</span> 02:41 /tmp/data.img
+4.0K -rw-r--r-- <span class="m">1</span> root root 101M Dec <span class="m">18</span> 02:41 /tmp/meta.data.img
+
+$ sudo losetup /dev/loop2019 /tmp/data.img
+$ sudo losetup /dev/loop2020 /tmp/meta.data.img
+
+$ sudo losetup -a <span class="p">|</span>  grep tmp
+/dev/loop2020: <span class="o">[</span>2050<span class="o">]</span>:26738715 <span class="o">(</span>/tmp/meta.data.img<span class="o">)</span>
+/dev/loop2019: <span class="o">[</span>2050<span class="o">]</span>:26738714 <span class="o">(</span>/tmp/data.img<span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>其中 <code>seek</code>选项，代表略过<code>of</code>选项指定输出文件的前 n 个 output的 <code>blocksize</code> 的空间后再写入内容。这里一个blocksize为 1K，故略过了前 10G 文件大小。</p>
+<ol start="2">
+<li>创建Pool Device</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ sudo dmsetup create pool --table <span class="s2">&#34;0 20971522 thin-pool /dev/loop2020 /dev/loop2019 128 65536 1 skip_block_zeroing&#34;</span>
+
+$ sudo dmsetup ls
+pool	<span class="o">(</span>253:0<span class="o">)</span>
+
+$ ll /dev/mapper/pool
+lrwxrwxrwx <span class="m">1</span> root root <span class="m">7</span> Dec <span class="m">18</span> 02:45 /dev/mapper/pool -&gt; ../dm-0
+</code></pre></td></tr></table>
+</div>
+</div><p>dmsetup 创建thin-pool命令详解：</p>
+<ul>
+<li><code>dmsetup create</code> 是用来创建 thin pool 的命令</li>
+<li><code>pool</code> 是自定义的一个 pool 名，不冲突就好。</li>
+<li><code>–-table</code>是这个 pool 的参数设置</li>
+<li><code>0</code> 代表起的 sector 位置
+<ul>
+<li><code>20971522</code> 代表结尾的 sector 号，前面说过，一个 sector 是 512 字节，所以，20971522 个正好是 10GB</li>
+</ul>
+</li>
+<li><code>/dev/loop2020</code> 是 meta 文件的设备（前面我们建好了）
+<ul>
+<li><code>/dev/loop2019</code> 是 data 文件的设备</li>
+<li><code>128</code> 是最小的可分配的 sector 数</li>
+<li><code>65536</code> 是最少可用 sector 的 water mark，也就是一个 threshold</li>
+<li><code>1</code> 代表有一个附加参数</li>
+<li><code>skip_block_zeroing</code> 是个附加参数，表示略过用 0 填充的块</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>创建thinly-provisioned volume</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ sudo dmsetup message /dev/mapper/pool <span class="m">0</span> <span class="s2">&#34;create_thin 0&#34;</span>
+$ sudo dmsetup create thin-volume-001 --table <span class="s2">&#34;0 2097152 thin /dev/mapper/pool 0&#34;</span>
+
+$ sudo dmsetup ls
+thin-volume-001	<span class="o">(</span>253:1<span class="o">)</span>
+pool	<span class="o">(</span>253:0<span class="o">)</span>
+
+$ sudo dmsetup info thin-volume-001
+Name:              thin-volume-001
+State:             ACTIVE
+Read Ahead:        <span class="m">256</span>
+Tables present:    LIVE
+Open count:        <span class="m">0</span>
+Event number:      <span class="m">0</span>
+Major, minor:      253, <span class="m">1</span>
+Number of targets: <span class="m">1</span>
+
+$ sudo mkfs.ext4 /dev/mapper/thin-volume-001
+mke2fs 1.44.1 <span class="o">(</span>24-Mar-2018<span class="o">)</span>
+Discarding device blocks: <span class="k">done</span>
+Creating filesystem with <span class="m">262144</span> 4k blocks and <span class="m">65536</span> inodes
+Filesystem UUID: d1aabd03-0152-4055-b43c-522041d9da3c
+Superblock backups stored on blocks:
+	32768, 98304, 163840, <span class="m">229376</span>
+
+Allocating group tables: <span class="k">done</span>
+Writing inode tables: <span class="k">done</span>
+Creating journal <span class="o">(</span><span class="m">8192</span> blocks<span class="o">)</span>: <span class="k">done</span>
+Writing superblocks and filesystem accounting information: <span class="k">done</span>
+
+$ sudo mkdir -p /mnt/base
+$ sudo mount /dev/mapper/thin-volume-001 /mnt/base
+$ sudo <span class="nb">echo</span> <span class="s2">&#34;Hi, I&#39;m a base&#34;</span> &gt; /mnt/base/id.txt
+$ cat /mnt/base/id.txt
+Hi, I<span class="err">&#39;</span>m a base
+</code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>创建快照（这里以创建internal snapshot为例）</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ sudo dmsetup message /dev/mapper/pool <span class="m">0</span> <span class="s2">&#34;create_snap 1 0&#34;</span>
+$ sudo dmsetup create mysnap1 --table <span class="s2">&#34;0 2097152 thin /dev/mapper/pool 1&#34;</span>
+ 
+$ ll /dev/mapper/mysnap1
+lrwxrwxrwx <span class="m">1</span> root root <span class="m">7</span> Dec <span class="m">18</span> 02:53 /dev/mapper/mysnap1 -&gt; ../dm-2
+
+$ sudo mkdir -p /mnt/mysnap1
+$ sudo mount /dev/mapper/mysnap1 /mnt/mysnap1
+
+$ ll /mnt/mysnap1/
+total <span class="m">28</span>
+-rw-r--r-- <span class="m">1</span> root root    <span class="m">15</span> Dec <span class="m">18</span> 02:52 id.txt
+drwx------ <span class="m">2</span> root root <span class="m">16384</span> Dec <span class="m">18</span> 02:49 lost+found/
+$ cat /mnt/mysnap1/id.txt
+Hi, I<span class="s1">&#39;m a base
+</span><span class="s1">
+</span><span class="s1">$ sudo echo &#34;I am snap1&#34; &gt;&gt; /mnt/mysnap1/id.txt
+</span><span class="s1">$ cat /mnt/mysnap1/id.txt
+</span><span class="s1">Hi, I&#39;</span>m a base
+I am snap1
+
+$ sudo <span class="nb">echo</span> <span class="s2">&#34;I am snap1&#34;</span> &gt; /mnt/mysnap1/snap1.txt
+$ cat /mnt/mysnap1/snap1.txt
+I am snap1
+
+$ ll /mnt/base/
+total <span class="m">28</span>
+-rw-r--r-- <span class="m">1</span> root root    <span class="m">15</span> Dec <span class="m">18</span> 02:52 id.txt
+drwx------ <span class="m">2</span> root root <span class="m">16384</span> Dec <span class="m">18</span> 02:49 lost+found/
+
+$ sudo cat /mnt/base/id.txt
+Hi, I<span class="err">&#39;</span>m a base
+
+$ sudo dmsetup message /dev/mapper/pool <span class="m">0</span> <span class="s2">&#34;create_snap 2 1&#34;</span>
+$ sudo dmsetup create mysnap2 --table <span class="s2">&#34;0 2097152 thin /dev/mapper/pool 2&#34;</span>
+
+$ ll /dev/mapper/mysnap2
+lrwxrwxrwx <span class="m">1</span> root root <span class="m">7</span> Dec <span class="m">18</span> 03:00 /dev/mapper/mysnap2 -&gt; ../dm-3
+
+$ sudo mkdir -p /mnt/mysnap2
+$ sudo mount /dev/mapper/mysnap2 /mnt/mysnap2
+$ ll /mnt/mysnap2
+total <span class="m">32</span>
+-rw-r--r-- <span class="m">1</span> root root    <span class="m">26</span> Dec <span class="m">18</span> 02:56 id.txt
+drwx------ <span class="m">2</span> root root <span class="m">16384</span> Dec <span class="m">18</span> 02:49 lost+found/
+-rw-r--r-- <span class="m">1</span> root root    <span class="m">11</span> Dec <span class="m">18</span> 02:57 snap1.txt
+
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="dmsetup常用命令">dmsetup常用命令</h2>
+<p>dmsetup info</p>
+<h2 id="参考文档">参考文档</h2>
+<p><a href="https://coolshell.cn/articles/17200.html">DOCKER基础技术：DEVICEMAPPER</a></p>
+<p><a href="https://www.kernel.org/doc/Documentation/device-mapper/thin-provisioning.txt">【kernel-doc】Thin-Provisioning</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">flyingFang</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-12-25
+        
+    </span>
+  </p>
+  
+  
+</div>
+<div class="post-reward">
+  <input type="checkbox" name="reward" id="reward" hidden />
+  <label class="reward-button" for="reward">赞赏支持</label>
+  <div class="qr-code">
+    
+    <label class="qr-code-image" for="reward">
+        <img class="image" src="http://xflying-blog.cdn.bcebos.com/wechatpay.jpg">
+        <span>微信打赏</span>
+      </label>
+    <label class="qr-code-image" for="reward">
+        <img class="image" src="http://xflying-blog.cdn.bcebos.com/alipay.jpg">
+        <span>支付宝打赏</span>
+      </label>
+  </div>
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/docker/">docker</a>
+          <a href="/tags/devicemapper/">devicemapper</a>
+          <a href="/tags/kernel/">kernel</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/devicemapper-in-docker/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">容器存储驱动Device Mapper系列（二）：docker中的应用详解</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/devicemapper-theory/">
+            <span class="next-text nav-default">容器存储驱动Device Mapper系列（一）：原理解析</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:flying.fangchn@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/flyingfang" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/1863612812/profile" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/casafly" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://www.douban.com/people/171846250/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://www.instagram.com/xflying203/" class="iconfont icon-instagram" title="instagram"></a>
+  <a href="http://flyingfang.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">flyingFang</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-<head>
+<head><script src="/livereload.js?port=1313&mindelay=10&v=2" data-no-instant defer></script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>[网络工具进阶] - tcpdump详解 - xflying&#39;s Coding Road</title>
@@ -16,56 +16,44 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="flyingFang" />
-  <meta name="description" content="网络相关工具进阶系列之tcpdump详解" />
-
-  <meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="flyingFang" /><meta name="description" content="网络相关工具进阶系列之tcpdump详解" /><meta name="keywords" content="cloud Native, kubernetes, golang, linux" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/tcpdump/" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="icon" href="/favicon.ico" />
 <link rel="manifest" href="/manifest.json">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
 
+<link href="/sass/main.min.564ac3b9fe418028b13effcb81f82fb70606e5f489f3b2b054656e6613d843d0.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
-
-
-
-<link href="/dist/even.min.css?v=2.7.0" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
 
 <meta property="og:title" content="[网络工具进阶] - tcpdump详解" />
 <meta property="og:description" content="网络相关工具进阶系列之tcpdump详解" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://localhost:1313/post/tcpdump/" />
-<meta property="article:published_time" content="2018-10-23T18:38:40&#43;08:00"/>
-<meta property="article:modified_time" content="2018-10-23T18:38:40&#43;08:00"/>
-
+<meta property="article:published_time" content="2018-10-23T18:38:40+08:00" />
+<meta property="article:modified_time" content="2018-10-23T18:38:40+08:00" />
 <meta itemprop="name" content="[网络工具进阶] - tcpdump详解">
 <meta itemprop="description" content="网络相关工具进阶系列之tcpdump详解">
-
-
 <meta itemprop="datePublished" content="2018-10-23T18:38:40&#43;08:00" />
 <meta itemprop="dateModified" content="2018-10-23T18:38:40&#43;08:00" />
-<meta itemprop="wordCount" content="2788">
+<meta itemprop="wordCount" content="2867">
 
 
 
-<meta itemprop="keywords" content="Linux,Networking," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Linux,Networking," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[网络工具进阶] - tcpdump详解"/>
 <meta name="twitter:description" content="网络相关工具进阶系列之tcpdump详解"/>
 
@@ -139,58 +127,41 @@
       <div class="post-meta">
         <span class="post-time"> 2018-10-23 </span>
         <div class="post-category">
-            
-              <a href="/categories/sre/"> SRE </a>
-            
-          </div>
-        <span class="more-meta"> 约 2788 字 </span>
-        <span class="more-meta"> 预计阅读 6 分钟 </span>
+            <a href="/categories/sre/"> SRE </a>
+            </div>
         
       </div>
     </header>
 
-    
-    
-<div class="post-toc" id="post-toc">
+    <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">文章目录</h2>
-  
   <div class="post-toc-content">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#一-简介">一、简介</a></li>
-<li><a href="#二-基本语法">二、基本语法</a>
-<ul>
-<li><a href="#命令行选项">命令行选项</a></li>
-<li><a href="#过滤表达式">过滤表达式</a></li>
-</ul></li>
-<li><a href="#三-数据结果解析">三、数据结果解析</a>
-<ul>
-<li><a href="#tcp-标志位">tcp 标志位</a></li>
-<li><a href="#示例分析">示例分析</a></li>
-</ul></li>
-<li><a href="#四-常见示例">四、常见示例</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#一简介">一、简介</a></li>
+    <li><a href="#二基本语法">二、基本语法</a>
+      <ul>
+        <li><a href="#命令行选项">命令行选项</a></li>
+        <li><a href="#过滤表达式">过滤表达式</a></li>
+      </ul>
+    </li>
+    <li><a href="#三数据结果解析">三、数据结果解析</a>
+      <ul>
+        <li><a href="#tcp-标志位">tcp 标志位</a></li>
+        <li><a href="#示例分析">示例分析</a></li>
+      </ul>
+    </li>
+    <li><a href="#四常见示例">四、常见示例</a></li>
+  </ul>
 </nav>
   </div>
 </div>
-
-    
     <div class="post-content">
-      
-
-<h2 id="一-简介">一、简介</h2>
-
+      <h2 id="一简介">一、简介</h2>
 <p>tcpdump是一个在运行在命令行下的嗅探工具。它允许用户拦截和显示发送或收到过网络连接到该计算机的TCP/IP和其他数据包。</p>
-
 <p>tcpdump能够分析网络行为，性能和应用产生或接收网络流量。它支持针对网络层、协议、主机、网络或端口的过滤，并提供and、or、not等逻辑语句来帮助你去掉无用的信息，从而使用户能够进一步找出问题的根源。</p>
-
-<h2 id="二-基本语法">二、基本语法</h2>
-
+<h2 id="二基本语法">二、基本语法</h2>
 <h3 id="命令行选项">命令行选项</h3>
-
 <table>
 <thead>
 <tr>
@@ -198,144 +169,114 @@
 <th>用法</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>-i</td>
 <td>指定监听的网络端口。如果未指定，则选择端口号最小的端口（不包括环回口）。如果要监听所有的端口，使用<code>any</code></td>
 </tr>
-
 <tr>
 <td>-D</td>
 <td>打印当前可用于tcpdump监听的网络端口</td>
 </tr>
-
 <tr>
 <td>-n</td>
 <td>不解析主机名，只显示IP地址</td>
 </tr>
-
 <tr>
 <td>-nn</td>
 <td>不解析主机名或对应的服务名，而是显示 IP 地址和端口号</td>
 </tr>
-
 <tr>
 <td>-q</td>
 <td>显示更少的协议信息</td>
 </tr>
-
 <tr>
 <td>-v</td>
 <td>详细输出，如 TTL、总长度、IP 包选项、IP/ICMP 报头校验和</td>
 </tr>
-
 <tr>
 <td>-vv</td>
 <td>更详细的输出，如打印NFS附加字段，SMB数据包等。</td>
 </tr>
-
 <tr>
 <td>-vvv</td>
 <td>更更详细的输出，如打印telnet SB &hellip; SE选项等</td>
 </tr>
-
 <tr>
 <td>-t</td>
 <td>不显示时间戳</td>
 </tr>
-
 <tr>
 <td>-tt</td>
 <td>显示自 1970-01-01 00:00:00 UTC 起的秒数</td>
 </tr>
-
 <tr>
 <td>-ttt</td>
 <td>显示当前和前一个数据包这两个数据包之间的时间差（微秒）</td>
 </tr>
-
 <tr>
 <td>-tttt</td>
 <td>显示年月日、时分秒</td>
 </tr>
-
 <tr>
 <td>-ttttt</td>
 <td>显示当前数据包相对第一个数据包的时间差（微秒）</td>
 </tr>
-
 <tr>
 <td>-A</td>
 <td>以 ASCII 显示数据包（不包括链路层头部信息）</td>
 </tr>
-
 <tr>
 <td>-X</td>
 <td>以 ASCII 和 Hex 显示数据包（不包括链路层头部信息）</td>
 </tr>
-
 <tr>
 <td>-XX</td>
 <td>以 ASCII 和 Hex 显示数据包（包括链路层头部信息）</td>
 </tr>
-
 <tr>
 <td>-e</td>
 <td>打印链路层头部（比如 MAC 地址信息）</td>
 </tr>
-
 <tr>
 <td>-c N</td>
 <td>只捕获 N 个数据包，捕获完成后自动退出</td>
 </tr>
-
 <tr>
 <td>-s SIZE</td>
 <td>定义捕获的数据包大小（字节为单位）</td>
 </tr>
-
 <tr>
 <td>-S</td>
 <td>打印绝对序列号而不是相对序列号（TCP）</td>
 </tr>
-
 <tr>
 <td>-l</td>
 <td>打印时使用行缓冲，这在使用管道时非常方便</td>
 </tr>
-
 <tr>
 <td>-w</td>
 <td>将捕获到的数据包保存至 pcap 文件中</td>
 </tr>
-
 <tr>
 <td>-r</td>
 <td>从 pcap 文件中读取数据包并进行分析</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="过滤表达式">过滤表达式</h3>
-
 <ul>
 <li><code>type</code>类型：<code>host</code>主机、<code>net</code>网段、<code>port</code>端口号，<code>portrange</code>端口范围</li>
 <li><code>dir</code>方向：<code>src</code>来源、<code>dst</code> 目的</li>
 <li><code>proto</code>协议：<code>ip</code>、<code>ip6</code>、<code>arp</code>、<code>rarp</code>、<code>icmp</code>、<code>tcp</code>、<code>udp</code>…等</li>
 </ul>
-
 <p><strong>注意</strong>：</p>
-
 <ul>
-<li>顺序是从前到后依次 <code>proto</code> <code>dir</code> <code>type</code>。</li>
+<li>顺序是从前到后依次 <code>proto </code> <code>dir</code> <code>type</code>。</li>
 <li>表达式优先级从高到低依次 <code>not</code> <code>and</code> <code>or</code>。</li>
 </ul>
-
-<h2 id="三-数据结果解析">三、数据结果解析</h2>
-
+<h2 id="三数据结果解析">三、数据结果解析</h2>
 <h3 id="tcp-标志位">tcp 标志位</h3>
-
 <ul>
 <li><code>SYN</code>，显示为<code>S</code>，同步标志位，用于建立会话连接，同步序列号；</li>
 <li><code>ACK</code>，显示为<code>.</code>，确认标志位，对已接收的数据包进行确认；</li>
@@ -344,246 +285,359 @@
 <li><code>PUSH</code>，显示为<code>P</code>，推送标志位，表示该数据包被对方接收后应立即交给上层应用，而不在缓冲区排队；</li>
 <li><code>URGENT</code>，显示为<code>U</code>，紧急标志位，表示数据包的紧急指针域有效，用来保证连接不被阻断，并督促中间设备尽快处理；</li>
 </ul>
-
 <h3 id="示例分析">示例分析</h3>
-
 <p>抓取80端口的数据包，一段访问web网站的数据包</p>
-
-<pre><code class="language-shell">[root@flying_lab ~]# tcpdump -Snnvvv -i eth0 &quot;tcp and port 80&quot;
-tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes
-18:12:32.794115 IP (tos 0x0, ttl 64, id 33685, offset 0, flags [DF], proto TCP (6), length 60)
-    172.21.22.16.52804 &gt; 169.254.0.4.80: Flags [S], cksum 0x6c56 (incorrect -&gt; 0x81ab), seq 3103604091, win 29200, options [mss 1460,sackOK,TS val 1679867630 ecr 0,nop,wscale 7], length 0
-18:12:32.797635 IP (tos 0x0, ttl 55, id 0, offset 0, flags [DF], proto TCP (6), length 52)
-    169.254.0.4.80 &gt; 172.21.22.16.52804: Flags [S.], cksum 0xf6ec (correct), seq 2835834104, ack 3103604092, win 14600, options [mss 1424,nop,nop,sackOK,nop,wscale 1], length 0
-18:12:32.797671 IP (tos 0x0, ttl 64, id 33686, offset 0, flags [DF], proto TCP (6), length 40)
-    172.21.22.16.52804 &gt; 169.254.0.4.80: Flags [.], cksum 0x6c42 (incorrect -&gt; 0x6fb8), seq 3103604092, ack 2835834105, win 229, length 0
-18:12:32.797758 IP (tos 0x0, ttl 64, id 33687, offset 0, flags [DF], proto TCP (6), length 221)
-    172.21.22.16.52804 &gt; 169.254.0.4.80: Flags [P.], cksum 0x6cf7 (incorrect -&gt; 0xb4f5), seq 3103604092:3103604273, ack 2835834105, win 229, length 181: HTTP, length: 181
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">[</span>root@flying_lab ~<span class="o">]</span><span class="c1"># tcpdump -Snnvvv -i eth0 &#34;tcp and port 80&#34;</span>
+tcpdump: listening on eth0, link-type EN10MB <span class="o">(</span>Ethernet<span class="o">)</span>, capture size <span class="m">262144</span> bytes
+18:12:32.794115 IP <span class="o">(</span>tos 0x0, ttl 64, id 33685, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 60<span class="o">)</span>
+    172.21.22.16.52804 &gt; 169.254.0.4.80: Flags <span class="o">[</span>S<span class="o">]</span>, cksum 0x6c56 <span class="o">(</span>incorrect -&gt; 0x81ab<span class="o">)</span>, seq 3103604091, win 29200, options <span class="o">[</span>mss 1460,sackOK,TS val <span class="m">1679867630</span> ecr 0,nop,wscale 7<span class="o">]</span>, length <span class="m">0</span>
+18:12:32.797635 IP <span class="o">(</span>tos 0x0, ttl 55, id 0, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 52<span class="o">)</span>
+    169.254.0.4.80 &gt; 172.21.22.16.52804: Flags <span class="o">[</span>S.<span class="o">]</span>, cksum 0xf6ec <span class="o">(</span>correct<span class="o">)</span>, seq 2835834104, ack 3103604092, win 14600, options <span class="o">[</span>mss 1424,nop,nop,sackOK,nop,wscale 1<span class="o">]</span>, length <span class="m">0</span>
+18:12:32.797671 IP <span class="o">(</span>tos 0x0, ttl 64, id 33686, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    172.21.22.16.52804 &gt; 169.254.0.4.80: Flags <span class="o">[</span>.<span class="o">]</span>, cksum 0x6c42 <span class="o">(</span>incorrect -&gt; 0x6fb8<span class="o">)</span>, seq 3103604092, ack 2835834105, win 229, length <span class="m">0</span>
+18:12:32.797758 IP <span class="o">(</span>tos 0x0, ttl 64, id 33687, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 221<span class="o">)</span>
+    172.21.22.16.52804 &gt; 169.254.0.4.80: Flags <span class="o">[</span>P.<span class="o">]</span>, cksum 0x6cf7 <span class="o">(</span>incorrect -&gt; 0xb4f5<span class="o">)</span>, seq 3103604092:3103604273, ack 2835834105, win 229, length 181: HTTP, length: <span class="m">181</span>
 	POST /ca_report.cgi HTTP/1.1
 	Accept-Encoding: identity
-	Content-Length: 531
+	Content-Length: <span class="m">531</span>
 	Host: 169.254.0.4
 	Content-Type: application/json
 	Connection: close
 	User-Agent: Python-urllib/2.6
 
-18:12:32.801234 IP (tos 0x0, ttl 55, id 22569, offset 0, flags [DF], proto TCP (6), length 40)
-    169.254.0.4.80 &gt; 172.21.22.16.52804: Flags [.], cksum 0x514c (correct), seq 2835834105, ack 3103604273, win 7836, length 0
-18:12:32.801254 IP (tos 0x0, ttl 64, id 33688, offset 0, flags [DF], proto TCP (6), length 571)
-    172.21.22.16.52804 &gt; 169.254.0.4.80: Flags [P.], cksum 0x6e55 (incorrect -&gt; 0x42b1), seq 3103604273:3103604804, ack 2835834105, win 229, length 531: HTTP
-</code></pre>
-
-<p><strong>tcp三次握手</strong></p>
-
-<pre><code class="language-shell"># 第一次握手 [SYN]
-18:18:46.793808 IP (tos 0x0, ttl 64, id 11367, offset 0, flags [DF], proto TCP (6), length 60)
-    172.21.22.16.53094 &gt; 169.254.0.4.80: Flags [S], cksum 0x6c56 (incorrect -&gt; 0x8926), seq 3643563961, win 29200, options [mss 1460,sackOK,TS val 1680241630 ecr 0,nop,wscale 7], length 0
-# 第二次握手 [SYN+ACK]
-18:18:46.797280 IP (tos 0x0, ttl 55, id 0, offset 0, flags [DF], proto TCP (6), length 52)
-    169.254.0.4.80 &gt; 172.21.22.16.53094: Flags [S.], cksum 0xf538 (correct), seq 1445164545, ack 3643563962, win 14600, options [mss 1424,nop,nop,sackOK,nop,wscale 1], length 0
-# 第三次握手 [ACK]
-18:18:46.797317 IP (tos 0x0, ttl 64, id 11368, offset 0, flags [DF], proto TCP (6), length 40)
-    172.21.22.16.53094 &gt; 169.254.0.4.80: Flags [.], cksum 0x6c42 (incorrect -&gt; 0x6e04), seq 3643563962, ack 1445164546, win 229, length 0
-</code></pre>
-
-<ol>
+18:12:32.801234 IP <span class="o">(</span>tos 0x0, ttl 55, id 22569, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    169.254.0.4.80 &gt; 172.21.22.16.52804: Flags <span class="o">[</span>.<span class="o">]</span>, cksum 0x514c <span class="o">(</span>correct<span class="o">)</span>, seq 2835834105, ack 3103604273, win 7836, length <span class="m">0</span>
+18:12:32.801254 IP <span class="o">(</span>tos 0x0, ttl 64, id 33688, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 571<span class="o">)</span>
+    172.21.22.16.52804 &gt; 169.254.0.4.80: Flags <span class="o">[</span>P.<span class="o">]</span>, cksum 0x6e55 <span class="o">(</span>incorrect -&gt; 0x42b1<span class="o">)</span>, seq 3103604273:3103604804, ack 2835834105, win 229, length 531: HTTP
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>tcp三次握手</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># 第一次握手 [SYN]</span>
+18:18:46.793808 IP <span class="o">(</span>tos 0x0, ttl 64, id 11367, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 60<span class="o">)</span>
+    172.21.22.16.53094 &gt; 169.254.0.4.80: Flags <span class="o">[</span>S<span class="o">]</span>, cksum 0x6c56 <span class="o">(</span>incorrect -&gt; 0x8926<span class="o">)</span>, seq 3643563961, win 29200, options <span class="o">[</span>mss 1460,sackOK,TS val <span class="m">1680241630</span> ecr 0,nop,wscale 7<span class="o">]</span>, length <span class="m">0</span>
+<span class="c1"># 第二次握手 [SYN+ACK]</span>
+18:18:46.797280 IP <span class="o">(</span>tos 0x0, ttl 55, id 0, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 52<span class="o">)</span>
+    169.254.0.4.80 &gt; 172.21.22.16.53094: Flags <span class="o">[</span>S.<span class="o">]</span>, cksum 0xf538 <span class="o">(</span>correct<span class="o">)</span>, seq 1445164545, ack 3643563962, win 14600, options <span class="o">[</span>mss 1424,nop,nop,sackOK,nop,wscale 1<span class="o">]</span>, length <span class="m">0</span>
+<span class="c1"># 第三次握手 [ACK]</span>
+18:18:46.797317 IP <span class="o">(</span>tos 0x0, ttl 64, id 11368, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    172.21.22.16.53094 &gt; 169.254.0.4.80: Flags <span class="o">[</span>.<span class="o">]</span>, cksum 0x6c42 <span class="o">(</span>incorrect -&gt; 0x6e04<span class="o">)</span>, seq 3643563962, ack 1445164546, win 229, length <span class="m">0</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol>
 <li>Client 发送连接请求（SYN; seq: 3643563961），进入<code>SYN-SENT</code>状态；</li>
 <li>Server 响应连接请求（SYN+ACK; seq: 1445164545; ack: 3643563962），进入<code>SYN-RCVD</code>状态；</li>
 <li>Client 确认 ack 值，进入<code>ESTABLISHED</code>状态，同时发送确认包（ACK; seq: 3643563962; ack: 1445164546）；Server 确认 ack 值，进入<code>ESTABLISHED</code>状态；</li>
 </ol>
-
 <p><strong>数据传输</strong></p>
-
-<pre><code class="language-shell"># Client 发送请求 [PUSH]
-18:18:46.800847 IP (tos 0x0, ttl 64, id 11370, offset 0, flags [DF], proto TCP (6), length 249)
-    172.21.22.16.53094 &gt; 169.254.0.4.80: Flags [P.], cksum 0x6d13 (incorrect -&gt; 0x9d98), seq 3643564143:3643564352, ack 1445164546, win 229, length 209: HTTP
-# Server 确认请求 [ACK]
-18:18:46.804214 IP (tos 0x0, ttl 55, id 64566, offset 0, flags [DF], proto TCP (6), length 40)
-    169.254.0.4.80 &gt; 172.21.22.16.53094: Flags [.], cksum 0x4caf (correct), seq 1445164546, ack 3643564352, win 8372, length 0
-# Server 响应请求 [PUSH]
-18:18:46.804256 IP (tos 0x0, ttl 55, id 64567, offset 0, flags [DF], proto TCP (6), length 168)
-    169.254.0.4.80 &gt; 172.21.22.16.53094: Flags [P.], cksum 0xe8d0 (correct), seq 1445164546:1445164674, ack 3643564352, win 8372, length 128: HTTP, length: 128
-	HTTP/1.1 200 OK
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># Client 发送请求 [PUSH]</span>
+18:18:46.800847 IP <span class="o">(</span>tos 0x0, ttl 64, id 11370, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 249<span class="o">)</span>
+    172.21.22.16.53094 &gt; 169.254.0.4.80: Flags <span class="o">[</span>P.<span class="o">]</span>, cksum 0x6d13 <span class="o">(</span>incorrect -&gt; 0x9d98<span class="o">)</span>, seq 3643564143:3643564352, ack 1445164546, win 229, length 209: HTTP
+<span class="c1"># Server 确认请求 [ACK]</span>
+18:18:46.804214 IP <span class="o">(</span>tos 0x0, ttl 55, id 64566, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    169.254.0.4.80 &gt; 172.21.22.16.53094: Flags <span class="o">[</span>.<span class="o">]</span>, cksum 0x4caf <span class="o">(</span>correct<span class="o">)</span>, seq 1445164546, ack 3643564352, win 8372, length <span class="m">0</span>
+<span class="c1"># Server 响应请求 [PUSH]</span>
+18:18:46.804256 IP <span class="o">(</span>tos 0x0, ttl 55, id 64567, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 168<span class="o">)</span>
+    169.254.0.4.80 &gt; 172.21.22.16.53094: Flags <span class="o">[</span>P.<span class="o">]</span>, cksum 0xe8d0 <span class="o">(</span>correct<span class="o">)</span>, seq 1445164546:1445164674, ack 3643564352, win 8372, length 128: HTTP, length: <span class="m">128</span>
+	HTTP/1.1 <span class="m">200</span> OK
 	Connection: close
-	Content-Length: 70
+	Content-Length: <span class="m">70</span>
 
-	{&quot;returnValue&quot;:0,&quot;returnCode&quot;:0,&quot;msg&quot;:&quot;OK&quot;,&quot;seq&quot;:14419936819469917437}[!http]
-# Client 确认响应 [ACK]
-18:18:46.804263 IP (tos 0x0, ttl 64, id 11371, offset 0, flags [DF], proto TCP (6), length 40)
-    172.21.22.16.53094 &gt; 169.254.0.4.80: Flags [.], cksum 0x6c42 (incorrect -&gt; 0x6bf6), seq 3643564352, ack 1445164674, win 237, length 0
-</code></pre>
-
-<p><strong>tcp四次挥手</strong></p>
-
-<pre><code class="language-shell"># Client 告诉 Server，我已经没有数据要发送了 [FIN]
-18:27:38.766403 IP (tos 0x0, ttl 64, id 11490, offset 0, flags [DF], proto TCP (6), length 40)
-    172.21.22.16.59770 &gt; 115.182.203.2.80: Flags [.], cksum 0x00f9 (incorrect -&gt; 0x1fc3), seq 2956639571, ack 2379655446, win 237, length 0
-# Server 收到后，告诉 Client，你再等会 [ACK]
-18:27:38.766682 IP (tos 0x0, ttl 64, id 11491, offset 0, flags [DF], proto TCP (6), length 40)
-    172.21.22.16.59770 &gt; 115.182.203.2.80: Flags [F.], cksum 0x00f9 (incorrect -&gt; 0x1fc2), seq 2956639571, ack 2379655446, win 237, length 0
-# Server 告诉 Client，我也没数据要发送了 [FIN + ACK]
-18:27:38.771154 IP (tos 0x64, ttl 53, id 63129, offset 0, flags [DF], proto TCP (6), length 40)
-    115.182.203.2.80 &gt; 172.21.22.16.59770: Flags [F.], cksum 0x203b (correct), seq 2379655446, ack 2956639572, win 115, length 0
-# Client 收到后，告诉 Server，好的 [ACK]
-18:27:38.771170 IP (tos 0x0, ttl 64, id 11492, offset 0, flags [DF], proto TCP (6), length 40)
-    172.21.22.16.59770 &gt; 115.182.203.2.80: Flags [.], cksum 0x00f9 (incorrect -&gt; 0x1fc1), seq 2956639572, ack 2379655447, win 237, length 0
-</code></pre>
-
-<ol>
+	<span class="o">{</span><span class="s2">&#34;returnValue&#34;</span>:0,<span class="s2">&#34;returnCode&#34;</span>:0,<span class="s2">&#34;msg&#34;</span>:<span class="s2">&#34;OK&#34;</span>,<span class="s2">&#34;seq&#34;</span>:14419936819469917437<span class="o">}[</span>!http<span class="o">]</span>
+<span class="c1"># Client 确认响应 [ACK]</span>
+18:18:46.804263 IP <span class="o">(</span>tos 0x0, ttl 64, id 11371, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    172.21.22.16.53094 &gt; 169.254.0.4.80: Flags <span class="o">[</span>.<span class="o">]</span>, cksum 0x6c42 <span class="o">(</span>incorrect -&gt; 0x6bf6<span class="o">)</span>, seq 3643564352, ack 1445164674, win 237, length <span class="m">0</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>tcp四次挥手</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># Client 告诉 Server，我已经没有数据要发送了 [FIN]</span>
+18:27:38.766403 IP <span class="o">(</span>tos 0x0, ttl 64, id 11490, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    172.21.22.16.59770 &gt; 115.182.203.2.80: Flags <span class="o">[</span>.<span class="o">]</span>, cksum 0x00f9 <span class="o">(</span>incorrect -&gt; 0x1fc3<span class="o">)</span>, seq 2956639571, ack 2379655446, win 237, length <span class="m">0</span>
+<span class="c1"># Server 收到后，告诉 Client，你再等会 [ACK]</span>
+18:27:38.766682 IP <span class="o">(</span>tos 0x0, ttl 64, id 11491, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    172.21.22.16.59770 &gt; 115.182.203.2.80: Flags <span class="o">[</span>F.<span class="o">]</span>, cksum 0x00f9 <span class="o">(</span>incorrect -&gt; 0x1fc2<span class="o">)</span>, seq 2956639571, ack 2379655446, win 237, length <span class="m">0</span>
+<span class="c1"># Server 告诉 Client，我也没数据要发送了 [FIN + ACK]</span>
+18:27:38.771154 IP <span class="o">(</span>tos 0x64, ttl 53, id 63129, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    115.182.203.2.80 &gt; 172.21.22.16.59770: Flags <span class="o">[</span>F.<span class="o">]</span>, cksum 0x203b <span class="o">(</span>correct<span class="o">)</span>, seq 2379655446, ack 2956639572, win 115, length <span class="m">0</span>
+<span class="c1"># Client 收到后，告诉 Server，好的 [ACK]</span>
+18:27:38.771170 IP <span class="o">(</span>tos 0x0, ttl 64, id 11492, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    172.21.22.16.59770 &gt; 115.182.203.2.80: Flags <span class="o">[</span>.<span class="o">]</span>, cksum 0x00f9 <span class="o">(</span>incorrect -&gt; 0x1fc1<span class="o">)</span>, seq 2956639572, ack 2379655447, win 237, length <span class="m">0</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol>
 <li>Client 发送 FIN 包，告诉 Server：我已经没有数据要发送了，我们关闭连接吧；进入<code>FIN-WAIT-1</code>状态；</li>
 <li>Server 收到 FIN 包后，知道 Client 要准备关闭连接了，于是回复 ACK 包，告诉 Client：我知道了；进入<code>CLOSE-WAIT</code>状态；Client 收到 ACK 包后，知道 Server 还有些事要准备（如将未发送的数据发送完），于是继续等待，进入<code>FIN-WAIT-2</code>状态；</li>
 <li>Server 准备完毕后，也发送 FIN 包，告诉 Client，我也没有数据要发送了，即将关闭连接了哦，进入<code>LAST-ACK</code>状态；</li>
 <li>Client 收到 FIN 包后，知道 Server 已经准备完毕并且即将关闭连接，于是发送 ACK 包，告诉 Server 已收到，进入<code>TIME-WAIT</code>状态；Server 收到 ACK 包后，进入<code>CLOSED</code>状态；Client 等待 2MSL 时间后，没有再次收到 Server 的 FIN 包，因此确认 Server 已经收到了 ACK 包并已关闭，于是 Client 也进入<code>CLOSED</code>状态；</li>
 </ol>
-
-<h2 id="四-常见示例">四、常见示例</h2>
-
+<h2 id="四常见示例">四、常见示例</h2>
 <ol>
-<li>过滤主机</li>
-</ol>
-
+<li>
+<p>过滤主机</p>
 <p>1.1 监听所有目的或源地址是10.20.0.1的网络数据</p>
-
-<pre><code class="language-shell">tcpdump host 10.20.0.1
-</code></pre>
-
-<p>​   1.2  监听所有目的地址是10.20.0.1的网络数据</p>
-
-<pre><code class="language-shell">tcpdump dst host 10.20.0.1
-</code></pre>
-
-<p>​   1.3  监听所有源地址是10.20.0.1的网络数据</p>
-
-<pre><code>tcpdump src host 10.20.0.1
-</code></pre>
-
-<ol>
-<li>过滤端口</li>
+</li>
 </ol>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump host 10.20.0.1
+</code></pre></td></tr></table>
+</div>
+</div><p>​	1.2  监听所有目的地址是10.20.0.1的网络数据</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump dst host 10.20.0.1
+</code></pre></td></tr></table>
+</div>
+</div><p>​	1.3  监听所有源地址是10.20.0.1的网络数据</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">tcpdump src host 10.20.0.1
+</code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>
+<p>过滤端口</p>
 <p>2.1 抓取所有经过eth0，目的或源端口是22的网络数据</p>
-
-<pre><code class="language-shell">tcpdump -i eth0 port 22
-</code></pre>
-
-<p>​   2.2 指定源端口</p>
-
-<pre><code class="language-shell">tcpdump -i eth0 src port 22
-</code></pre>
-
-<p>​   2.3 指定目的端口</p>
-
-<pre><code class="language-shell">tcpdump -i eth0 dst port 22
-</code></pre>
-
-<ol>
-<li>过滤网络</li>
+</li>
 </ol>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth0 port <span class="m">22</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>​	2.2 指定源端口</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth0 src port <span class="m">22</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>​	2.3 指定目的端口</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth0 dst port <span class="m">22</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>
+<p>过滤网络</p>
 <p>3.1 抓取所有经过eth0，目的或源网段是10.20的网络数据</p>
-
-<pre><code class="language-shell">tcpdump -i eth0 net 10.20
-</code></pre>
-
-<p>​   3.2 指定源网段</p>
-
-<pre><code class="language-shell">tcpdump -i eth0 src net 10.20
-</code></pre>
-
-<p>​   3.3 指定目的网段</p>
-
-<pre><code class="language-shell">tcpdump -i eth0 dst net 10.20
-</code></pre>
-
-<ol>
+</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth0 net 10.20
+</code></pre></td></tr></table>
+</div>
+</div><p>​	3.2 指定源网段</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth0 src net 10.20
+</code></pre></td></tr></table>
+</div>
+</div><p>​	3.3 指定目的网段</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth0 dst net 10.20
+</code></pre></td></tr></table>
+</div>
+</div><ol>
 <li>过滤协议</li>
 </ol>
-
-<pre><code class="language-shell">tcpdump -i eth1 arp
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth1 arp
 tcpdump -i eth1 ip
 tcpdump -i eth1 tcp
 tcpdump -i eth1 udp
 tcpdump -i eth1 icmp
-</code></pre>
-
-<p>5.常用表达式</p>
-
-<pre><code class="language-shell">非 : ! or &quot;not&quot; (去掉双引号)  
-且 : &amp;&amp; or &quot;and&quot;  
-或 : || or &quot;or&quot;
-</code></pre>
-
-<p>​   5.1 抓取所有经过eth2，源地址是10.20.0.60或者10.20.0.22的ICMP流量</p>
-
-<pre><code class="language-shell">tcpdump -i eth2 '(icmp) and (src host 10.20.0.60 or src host 10.20.0.22)'
-</code></pre>
-
-<p>​   5.2 抓取所有经过eth2，源网段是10.20，但目的主机不是10.20.0.60的ICMP流量</p>
-
-<pre><code class="language-shell">tcpdump -i eth2 '(icmp) and ((src net 10.20) and (not src host 10.20.0.60))'
-</code></pre>
-
+</code></pre></td></tr></table>
+</div>
+</div><p>5.常用表达式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">非 : ! or <span class="s2">&#34;not&#34;</span> <span class="o">(</span>去掉双引号<span class="o">)</span>  
+且 : <span class="o">&amp;&amp;</span> or <span class="s2">&#34;and&#34;</span>  
+或 : <span class="o">||</span> or <span class="s2">&#34;or&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>​	5.1 抓取所有经过eth2，源地址是10.20.0.60或者10.20.0.22的ICMP流量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth2 <span class="s1">&#39;(icmp) and (src host 10.20.0.60 or src host 10.20.0.22)&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>​	5.2 抓取所有经过eth2，源网段是10.20，但目的主机不是10.20.0.60的ICMP流量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth2 <span class="s1">&#39;(icmp) and ((src net 10.20) and (not src host 10.20.0.60))&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div>
     </div>
 
-    
-    
-<div class="post-copyright">
+    <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">文章作者</span>
     <span class="item-content">flyingFang</span>
   </p>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
-    <span class="item-content">2018-10-23</span>
+    <span class="item-content">
+        2018-10-23
+        
+    </span>
   </p>
   
-  <p class="copyright-item">
-    <span class="item-title">许可协议</span>
-    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
-  </p>
+  
 </div>
-
-    
-    
 <div class="post-reward">
   <input type="checkbox" name="reward" id="reward" hidden />
   <label class="reward-button" for="reward">赞赏支持</label>
   <div class="qr-code">
     
-    
-      <label class="qr-code-image" for="reward">
+    <label class="qr-code-image" for="reward">
         <img class="image" src="http://xflying-blog.cdn.bcebos.com/wechatpay.jpg">
         <span>微信打赏</span>
       </label>
-    
-      <label class="qr-code-image" for="reward">
+    <label class="qr-code-image" for="reward">
         <img class="image" src="http://xflying-blog.cdn.bcebos.com/alipay.jpg">
         <span>支付宝打赏</span>
       </label>
   </div>
-</div>
-
-    <footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/linux/">Linux</a>
-          
           <a href="/tags/networking/">Networking</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/post/soft-skills/">
+        <a class="prev" href="/post/soft-skills/">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">[读书笔记] - 《软技能》</span>
             <span class="prev-text nav-mobile">上一篇</span>
           </a>
-        
-          <a class="next" href="/post/google-works/">
+        <a class="next" href="/post/google-works/">
             <span class="next-text nav-default">[读书笔记] - Google高效工作法</span>
-            <span class="prev-text nav-mobile">下一篇</span>
+            <span class="next-text nav-mobile">下一篇</span>
             <i class="iconfont icon-right"></i>
           </a>
       </nav>
@@ -591,11 +645,11 @@ tcpdump -i eth1 icmp
   </article>
         </div>
         
-  
 
   
 
   
+
       </div>
     </main>
 
@@ -624,9 +678,8 @@ tcpdump -i eth1 icmp
 
   <span class="copyright-year">
     &copy; 
-    
-      2018 - 
-    2019
+    2017 - 
+    2020
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
@@ -639,15 +692,21 @@ tcpdump -i eth1 icmp
       <i class="iconfont icon-up"></i>
     </div>
   </div>
-  
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
-<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-<script type="text/javascript" src="/dist/even.min.js?v=2.7.0"></script>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
 
 
 
 
-<script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
+
+
+
+
+</body>
 </html>

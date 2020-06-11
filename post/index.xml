@@ -1,157 +1,157 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on xflying&#39;s Coding Road</title>
-    <link>http://localhost:1313/post/</link>
-    <description>Recent content in Posts on xflying&#39;s Coding Road</description>
+    <title>Posts on FlyingFang的自留地</title>
+    <link>http://flyingfang.github.io/post/</link>
+    <description>Recent content in Posts on FlyingFang的自留地</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Tue, 09 Jun 2020 15:21:48 +0800</lastBuildDate>
     
-	<atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://flyingfang.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>基于Kubernetes的动态扩缩容（一）：HPA源码分析</title>
-      <link>http://localhost:1313/post/kubernetes-autoscaling-01/</link>
+      <link>http://flyingfang.github.io/post/kubernetes-autoscaling-01/</link>
       <pubDate>Tue, 09 Jun 2020 15:21:48 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/kubernetes-autoscaling-01/</guid>
+      <guid>http://flyingfang.github.io/post/kubernetes-autoscaling-01/</guid>
       <description>最近调研了一些kubernetes-based的autoscaling方案，准备分几篇记录一下。</description>
     </item>
     
     <item>
       <title>容器存储驱动Device Mapper系列（一）：原理解析</title>
-      <link>http://localhost:1313/post/devicemapper-theory/</link>
+      <link>http://flyingfang.github.io/post/devicemapper-theory/</link>
       <pubDate>Wed, 25 Dec 2019 13:24:37 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/devicemapper-theory/</guid>
+      <guid>http://flyingfang.github.io/post/devicemapper-theory/</guid>
       <description>devicemapper技术是一种块设备映射技术框架，也是docker存储驱动的一种。</description>
     </item>
     
     <item>
       <title>runc简明命令指南</title>
-      <link>http://localhost:1313/post/runc-cheat-sheet/</link>
+      <link>http://flyingfang.github.io/post/runc-cheat-sheet/</link>
       <pubDate>Wed, 18 Sep 2019 01:17:53 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/runc-cheat-sheet/</guid>
+      <guid>http://flyingfang.github.io/post/runc-cheat-sheet/</guid>
       <description>初探runc。</description>
     </item>
     
     <item>
       <title>【源码分析】docker（一）之dockerd、containerd、shim、runc各组件关系</title>
-      <link>http://localhost:1313/post/docker-reading-01/</link>
+      <link>http://flyingfang.github.io/post/docker-reading-01/</link>
       <pubDate>Mon, 16 Sep 2019 21:38:53 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/docker-reading-01/</guid>
+      <guid>http://flyingfang.github.io/post/docker-reading-01/</guid>
       <description>通过阅读源码理清dockerd、containerd、shim和runc之间的关系。</description>
     </item>
     
     <item>
       <title>使用Ngrok搭建内网穿透环境</title>
-      <link>http://localhost:1313/post/ngrok/</link>
+      <link>http://flyingfang.github.io/post/ngrok/</link>
       <pubDate>Thu, 05 Sep 2019 14:43:50 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/ngrok/</guid>
+      <guid>http://flyingfang.github.io/post/ngrok/</guid>
       <description>我们在工作学习生活中，难免有一些这样的需求：想要在外网访问家里的电脑/服务器；想要在家里访问公司的开发机&amp;hellip;这个时候，我们就需要采用内网穿透技术，而ngrok是一个老牌的内网穿透工具。</description>
     </item>
     
     <item>
       <title>Cgroup泄漏</title>
-      <link>http://localhost:1313/post/cgroup-leak/</link>
+      <link>http://flyingfang.github.io/post/cgroup-leak/</link>
       <pubDate>Tue, 23 Jul 2019 15:39:48 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/cgroup-leak/</guid>
+      <guid>http://flyingfang.github.io/post/cgroup-leak/</guid>
       <description>记录一次线下环境遇到的cgroup泄漏问题，以及相关的解决方案。</description>
     </item>
     
     <item>
       <title>Etcd Operator使用笔记</title>
-      <link>http://localhost:1313/post/etcd-operator/</link>
+      <link>http://flyingfang.github.io/post/etcd-operator/</link>
       <pubDate>Tue, 30 Apr 2019 20:24:47 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/etcd-operator/</guid>
+      <guid>http://flyingfang.github.io/post/etcd-operator/</guid>
       <description>etcd operator startup</description>
     </item>
     
     <item>
       <title>初探FaaS（一）——Serverless架构</title>
-      <link>http://localhost:1313/post/seek-faas-01/</link>
+      <link>http://flyingfang.github.io/post/seek-faas-01/</link>
       <pubDate>Sun, 23 Dec 2018 21:38:13 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/seek-faas-01/</guid>
+      <guid>http://flyingfang.github.io/post/seek-faas-01/</guid>
       <description>本系列是对最近初探FaaS领域的一个总结，希望达到输出是最好的吸收的目的吧。</description>
     </item>
     
     <item>
       <title>白话TCP协议的三次握手和四次分手</title>
-      <link>http://localhost:1313/post/tcp-hello-bye/</link>
+      <link>http://flyingfang.github.io/post/tcp-hello-bye/</link>
       <pubDate>Wed, 31 Oct 2018 22:38:40 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/tcp-hello-bye/</guid>
+      <guid>http://flyingfang.github.io/post/tcp-hello-bye/</guid>
       <description>知识的真正掌握，就是说人话，让小白都能听得懂。所以，写这篇文章力求用看得懂的人话总结TCP的三次握手和四次分手。</description>
     </item>
     
     <item>
       <title>[读书笔记] - 《软技能》</title>
-      <link>http://localhost:1313/post/soft-skills/</link>
+      <link>http://flyingfang.github.io/post/soft-skills/</link>
       <pubDate>Sun, 28 Oct 2018 22:38:40 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/soft-skills/</guid>
+      <guid>http://flyingfang.github.io/post/soft-skills/</guid>
       <description>《软技能》——一本程序员的职业生活指南。</description>
     </item>
     
     <item>
       <title>[网络工具进阶] - tcpdump详解</title>
-      <link>http://localhost:1313/post/tcpdump/</link>
+      <link>http://flyingfang.github.io/post/tcpdump/</link>
       <pubDate>Tue, 23 Oct 2018 18:38:40 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/tcpdump/</guid>
+      <guid>http://flyingfang.github.io/post/tcpdump/</guid>
       <description>网络相关工具进阶系列之tcpdump详解</description>
     </item>
     
     <item>
       <title>[读书笔记] - Google高效工作法</title>
-      <link>http://localhost:1313/post/google-works/</link>
+      <link>http://flyingfang.github.io/post/google-works/</link>
       <pubDate>Sat, 08 Sep 2018 20:23:09 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/google-works/</guid>
+      <guid>http://flyingfang.github.io/post/google-works/</guid>
       <description>周末看了个知乎私家课【Google高效法】，受益良多。特此附上笔记。</description>
     </item>
     
     <item>
       <title>设备唯一性标识知多少？</title>
-      <link>http://localhost:1313/post/uuid/</link>
+      <link>http://flyingfang.github.io/post/uuid/</link>
       <pubDate>Thu, 30 Aug 2018 13:05:14 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/uuid/</guid>
+      <guid>http://flyingfang.github.io/post/uuid/</guid>
       <description>最近接手公司的推送服务。刚接手时，对各种设备唯一标识很懵。特此梳理成一篇笔记。</description>
     </item>
     
     <item>
       <title>[每日一个Linux命令]——ps详解</title>
-      <link>http://localhost:1313/post/ps/</link>
+      <link>http://flyingfang.github.io/post/ps/</link>
       <pubDate>Wed, 04 Apr 2018 00:16:50 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/ps/</guid>
+      <guid>http://flyingfang.github.io/post/ps/</guid>
       <description>记录一下常用的linux命令的用法和实例。第二篇 —— ps。</description>
     </item>
     
     <item>
       <title>[每日一个Linux命令]——lsof详解</title>
-      <link>http://localhost:1313/post/lsof/</link>
+      <link>http://flyingfang.github.io/post/lsof/</link>
       <pubDate>Tue, 03 Apr 2018 00:33:58 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/lsof/</guid>
+      <guid>http://flyingfang.github.io/post/lsof/</guid>
       <description>记录一下常用的linux命令的用法和实例。第一篇 —— lsof。</description>
     </item>
     
     <item>
       <title>性能测试- [腾讯云 2核4G]</title>
-      <link>http://localhost:1313/post/performance-test/</link>
+      <link>http://flyingfang.github.io/post/performance-test/</link>
       <pubDate>Sat, 24 Mar 2018 15:27:25 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/performance-test/</guid>
+      <guid>http://flyingfang.github.io/post/performance-test/</guid>
       <description>前几天腾讯云活动，买了一台服务器用来折腾玩。也想乘机再次开个博客，再次记录一下自己的学习和娱乐。某日再回头看看自己走过的坑，也可能也是一种别样的乐趣。</description>
     </item>
     

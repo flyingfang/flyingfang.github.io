@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
-<head>
+<head><script src="/livereload.js?port=1313&mindelay=10&v=2" data-no-instant defer></script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>[网络工具进阶] - tcpdump详解 - FlyingFang的自留地</title>
@@ -35,7 +35,7 @@
 <meta name="generator" content="Hugo 0.68.3" />
 
 
-<link rel="canonical" href="http://flyingfang.github.io/post/tcpdump/" />
+<link rel="canonical" href="http://localhost:1313/post/tcpdump/" />
 
 
 
@@ -62,14 +62,14 @@
 <meta property="og:title" content="[网络工具进阶] - tcpdump详解" />
 <meta property="og:description" content="网络相关工具进阶系列之tcpdump详解" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://flyingfang.github.io/post/tcpdump/" />
+<meta property="og:url" content="http://localhost:1313/post/tcpdump/" />
 <meta property="article:published_time" content="2018-10-23T18:38:40+08:00" />
 <meta property="article:modified_time" content="2018-10-23T18:38:40+08:00" />
 <meta itemprop="name" content="[网络工具进阶] - tcpdump详解">
 <meta itemprop="description" content="网络相关工具进阶系列之tcpdump详解">
 <meta itemprop="datePublished" content="2018-10-23T18:38:40&#43;08:00" />
 <meta itemprop="dateModified" content="2018-10-23T18:38:40&#43;08:00" />
-<meta itemprop="wordCount" content="2788">
+<meta itemprop="wordCount" content="2867">
 
 
 
@@ -107,35 +107,35 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/">主页</a>
+            <a class="menu-item-link" href="http://localhost:1313/">主页</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/post/">归档</a>
+            <a class="menu-item-link" href="http://localhost:1313/post/">归档</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/tags/">标签</a>
+            <a class="menu-item-link" href="http://localhost:1313/tags/">标签</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/categories/">分类</a>
+            <a class="menu-item-link" href="http://localhost:1313/categories/">分类</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/about/">关于</a>
+            <a class="menu-item-link" href="http://localhost:1313/about/">关于</a>
           
         
       </li>
@@ -227,7 +227,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/">主页</a>
+            <a class="menu-item-link" href="http://localhost:1313/">主页</a>
           
 
         
@@ -238,7 +238,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/post/">归档</a>
+            <a class="menu-item-link" href="http://localhost:1313/post/">归档</a>
           
 
         
@@ -249,7 +249,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/tags/">标签</a>
+            <a class="menu-item-link" href="http://localhost:1313/tags/">标签</a>
           
 
         
@@ -260,7 +260,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/categories/">分类</a>
+            <a class="menu-item-link" href="http://localhost:1313/categories/">分类</a>
           
 
         
@@ -271,7 +271,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/about/">关于</a>
+            <a class="menu-item-link" href="http://localhost:1313/about/">关于</a>
           
 
         
@@ -302,7 +302,7 @@
           2018-10-23
         </time>
         <div class="post-category">
-            <a href="http://flyingfang.github.io/categories/sre/"> SRE </a>
+            <a href="http://localhost:1313/categories/sre/"> SRE </a>
             
           </div>
         
@@ -473,75 +473,159 @@
 </ul>
 <h3 id="示例分析">示例分析</h3>
 <p>抓取80端口的数据包，一段访问web网站的数据包</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@flying_lab ~<span style="color:#f92672">]</span><span style="color:#75715e"># tcpdump -Snnvvv -i eth0 &#34;tcp and port 80&#34;</span>
-tcpdump: listening on eth0, link-type EN10MB <span style="color:#f92672">(</span>Ethernet<span style="color:#f92672">)</span>, capture size <span style="color:#ae81ff">262144</span> bytes
-18:12:32.794115 IP <span style="color:#f92672">(</span>tos 0x0, ttl 64, id 33685, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 60<span style="color:#f92672">)</span>
-    172.21.22.16.52804 &gt; 169.254.0.4.80: Flags <span style="color:#f92672">[</span>S<span style="color:#f92672">]</span>, cksum 0x6c56 <span style="color:#f92672">(</span>incorrect -&gt; 0x81ab<span style="color:#f92672">)</span>, seq 3103604091, win 29200, options <span style="color:#f92672">[</span>mss 1460,sackOK,TS val <span style="color:#ae81ff">1679867630</span> ecr 0,nop,wscale 7<span style="color:#f92672">]</span>, length <span style="color:#ae81ff">0</span>
-18:12:32.797635 IP <span style="color:#f92672">(</span>tos 0x0, ttl 55, id 0, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 52<span style="color:#f92672">)</span>
-    169.254.0.4.80 &gt; 172.21.22.16.52804: Flags <span style="color:#f92672">[</span>S.<span style="color:#f92672">]</span>, cksum 0xf6ec <span style="color:#f92672">(</span>correct<span style="color:#f92672">)</span>, seq 2835834104, ack 3103604092, win 14600, options <span style="color:#f92672">[</span>mss 1424,nop,nop,sackOK,nop,wscale 1<span style="color:#f92672">]</span>, length <span style="color:#ae81ff">0</span>
-18:12:32.797671 IP <span style="color:#f92672">(</span>tos 0x0, ttl 64, id 33686, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 40<span style="color:#f92672">)</span>
-    172.21.22.16.52804 &gt; 169.254.0.4.80: Flags <span style="color:#f92672">[</span>.<span style="color:#f92672">]</span>, cksum 0x6c42 <span style="color:#f92672">(</span>incorrect -&gt; 0x6fb8<span style="color:#f92672">)</span>, seq 3103604092, ack 2835834105, win 229, length <span style="color:#ae81ff">0</span>
-18:12:32.797758 IP <span style="color:#f92672">(</span>tos 0x0, ttl 64, id 33687, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 221<span style="color:#f92672">)</span>
-    172.21.22.16.52804 &gt; 169.254.0.4.80: Flags <span style="color:#f92672">[</span>P.<span style="color:#f92672">]</span>, cksum 0x6cf7 <span style="color:#f92672">(</span>incorrect -&gt; 0xb4f5<span style="color:#f92672">)</span>, seq 3103604092:3103604273, ack 2835834105, win 229, length 181: HTTP, length: <span style="color:#ae81ff">181</span>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">[</span>root@flying_lab ~<span class="o">]</span><span class="c1"># tcpdump -Snnvvv -i eth0 &#34;tcp and port 80&#34;</span>
+tcpdump: listening on eth0, link-type EN10MB <span class="o">(</span>Ethernet<span class="o">)</span>, capture size <span class="m">262144</span> bytes
+18:12:32.794115 IP <span class="o">(</span>tos 0x0, ttl 64, id 33685, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 60<span class="o">)</span>
+    172.21.22.16.52804 &gt; 169.254.0.4.80: Flags <span class="o">[</span>S<span class="o">]</span>, cksum 0x6c56 <span class="o">(</span>incorrect -&gt; 0x81ab<span class="o">)</span>, seq 3103604091, win 29200, options <span class="o">[</span>mss 1460,sackOK,TS val <span class="m">1679867630</span> ecr 0,nop,wscale 7<span class="o">]</span>, length <span class="m">0</span>
+18:12:32.797635 IP <span class="o">(</span>tos 0x0, ttl 55, id 0, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 52<span class="o">)</span>
+    169.254.0.4.80 &gt; 172.21.22.16.52804: Flags <span class="o">[</span>S.<span class="o">]</span>, cksum 0xf6ec <span class="o">(</span>correct<span class="o">)</span>, seq 2835834104, ack 3103604092, win 14600, options <span class="o">[</span>mss 1424,nop,nop,sackOK,nop,wscale 1<span class="o">]</span>, length <span class="m">0</span>
+18:12:32.797671 IP <span class="o">(</span>tos 0x0, ttl 64, id 33686, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    172.21.22.16.52804 &gt; 169.254.0.4.80: Flags <span class="o">[</span>.<span class="o">]</span>, cksum 0x6c42 <span class="o">(</span>incorrect -&gt; 0x6fb8<span class="o">)</span>, seq 3103604092, ack 2835834105, win 229, length <span class="m">0</span>
+18:12:32.797758 IP <span class="o">(</span>tos 0x0, ttl 64, id 33687, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 221<span class="o">)</span>
+    172.21.22.16.52804 &gt; 169.254.0.4.80: Flags <span class="o">[</span>P.<span class="o">]</span>, cksum 0x6cf7 <span class="o">(</span>incorrect -&gt; 0xb4f5<span class="o">)</span>, seq 3103604092:3103604273, ack 2835834105, win 229, length 181: HTTP, length: <span class="m">181</span>
 	POST /ca_report.cgi HTTP/1.1
 	Accept-Encoding: identity
-	Content-Length: <span style="color:#ae81ff">531</span>
+	Content-Length: <span class="m">531</span>
 	Host: 169.254.0.4
 	Content-Type: application/json
 	Connection: close
 	User-Agent: Python-urllib/2.6
 
-18:12:32.801234 IP <span style="color:#f92672">(</span>tos 0x0, ttl 55, id 22569, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 40<span style="color:#f92672">)</span>
-    169.254.0.4.80 &gt; 172.21.22.16.52804: Flags <span style="color:#f92672">[</span>.<span style="color:#f92672">]</span>, cksum 0x514c <span style="color:#f92672">(</span>correct<span style="color:#f92672">)</span>, seq 2835834105, ack 3103604273, win 7836, length <span style="color:#ae81ff">0</span>
-18:12:32.801254 IP <span style="color:#f92672">(</span>tos 0x0, ttl 64, id 33688, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 571<span style="color:#f92672">)</span>
-    172.21.22.16.52804 &gt; 169.254.0.4.80: Flags <span style="color:#f92672">[</span>P.<span style="color:#f92672">]</span>, cksum 0x6e55 <span style="color:#f92672">(</span>incorrect -&gt; 0x42b1<span style="color:#f92672">)</span>, seq 3103604273:3103604804, ack 2835834105, win 229, length 531: HTTP
-</code></pre></div><p><strong>tcp三次握手</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># 第一次握手 [SYN]</span>
-18:18:46.793808 IP <span style="color:#f92672">(</span>tos 0x0, ttl 64, id 11367, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 60<span style="color:#f92672">)</span>
-    172.21.22.16.53094 &gt; 169.254.0.4.80: Flags <span style="color:#f92672">[</span>S<span style="color:#f92672">]</span>, cksum 0x6c56 <span style="color:#f92672">(</span>incorrect -&gt; 0x8926<span style="color:#f92672">)</span>, seq 3643563961, win 29200, options <span style="color:#f92672">[</span>mss 1460,sackOK,TS val <span style="color:#ae81ff">1680241630</span> ecr 0,nop,wscale 7<span style="color:#f92672">]</span>, length <span style="color:#ae81ff">0</span>
-<span style="color:#75715e"># 第二次握手 [SYN+ACK]</span>
-18:18:46.797280 IP <span style="color:#f92672">(</span>tos 0x0, ttl 55, id 0, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 52<span style="color:#f92672">)</span>
-    169.254.0.4.80 &gt; 172.21.22.16.53094: Flags <span style="color:#f92672">[</span>S.<span style="color:#f92672">]</span>, cksum 0xf538 <span style="color:#f92672">(</span>correct<span style="color:#f92672">)</span>, seq 1445164545, ack 3643563962, win 14600, options <span style="color:#f92672">[</span>mss 1424,nop,nop,sackOK,nop,wscale 1<span style="color:#f92672">]</span>, length <span style="color:#ae81ff">0</span>
-<span style="color:#75715e"># 第三次握手 [ACK]</span>
-18:18:46.797317 IP <span style="color:#f92672">(</span>tos 0x0, ttl 64, id 11368, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 40<span style="color:#f92672">)</span>
-    172.21.22.16.53094 &gt; 169.254.0.4.80: Flags <span style="color:#f92672">[</span>.<span style="color:#f92672">]</span>, cksum 0x6c42 <span style="color:#f92672">(</span>incorrect -&gt; 0x6e04<span style="color:#f92672">)</span>, seq 3643563962, ack 1445164546, win 229, length <span style="color:#ae81ff">0</span>
-</code></pre></div><ol>
+18:12:32.801234 IP <span class="o">(</span>tos 0x0, ttl 55, id 22569, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    169.254.0.4.80 &gt; 172.21.22.16.52804: Flags <span class="o">[</span>.<span class="o">]</span>, cksum 0x514c <span class="o">(</span>correct<span class="o">)</span>, seq 2835834105, ack 3103604273, win 7836, length <span class="m">0</span>
+18:12:32.801254 IP <span class="o">(</span>tos 0x0, ttl 64, id 33688, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 571<span class="o">)</span>
+    172.21.22.16.52804 &gt; 169.254.0.4.80: Flags <span class="o">[</span>P.<span class="o">]</span>, cksum 0x6e55 <span class="o">(</span>incorrect -&gt; 0x42b1<span class="o">)</span>, seq 3103604273:3103604804, ack 2835834105, win 229, length 531: HTTP
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>tcp三次握手</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># 第一次握手 [SYN]</span>
+18:18:46.793808 IP <span class="o">(</span>tos 0x0, ttl 64, id 11367, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 60<span class="o">)</span>
+    172.21.22.16.53094 &gt; 169.254.0.4.80: Flags <span class="o">[</span>S<span class="o">]</span>, cksum 0x6c56 <span class="o">(</span>incorrect -&gt; 0x8926<span class="o">)</span>, seq 3643563961, win 29200, options <span class="o">[</span>mss 1460,sackOK,TS val <span class="m">1680241630</span> ecr 0,nop,wscale 7<span class="o">]</span>, length <span class="m">0</span>
+<span class="c1"># 第二次握手 [SYN+ACK]</span>
+18:18:46.797280 IP <span class="o">(</span>tos 0x0, ttl 55, id 0, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 52<span class="o">)</span>
+    169.254.0.4.80 &gt; 172.21.22.16.53094: Flags <span class="o">[</span>S.<span class="o">]</span>, cksum 0xf538 <span class="o">(</span>correct<span class="o">)</span>, seq 1445164545, ack 3643563962, win 14600, options <span class="o">[</span>mss 1424,nop,nop,sackOK,nop,wscale 1<span class="o">]</span>, length <span class="m">0</span>
+<span class="c1"># 第三次握手 [ACK]</span>
+18:18:46.797317 IP <span class="o">(</span>tos 0x0, ttl 64, id 11368, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    172.21.22.16.53094 &gt; 169.254.0.4.80: Flags <span class="o">[</span>.<span class="o">]</span>, cksum 0x6c42 <span class="o">(</span>incorrect -&gt; 0x6e04<span class="o">)</span>, seq 3643563962, ack 1445164546, win 229, length <span class="m">0</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol>
 <li>Client 发送连接请求（SYN; seq: 3643563961），进入<code>SYN-SENT</code>状态；</li>
 <li>Server 响应连接请求（SYN+ACK; seq: 1445164545; ack: 3643563962），进入<code>SYN-RCVD</code>状态；</li>
 <li>Client 确认 ack 值，进入<code>ESTABLISHED</code>状态，同时发送确认包（ACK; seq: 3643563962; ack: 1445164546）；Server 确认 ack 值，进入<code>ESTABLISHED</code>状态；</li>
 </ol>
 <p><strong>数据传输</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># Client 发送请求 [PUSH]</span>
-18:18:46.800847 IP <span style="color:#f92672">(</span>tos 0x0, ttl 64, id 11370, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 249<span style="color:#f92672">)</span>
-    172.21.22.16.53094 &gt; 169.254.0.4.80: Flags <span style="color:#f92672">[</span>P.<span style="color:#f92672">]</span>, cksum 0x6d13 <span style="color:#f92672">(</span>incorrect -&gt; 0x9d98<span style="color:#f92672">)</span>, seq 3643564143:3643564352, ack 1445164546, win 229, length 209: HTTP
-<span style="color:#75715e"># Server 确认请求 [ACK]</span>
-18:18:46.804214 IP <span style="color:#f92672">(</span>tos 0x0, ttl 55, id 64566, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 40<span style="color:#f92672">)</span>
-    169.254.0.4.80 &gt; 172.21.22.16.53094: Flags <span style="color:#f92672">[</span>.<span style="color:#f92672">]</span>, cksum 0x4caf <span style="color:#f92672">(</span>correct<span style="color:#f92672">)</span>, seq 1445164546, ack 3643564352, win 8372, length <span style="color:#ae81ff">0</span>
-<span style="color:#75715e"># Server 响应请求 [PUSH]</span>
-18:18:46.804256 IP <span style="color:#f92672">(</span>tos 0x0, ttl 55, id 64567, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 168<span style="color:#f92672">)</span>
-    169.254.0.4.80 &gt; 172.21.22.16.53094: Flags <span style="color:#f92672">[</span>P.<span style="color:#f92672">]</span>, cksum 0xe8d0 <span style="color:#f92672">(</span>correct<span style="color:#f92672">)</span>, seq 1445164546:1445164674, ack 3643564352, win 8372, length 128: HTTP, length: <span style="color:#ae81ff">128</span>
-	HTTP/1.1 <span style="color:#ae81ff">200</span> OK
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># Client 发送请求 [PUSH]</span>
+18:18:46.800847 IP <span class="o">(</span>tos 0x0, ttl 64, id 11370, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 249<span class="o">)</span>
+    172.21.22.16.53094 &gt; 169.254.0.4.80: Flags <span class="o">[</span>P.<span class="o">]</span>, cksum 0x6d13 <span class="o">(</span>incorrect -&gt; 0x9d98<span class="o">)</span>, seq 3643564143:3643564352, ack 1445164546, win 229, length 209: HTTP
+<span class="c1"># Server 确认请求 [ACK]</span>
+18:18:46.804214 IP <span class="o">(</span>tos 0x0, ttl 55, id 64566, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    169.254.0.4.80 &gt; 172.21.22.16.53094: Flags <span class="o">[</span>.<span class="o">]</span>, cksum 0x4caf <span class="o">(</span>correct<span class="o">)</span>, seq 1445164546, ack 3643564352, win 8372, length <span class="m">0</span>
+<span class="c1"># Server 响应请求 [PUSH]</span>
+18:18:46.804256 IP <span class="o">(</span>tos 0x0, ttl 55, id 64567, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 168<span class="o">)</span>
+    169.254.0.4.80 &gt; 172.21.22.16.53094: Flags <span class="o">[</span>P.<span class="o">]</span>, cksum 0xe8d0 <span class="o">(</span>correct<span class="o">)</span>, seq 1445164546:1445164674, ack 3643564352, win 8372, length 128: HTTP, length: <span class="m">128</span>
+	HTTP/1.1 <span class="m">200</span> OK
 	Connection: close
-	Content-Length: <span style="color:#ae81ff">70</span>
+	Content-Length: <span class="m">70</span>
 
-	<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;returnValue&#34;</span>:0,<span style="color:#e6db74">&#34;returnCode&#34;</span>:0,<span style="color:#e6db74">&#34;msg&#34;</span>:<span style="color:#e6db74">&#34;OK&#34;</span>,<span style="color:#e6db74">&#34;seq&#34;</span>:14419936819469917437<span style="color:#f92672">}[</span>!http<span style="color:#f92672">]</span>
-<span style="color:#75715e"># Client 确认响应 [ACK]</span>
-18:18:46.804263 IP <span style="color:#f92672">(</span>tos 0x0, ttl 64, id 11371, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 40<span style="color:#f92672">)</span>
-    172.21.22.16.53094 &gt; 169.254.0.4.80: Flags <span style="color:#f92672">[</span>.<span style="color:#f92672">]</span>, cksum 0x6c42 <span style="color:#f92672">(</span>incorrect -&gt; 0x6bf6<span style="color:#f92672">)</span>, seq 3643564352, ack 1445164674, win 237, length <span style="color:#ae81ff">0</span>
-</code></pre></div><p><strong>tcp四次挥手</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># Client 告诉 Server，我已经没有数据要发送了 [FIN]</span>
-18:27:38.766403 IP <span style="color:#f92672">(</span>tos 0x0, ttl 64, id 11490, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 40<span style="color:#f92672">)</span>
-    172.21.22.16.59770 &gt; 115.182.203.2.80: Flags <span style="color:#f92672">[</span>.<span style="color:#f92672">]</span>, cksum 0x00f9 <span style="color:#f92672">(</span>incorrect -&gt; 0x1fc3<span style="color:#f92672">)</span>, seq 2956639571, ack 2379655446, win 237, length <span style="color:#ae81ff">0</span>
-<span style="color:#75715e"># Server 收到后，告诉 Client，你再等会 [ACK]</span>
-18:27:38.766682 IP <span style="color:#f92672">(</span>tos 0x0, ttl 64, id 11491, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 40<span style="color:#f92672">)</span>
-    172.21.22.16.59770 &gt; 115.182.203.2.80: Flags <span style="color:#f92672">[</span>F.<span style="color:#f92672">]</span>, cksum 0x00f9 <span style="color:#f92672">(</span>incorrect -&gt; 0x1fc2<span style="color:#f92672">)</span>, seq 2956639571, ack 2379655446, win 237, length <span style="color:#ae81ff">0</span>
-<span style="color:#75715e"># Server 告诉 Client，我也没数据要发送了 [FIN + ACK]</span>
-18:27:38.771154 IP <span style="color:#f92672">(</span>tos 0x64, ttl 53, id 63129, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 40<span style="color:#f92672">)</span>
-    115.182.203.2.80 &gt; 172.21.22.16.59770: Flags <span style="color:#f92672">[</span>F.<span style="color:#f92672">]</span>, cksum 0x203b <span style="color:#f92672">(</span>correct<span style="color:#f92672">)</span>, seq 2379655446, ack 2956639572, win 115, length <span style="color:#ae81ff">0</span>
-<span style="color:#75715e"># Client 收到后，告诉 Server，好的 [ACK]</span>
-18:27:38.771170 IP <span style="color:#f92672">(</span>tos 0x0, ttl 64, id 11492, offset 0, flags <span style="color:#f92672">[</span>DF<span style="color:#f92672">]</span>, proto TCP <span style="color:#f92672">(</span>6<span style="color:#f92672">)</span>, length 40<span style="color:#f92672">)</span>
-    172.21.22.16.59770 &gt; 115.182.203.2.80: Flags <span style="color:#f92672">[</span>.<span style="color:#f92672">]</span>, cksum 0x00f9 <span style="color:#f92672">(</span>incorrect -&gt; 0x1fc1<span style="color:#f92672">)</span>, seq 2956639572, ack 2379655447, win 237, length <span style="color:#ae81ff">0</span>
-</code></pre></div><ol>
+	<span class="o">{</span><span class="s2">&#34;returnValue&#34;</span>:0,<span class="s2">&#34;returnCode&#34;</span>:0,<span class="s2">&#34;msg&#34;</span>:<span class="s2">&#34;OK&#34;</span>,<span class="s2">&#34;seq&#34;</span>:14419936819469917437<span class="o">}[</span>!http<span class="o">]</span>
+<span class="c1"># Client 确认响应 [ACK]</span>
+18:18:46.804263 IP <span class="o">(</span>tos 0x0, ttl 64, id 11371, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    172.21.22.16.53094 &gt; 169.254.0.4.80: Flags <span class="o">[</span>.<span class="o">]</span>, cksum 0x6c42 <span class="o">(</span>incorrect -&gt; 0x6bf6<span class="o">)</span>, seq 3643564352, ack 1445164674, win 237, length <span class="m">0</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>tcp四次挥手</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># Client 告诉 Server，我已经没有数据要发送了 [FIN]</span>
+18:27:38.766403 IP <span class="o">(</span>tos 0x0, ttl 64, id 11490, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    172.21.22.16.59770 &gt; 115.182.203.2.80: Flags <span class="o">[</span>.<span class="o">]</span>, cksum 0x00f9 <span class="o">(</span>incorrect -&gt; 0x1fc3<span class="o">)</span>, seq 2956639571, ack 2379655446, win 237, length <span class="m">0</span>
+<span class="c1"># Server 收到后，告诉 Client，你再等会 [ACK]</span>
+18:27:38.766682 IP <span class="o">(</span>tos 0x0, ttl 64, id 11491, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    172.21.22.16.59770 &gt; 115.182.203.2.80: Flags <span class="o">[</span>F.<span class="o">]</span>, cksum 0x00f9 <span class="o">(</span>incorrect -&gt; 0x1fc2<span class="o">)</span>, seq 2956639571, ack 2379655446, win 237, length <span class="m">0</span>
+<span class="c1"># Server 告诉 Client，我也没数据要发送了 [FIN + ACK]</span>
+18:27:38.771154 IP <span class="o">(</span>tos 0x64, ttl 53, id 63129, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    115.182.203.2.80 &gt; 172.21.22.16.59770: Flags <span class="o">[</span>F.<span class="o">]</span>, cksum 0x203b <span class="o">(</span>correct<span class="o">)</span>, seq 2379655446, ack 2956639572, win 115, length <span class="m">0</span>
+<span class="c1"># Client 收到后，告诉 Server，好的 [ACK]</span>
+18:27:38.771170 IP <span class="o">(</span>tos 0x0, ttl 64, id 11492, offset 0, flags <span class="o">[</span>DF<span class="o">]</span>, proto TCP <span class="o">(</span>6<span class="o">)</span>, length 40<span class="o">)</span>
+    172.21.22.16.59770 &gt; 115.182.203.2.80: Flags <span class="o">[</span>.<span class="o">]</span>, cksum 0x00f9 <span class="o">(</span>incorrect -&gt; 0x1fc1<span class="o">)</span>, seq 2956639572, ack 2379655447, win 237, length <span class="m">0</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol>
 <li>Client 发送 FIN 包，告诉 Server：我已经没有数据要发送了，我们关闭连接吧；进入<code>FIN-WAIT-1</code>状态；</li>
 <li>Server 收到 FIN 包后，知道 Client 要准备关闭连接了，于是回复 ACK 包，告诉 Client：我知道了；进入<code>CLOSE-WAIT</code>状态；Client 收到 ACK 包后，知道 Server 还有些事要准备（如将未发送的数据发送完），于是继续等待，进入<code>FIN-WAIT-2</code>状态；</li>
 <li>Server 准备完毕后，也发送 FIN 包，告诉 Client，我也没有数据要发送了，即将关闭连接了哦，进入<code>LAST-ACK</code>状态；</li>
@@ -554,50 +638,147 @@ tcpdump: listening on eth0, link-type EN10MB <span style="color:#f92672">(</span
 <p>1.1 监听所有目的或源地址是10.20.0.1的网络数据</p>
 </li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tcpdump host 10.20.0.1
-</code></pre></div><p>​	1.2  监听所有目的地址是10.20.0.1的网络数据</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tcpdump dst host 10.20.0.1
-</code></pre></div><p>​	1.3  监听所有源地址是10.20.0.1的网络数据</p>
-<pre><code>tcpdump src host 10.20.0.1
-</code></pre><ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump host 10.20.0.1
+</code></pre></td></tr></table>
+</div>
+</div><p>​	1.2  监听所有目的地址是10.20.0.1的网络数据</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump dst host 10.20.0.1
+</code></pre></td></tr></table>
+</div>
+</div><p>​	1.3  监听所有源地址是10.20.0.1的网络数据</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">tcpdump src host 10.20.0.1
+</code></pre></td></tr></table>
+</div>
+</div><ol>
 <li>
 <p>过滤端口</p>
 <p>2.1 抓取所有经过eth0，目的或源端口是22的网络数据</p>
 </li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tcpdump -i eth0 port <span style="color:#ae81ff">22</span>
-</code></pre></div><p>​	2.2 指定源端口</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tcpdump -i eth0 src port <span style="color:#ae81ff">22</span>
-</code></pre></div><p>​	2.3 指定目的端口</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tcpdump -i eth0 dst port <span style="color:#ae81ff">22</span>
-</code></pre></div><ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth0 port <span class="m">22</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>​	2.2 指定源端口</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth0 src port <span class="m">22</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>​	2.3 指定目的端口</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth0 dst port <span class="m">22</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol>
 <li>
 <p>过滤网络</p>
 <p>3.1 抓取所有经过eth0，目的或源网段是10.20的网络数据</p>
 </li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tcpdump -i eth0 net 10.20
-</code></pre></div><p>​	3.2 指定源网段</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tcpdump -i eth0 src net 10.20
-</code></pre></div><p>​	3.3 指定目的网段</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tcpdump -i eth0 dst net 10.20
-</code></pre></div><ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth0 net 10.20
+</code></pre></td></tr></table>
+</div>
+</div><p>​	3.2 指定源网段</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth0 src net 10.20
+</code></pre></td></tr></table>
+</div>
+</div><p>​	3.3 指定目的网段</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth0 dst net 10.20
+</code></pre></td></tr></table>
+</div>
+</div><ol>
 <li>过滤协议</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tcpdump -i eth1 arp
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth1 arp
 tcpdump -i eth1 ip
 tcpdump -i eth1 tcp
 tcpdump -i eth1 udp
 tcpdump -i eth1 icmp
-</code></pre></div><p>5.常用表达式</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">非 : ! or <span style="color:#e6db74">&#34;not&#34;</span> <span style="color:#f92672">(</span>去掉双引号<span style="color:#f92672">)</span>  
-且 : <span style="color:#f92672">&amp;&amp;</span> or <span style="color:#e6db74">&#34;and&#34;</span>  
-或 : <span style="color:#f92672">||</span> or <span style="color:#e6db74">&#34;or&#34;</span>
-</code></pre></div><p>​	5.1 抓取所有经过eth2，源地址是10.20.0.60或者10.20.0.22的ICMP流量</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tcpdump -i eth2 <span style="color:#e6db74">&#39;(icmp) and (src host 10.20.0.60 or src host 10.20.0.22)&#39;</span>
-</code></pre></div><p>​	5.2 抓取所有经过eth2，源网段是10.20，但目的主机不是10.20.0.60的ICMP流量</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tcpdump -i eth2 <span style="color:#e6db74">&#39;(icmp) and ((src net 10.20) and (not src host 10.20.0.60))&#39;</span>
-</code></pre></div>
+</code></pre></td></tr></table>
+</div>
+</div><p>5.常用表达式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">非 : ! or <span class="s2">&#34;not&#34;</span> <span class="o">(</span>去掉双引号<span class="o">)</span>  
+且 : <span class="o">&amp;&amp;</span> or <span class="s2">&#34;and&#34;</span>  
+或 : <span class="o">||</span> or <span class="s2">&#34;or&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>​	5.1 抓取所有经过eth2，源地址是10.20.0.60或者10.20.0.22的ICMP流量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth2 <span class="s1">&#39;(icmp) and (src host 10.20.0.60 or src host 10.20.0.22)&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>​	5.2 抓取所有经过eth2，源网段是10.20，但目的主机不是10.20.0.60的ICMP流量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tcpdump -i eth2 <span class="s1">&#39;(icmp) and ((src net 10.20) and (not src host 10.20.0.60))&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div>
     </div>
 
     
@@ -627,8 +808,8 @@ tcpdump -i eth1 icmp
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="http://flyingfang.github.io/tags/linux/">Linux</a>
-          <a href="http://flyingfang.github.io/tags/networking/">Networking</a>
+          <a href="http://localhost:1313/tags/linux/">Linux</a>
+          <a href="http://localhost:1313/tags/networking/">Networking</a>
           
         </div>
 
@@ -762,7 +943,7 @@ tcpdump -i eth1 icmp
     </a>
 
 
-<a href="http://flyingfang.github.io/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+<a href="http://localhost:1313/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
     class="iconfont" title="rss" target="_blank">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"

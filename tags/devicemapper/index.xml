@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>devicemapper on FlyingFang的自留地</title>
-    <link>http://flyingfang.github.io/tags/devicemapper/</link>
+    <link>http://localhost:1313/tags/devicemapper/</link>
     <description>Recent content in devicemapper on FlyingFang的自留地</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 25 Dec 2019 13:24:37 +0800</lastBuildDate>
     
-	<atom:link href="http://flyingfang.github.io/tags/devicemapper/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://localhost:1313/tags/devicemapper/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>容器存储驱动Device Mapper系列（一）：原理解析</title>
-      <link>http://flyingfang.github.io/post/devicemapper-theory/</link>
+      <link>http://localhost:1313/post/devicemapper-theory/</link>
       <pubDate>Wed, 25 Dec 2019 13:24:37 +0800</pubDate>
       
-      <guid>http://flyingfang.github.io/post/devicemapper-theory/</guid>
+      <guid>http://localhost:1313/post/devicemapper-theory/</guid>
       <description>devicemapper技术是一种块设备映射技术框架，也是docker存储驱动的一种。</description>
     </item>
     

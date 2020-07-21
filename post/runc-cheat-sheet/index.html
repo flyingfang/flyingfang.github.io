@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
-<head>
+<head><script src="/livereload.js?port=1313&mindelay=10&v=2" data-no-instant defer></script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>runc简明命令指南 - FlyingFang的自留地</title>
@@ -35,7 +35,7 @@
 <meta name="generator" content="Hugo 0.68.3" />
 
 
-<link rel="canonical" href="http://flyingfang.github.io/post/runc-cheat-sheet/" />
+<link rel="canonical" href="http://localhost:1313/post/runc-cheat-sheet/" />
 
 
 
@@ -62,14 +62,14 @@
 <meta property="og:title" content="runc简明命令指南" />
 <meta property="og:description" content="初探runc。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://flyingfang.github.io/post/runc-cheat-sheet/" />
+<meta property="og:url" content="http://localhost:1313/post/runc-cheat-sheet/" />
 <meta property="article:published_time" content="2019-09-18T01:17:53+08:00" />
 <meta property="article:modified_time" content="2019-09-18T01:17:53+08:00" />
 <meta itemprop="name" content="runc简明命令指南">
 <meta itemprop="description" content="初探runc。">
 <meta itemprop="datePublished" content="2019-09-18T01:17:53&#43;08:00" />
 <meta itemprop="dateModified" content="2019-09-18T01:17:53&#43;08:00" />
-<meta itemprop="wordCount" content="698">
+<meta itemprop="wordCount" content="723">
 
 
 
@@ -107,35 +107,35 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/">主页</a>
+            <a class="menu-item-link" href="http://localhost:1313/">主页</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/post/">归档</a>
+            <a class="menu-item-link" href="http://localhost:1313/post/">归档</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/tags/">标签</a>
+            <a class="menu-item-link" href="http://localhost:1313/tags/">标签</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/categories/">分类</a>
+            <a class="menu-item-link" href="http://localhost:1313/categories/">分类</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/about/">关于</a>
+            <a class="menu-item-link" href="http://localhost:1313/about/">关于</a>
           
         
       </li>
@@ -227,7 +227,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/">主页</a>
+            <a class="menu-item-link" href="http://localhost:1313/">主页</a>
           
 
         
@@ -238,7 +238,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/post/">归档</a>
+            <a class="menu-item-link" href="http://localhost:1313/post/">归档</a>
           
 
         
@@ -249,7 +249,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/tags/">标签</a>
+            <a class="menu-item-link" href="http://localhost:1313/tags/">标签</a>
           
 
         
@@ -260,7 +260,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/categories/">分类</a>
+            <a class="menu-item-link" href="http://localhost:1313/categories/">分类</a>
           
 
         
@@ -271,7 +271,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/about/">关于</a>
+            <a class="menu-item-link" href="http://localhost:1313/about/">关于</a>
           
 
         
@@ -302,7 +302,7 @@
           2019-09-18
         </time>
         <div class="post-category">
-            <a href="http://flyingfang.github.io/categories/docker/"> docker </a>
+            <a href="http://localhost:1313/categories/docker/"> docker </a>
             
           </div>
         
@@ -333,54 +333,169 @@
 <ol>
 <li>安装相关依赖</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo apt install libseccomp-dev pkg-config
-</code></pre></div><ol start="2">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ sudo apt install libseccomp-dev pkg-config
+</code></pre></td></tr></table>
+</div>
+</div><ol start="2">
 <li>下载源码</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ go get github.com/opencontainers/runc
-</code></pre></div><ol start="3">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ go get github.com/opencontainers/runc
+</code></pre></td></tr></table>
+</div>
+</div><ol start="3">
 <li>安装<code>v1.0.0-rc8</code> 版本</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd ~/go/src/github.com/opencontainers/runc
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ <span class="nb">cd</span> ~/go/src/github.com/opencontainers/runc
 $ git checkout v1.0.0-rc8
 $ make
 $ sudo make install
-</code></pre></div><ol start="4">
+</code></pre></td></tr></table>
+</div>
+</div><ol start="4">
 <li>验证runc安装成功</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ runc -v
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sh" data-lang="sh">$ runc -v
 runc version 1.0.0-rc8
 commit: 425e105d5a03fabd737a126ad93d62a9eeede87f
 spec: 1.0.1-dev
-</code></pre></div><h1 id="准备oci-bundle">准备OCI bundle</h1>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="准备oci-bundle">准备OCI bundle</h1>
 <p>所谓的 OCI bundle 就是指容器的文件系统和一个 config.json 文件。有了容器的文件系统后我们可以通过 runc spec 命令来生成 config.json 文件。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ docker pull busybox
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ docker pull busybox
 $ mkdir -p /tmp/mycontainer/rootfs
-$ cd /tmp/mycontainer
-$ docker export <span style="color:#66d9ef">$(</span>docker create busybox<span style="color:#66d9ef">)</span> | tar -C rootfs -xvf -
-</code></pre></div><p>现在 rootfs 目录下就是 busybox 镜像的文件系统，然后生成 config.json 文件：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ runc spec
-</code></pre></div><h1 id="简明示例">简明示例</h1>
+$ <span class="nb">cd</span> /tmp/mycontainer
+$ docker <span class="nb">export</span> <span class="k">$(</span>docker create busybox<span class="k">)</span> <span class="p">|</span> tar -C rootfs -xvf -
+</code></pre></td></tr></table>
+</div>
+</div><p>现在 rootfs 目录下就是 busybox 镜像的文件系统，然后生成 config.json 文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ runc spec
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="简明示例">简明示例</h1>
 <p>0.查看帮助</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ runc -h // 查看帮助
-$ runc help subcommand // 查看子命令帮助
-</code></pre></div><p>1.利用之前准备好的OCI bundle，创建一个容器</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ runc create demo
-</code></pre></div><p>2.查看当前所有的容器</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ runc list
-</code></pre></div><p>3.查看容器的状态</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ runc state demo
-</code></pre></div><p>4.启动容器</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ runc start demo
-</code></pre></div><p>5.查看容器的进程</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ runc ps demo
-</code></pre></div><p>6.在容器内执行命令</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ runc exec demo ls
-</code></pre></div><p>7.终止容器</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ runc kill demo
-</code></pre></div><p>8.删除容器</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ runc delete demo
-</code></pre></div><h1 id="常用命令">常用命令</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ runc -h // 查看帮助
+$ runc <span class="nb">help</span> subcommand // 查看子命令帮助
+</code></pre></td></tr></table>
+</div>
+</div><p>1.利用之前准备好的OCI bundle，创建一个容器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ runc create demo
+</code></pre></td></tr></table>
+</div>
+</div><p>2.查看当前所有的容器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ runc list
+</code></pre></td></tr></table>
+</div>
+</div><p>3.查看容器的状态</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ runc state demo
+</code></pre></td></tr></table>
+</div>
+</div><p>4.启动容器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ runc start demo
+</code></pre></td></tr></table>
+</div>
+</div><p>5.查看容器的进程</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ runc ps demo
+</code></pre></td></tr></table>
+</div>
+</div><p>6.在容器内执行命令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ runc <span class="nb">exec</span> demo ls
+</code></pre></td></tr></table>
+</div>
+</div><p>7.终止容器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ runc <span class="nb">kill</span> demo
+</code></pre></td></tr></table>
+</div>
+</div><p>8.删除容器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ runc delete demo
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="常用命令">常用命令</h1>
 <table>
 <thead>
 <tr>
@@ -460,8 +575,8 @@ $ runc help subcommand // 查看子命令帮助
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="http://flyingfang.github.io/tags/docker/">docker</a>
-          <a href="http://flyingfang.github.io/tags/runc/">runc</a>
+          <a href="http://localhost:1313/tags/docker/">docker</a>
+          <a href="http://localhost:1313/tags/runc/">runc</a>
           
         </div>
 
@@ -595,7 +710,7 @@ $ runc help subcommand // 查看子命令帮助
     </a>
 
 
-<a href="http://flyingfang.github.io/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+<a href="http://localhost:1313/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
     class="iconfont" title="rss" target="_blank">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"

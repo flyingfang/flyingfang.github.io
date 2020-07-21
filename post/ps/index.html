@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
-<head>
+<head><script src="/livereload.js?port=1313&mindelay=10&v=2" data-no-instant defer></script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>[每日一个Linux命令]——ps详解 - FlyingFang的自留地</title>
@@ -35,7 +35,7 @@
 <meta name="generator" content="Hugo 0.68.3" />
 
 
-<link rel="canonical" href="http://flyingfang.github.io/post/ps/" />
+<link rel="canonical" href="http://localhost:1313/post/ps/" />
 
 
 
@@ -62,14 +62,14 @@
 <meta property="og:title" content="[每日一个Linux命令]——ps详解" />
 <meta property="og:description" content="记录一下常用的linux命令的用法和实例。第二篇 —— ps。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://flyingfang.github.io/post/ps/" />
+<meta property="og:url" content="http://localhost:1313/post/ps/" />
 <meta property="article:published_time" content="2018-04-04T00:16:50+08:00" />
 <meta property="article:modified_time" content="2018-04-04T00:16:50+08:00" />
 <meta itemprop="name" content="[每日一个Linux命令]——ps详解">
 <meta itemprop="description" content="记录一下常用的linux命令的用法和实例。第二篇 —— ps。">
 <meta itemprop="datePublished" content="2018-04-04T00:16:50&#43;08:00" />
 <meta itemprop="dateModified" content="2018-04-04T00:16:50&#43;08:00" />
-<meta itemprop="wordCount" content="1141">
+<meta itemprop="wordCount" content="1147">
 
 
 
@@ -107,35 +107,35 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/">主页</a>
+            <a class="menu-item-link" href="http://localhost:1313/">主页</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/post/">归档</a>
+            <a class="menu-item-link" href="http://localhost:1313/post/">归档</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/tags/">标签</a>
+            <a class="menu-item-link" href="http://localhost:1313/tags/">标签</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/categories/">分类</a>
+            <a class="menu-item-link" href="http://localhost:1313/categories/">分类</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/about/">关于</a>
+            <a class="menu-item-link" href="http://localhost:1313/about/">关于</a>
           
         
       </li>
@@ -227,7 +227,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/">主页</a>
+            <a class="menu-item-link" href="http://localhost:1313/">主页</a>
           
 
         
@@ -238,7 +238,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/post/">归档</a>
+            <a class="menu-item-link" href="http://localhost:1313/post/">归档</a>
           
 
         
@@ -249,7 +249,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/tags/">标签</a>
+            <a class="menu-item-link" href="http://localhost:1313/tags/">标签</a>
           
 
         
@@ -260,7 +260,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/categories/">分类</a>
+            <a class="menu-item-link" href="http://localhost:1313/categories/">分类</a>
           
 
         
@@ -271,7 +271,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/about/">关于</a>
+            <a class="menu-item-link" href="http://localhost:1313/about/">关于</a>
           
 
         
@@ -302,7 +302,7 @@
           2018-04-04
         </time>
         <div class="post-category">
-            <a href="http://flyingfang.github.io/categories/sre/"> SRE </a>
+            <a href="http://localhost:1313/categories/sre/"> SRE </a>
             
           </div>
         
@@ -432,18 +432,60 @@
 </ul>
 <h2 id="4使用实例">4.使用实例</h2>
 <h3 id="实例1显示所有进程信息">实例1：显示所有进程信息</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ps -A
-</code></pre></div><h3 id="实例2显示指定用户信息">实例2：显示指定用户信息</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ps -u root
-</code></pre></div><h3 id="实例3显示所有进程信息连同命令行">实例3：显示所有进程信息，连同命令行</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ps -ef
-</code></pre></div><h3 id="实例4-ps-与grep-组合使用查找特定进程">实例4： ps 与grep 组合使用，查找特定进程</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ps -ef | grep ssh
-</code></pre></div><h3 id="实例5将与这次登入的-pid-与相关信息列示出来">实例5：将与这次登入的 PID 与相关信息列示出来</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ps -l
-</code></pre></div><h3 id="实例6列出目前所有的正在内存中的程序">实例6：列出目前所有的正在内存中的程序</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ps aux
-</code></pre></div><h2 id="备注">备注</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ ps -A
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="实例2显示指定用户信息">实例2：显示指定用户信息</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ ps -u root
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="实例3显示所有进程信息连同命令行">实例3：显示所有进程信息，连同命令行</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ ps -ef
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="实例4-ps-与grep-组合使用查找特定进程">实例4： ps 与grep 组合使用，查找特定进程</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ ps -ef <span class="p">|</span> grep ssh
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="实例5将与这次登入的-pid-与相关信息列示出来">实例5：将与这次登入的 PID 与相关信息列示出来</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ ps -l
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="实例6列出目前所有的正在内存中的程序">实例6：列出目前所有的正在内存中的程序</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ ps aux
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="备注">备注</h2>
 <p><strong>参考资料</strong></p>
 <p><a href="http://linuxtools-rst.readthedocs.io/zh_CN/latest/tool/ps.html">Linux Tools Quick Tutorial</a></p>
 
@@ -476,7 +518,7 @@
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="http://flyingfang.github.io/tags/linux/">Linux</a>
+          <a href="http://localhost:1313/tags/linux/">Linux</a>
           
         </div>
 
@@ -610,7 +652,7 @@
     </a>
 
 
-<a href="http://flyingfang.github.io/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+<a href="http://localhost:1313/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
     class="iconfont" title="rss" target="_blank">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>network on FlyingFang的自留地</title>
-    <link>http://flyingfang.github.io/categories/network/</link>
+    <link>http://localhost:1313/categories/network/</link>
     <description>Recent content in network on FlyingFang的自留地</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 31 Oct 2018 22:38:40 +0800</lastBuildDate>
     
-	<atom:link href="http://flyingfang.github.io/categories/network/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://localhost:1313/categories/network/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>白话TCP协议的三次握手和四次分手</title>
-      <link>http://flyingfang.github.io/post/tcp-hello-bye/</link>
+      <link>http://localhost:1313/post/tcp-hello-bye/</link>
       <pubDate>Wed, 31 Oct 2018 22:38:40 +0800</pubDate>
       
-      <guid>http://flyingfang.github.io/post/tcp-hello-bye/</guid>
+      <guid>http://localhost:1313/post/tcp-hello-bye/</guid>
       <description>知识的真正掌握，就是说人话，让小白都能听得懂。所以，写这篇文章力求用看得懂的人话总结TCP的三次握手和四次分手。</description>
     </item>
     

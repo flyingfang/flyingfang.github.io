@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
-<head>
+<head><script src="/livereload.js?port=1313&mindelay=10&v=2" data-no-instant defer></script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>基于Kubernetes的动态扩缩容（一）：HPA源码分析 - FlyingFang的自留地</title>
@@ -35,7 +35,7 @@
 <meta name="generator" content="Hugo 0.68.3" />
 
 
-<link rel="canonical" href="http://flyingfang.github.io/post/kubernetes-autoscaling-01/" />
+<link rel="canonical" href="http://localhost:1313/post/kubernetes-autoscaling-01/" />
 
 
 
@@ -62,14 +62,14 @@
 <meta property="og:title" content="基于Kubernetes的动态扩缩容（一）：HPA源码分析" />
 <meta property="og:description" content="最近调研了一些kubernetes-based的autoscaling方案，准备分几篇记录一下。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://flyingfang.github.io/post/kubernetes-autoscaling-01/" />
+<meta property="og:url" content="http://localhost:1313/post/kubernetes-autoscaling-01/" />
 <meta property="article:published_time" content="2020-06-09T15:21:48+08:00" />
 <meta property="article:modified_time" content="2020-06-09T15:21:48+08:00" />
 <meta itemprop="name" content="基于Kubernetes的动态扩缩容（一）：HPA源码分析">
 <meta itemprop="description" content="最近调研了一些kubernetes-based的autoscaling方案，准备分几篇记录一下。">
 <meta itemprop="datePublished" content="2020-06-09T15:21:48&#43;08:00" />
 <meta itemprop="dateModified" content="2020-06-09T15:21:48&#43;08:00" />
-<meta itemprop="wordCount" content="3981">
+<meta itemprop="wordCount" content="3938">
 
 
 
@@ -107,35 +107,35 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/">主页</a>
+            <a class="menu-item-link" href="http://localhost:1313/">主页</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/post/">归档</a>
+            <a class="menu-item-link" href="http://localhost:1313/post/">归档</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/tags/">标签</a>
+            <a class="menu-item-link" href="http://localhost:1313/tags/">标签</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/categories/">分类</a>
+            <a class="menu-item-link" href="http://localhost:1313/categories/">分类</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/about/">关于</a>
+            <a class="menu-item-link" href="http://localhost:1313/about/">关于</a>
           
         
       </li>
@@ -227,7 +227,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/">主页</a>
+            <a class="menu-item-link" href="http://localhost:1313/">主页</a>
           
 
         
@@ -238,7 +238,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/post/">归档</a>
+            <a class="menu-item-link" href="http://localhost:1313/post/">归档</a>
           
 
         
@@ -249,7 +249,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/tags/">标签</a>
+            <a class="menu-item-link" href="http://localhost:1313/tags/">标签</a>
           
 
         
@@ -260,7 +260,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/categories/">分类</a>
+            <a class="menu-item-link" href="http://localhost:1313/categories/">分类</a>
           
 
         
@@ -271,7 +271,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/about/">关于</a>
+            <a class="menu-item-link" href="http://localhost:1313/about/">关于</a>
           
 
         
@@ -302,7 +302,7 @@
           2020-06-09
         </time>
         <div class="post-category">
-            <a href="http://flyingfang.github.io/categories/kubernetes/"> kubernetes </a>
+            <a href="http://localhost:1313/categories/kubernetes/"> kubernetes </a>
             
           </div>
         
@@ -337,8 +337,7 @@
 
     
     <div class="post-content">
-      <h1 id="基于kubernetes的动态扩缩容一hpa源码分析">基于Kubernetes的动态扩缩容（一）：HPA源码分析</h1>
-<h2 id="hpa">HPA</h2>
+      <h2 id="hpa">HPA</h2>
 <p>HPA（Horizontal Pod Autoscaler）：自动水平扩缩容模块。</p>
 <p>HPA有两个大版本v1、v2。v1版本仅支持基于CPU使用率的动态扩缩容，v2版本支持根据自定义指标进行动态扩缩容。</p>
 <p>HPA最小的副本数为1，未来有望支持scale to zero。市面上的三方产品多支持scale to zero。</p>
@@ -356,8 +355,15 @@
 <h3 id="扩缩容算法">扩缩容算法</h3>
 <h4 id="算法概述">算法概述</h4>
 <p>算法：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">desiredReplicas <span style="color:#f92672">=</span> ceil<span style="color:#f92672">[</span>currentReplicas * <span style="color:#f92672">(</span> currentMetricValue / desiredMetricValue <span style="color:#f92672">)]</span>
-</code></pre></div><p>特殊情况：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">desiredReplicas</span> <span class="o">=</span> ceil<span class="o">[</span>currentReplicas * <span class="o">(</span> currentMetricValue / desiredMetricValue <span class="o">)]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>特殊情况：</p>
 <ol>
 <li>正在关闭的Pod或失败的Pod不会被纳入计算。</li>
 <li>在Pod指标信息缺失时，会被搁置，在最终确定伸缩值的时候再纳入计算。</li>
@@ -424,8 +430,15 @@
 <p>缩容有一个缩容冷却时间窗口。在缩容冷却时间窗口内，不会触发缩容行为。防止一段时间内因为指标翻动造成的频繁扩缩容。缩容稳定窗口不仅是一个全局配置，也可以在HPA的扩缩容行为中配置。</p>
 <p>最小缩放容忍度：</p>
 <p>缩放容忍度指在缩放过程中目标值与当前值差距不大时，可以忽略相应的缩放行为。计算公式：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">（1-当前值/目标值）&lt; 容忍度
-</code></pre></div><h4 id="标准缩放建议">标准缩放建议</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">（1-当前值/目标值）&lt; 容忍度
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="标准缩放建议">标准缩放建议</h4>
 <p>标准缩放建议为按照指标计算出相应期望值后，提供一定的规则进行再次校准，以达到削峰和去抖动的作用。</p>
 <p>相关代码：<a href="https://github.com/kubernetes/kubernetes/blob/1bc526aa6c310b915e7ad57b4442deec7328aad2/pkg/controller/podautoscaler/horizontal.go#L701">pkg/controller/podautoscaler/horizontal.go::normalizeDesiredReplicas</a></p>
 <ol>
@@ -437,41 +450,87 @@
 <p>支持在hpa的配置文件中指定扩容和缩容的行为策略。</p>
 <p><strong>多条扩缩容策略的处理规则</strong>：最终确定的扩缩容期望副本数会依据多个策略综合考量，按照指定的选取策略决定最终的期望值。默认的缩容选取策略为Max（取最大值），故会选取多个策略期望值中的最大值。</p>
 <p>示例：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">behavior</span>:
-  <span style="color:#66d9ef">scaleDown</span>:
-    <span style="color:#66d9ef">policies</span>:
-    - <span style="color:#66d9ef">type</span>: Pods
-      <span style="color:#66d9ef">value</span>: <span style="color:#ae81ff">4</span>
-      <span style="color:#66d9ef">periodSeconds</span>: <span style="color:#ae81ff">60</span>
-    - <span style="color:#66d9ef">type</span>: Percent
-      <span style="color:#66d9ef">value</span>: <span style="color:#ae81ff">10</span>
-      <span style="color:#66d9ef">periodSeconds</span>: <span style="color:#ae81ff">60</span>
-</code></pre></div><p>当总副本数大于40时，此时第二条缩容策略显然更大，故按照第二条策略缩容；当总副本数小于等于40时，按照第一条策略，每次缩容4个。<code>periodSeconds</code>表示缩容周期。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">behavior</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">scaleDown</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">policies</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="k">type</span><span class="p">:</span><span class="w"> </span>Pods<span class="w">
+</span><span class="w">      </span><span class="k">value</span><span class="p">:</span><span class="w"> </span><span class="m">4</span><span class="w">
+</span><span class="w">      </span><span class="k">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">60</span><span class="w">
+</span><span class="w">    </span>- <span class="k">type</span><span class="p">:</span><span class="w"> </span>Percent<span class="w">
+</span><span class="w">      </span><span class="k">value</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w">
+</span><span class="w">      </span><span class="k">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">60</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>当总副本数大于40时，此时第二条缩容策略显然更大，故按照第二条策略缩容；当总副本数小于等于40时，按照第一条策略，每次缩容4个。<code>periodSeconds</code>表示缩容周期。</p>
 <p><strong>选取策略</strong>可以通过 <code>selectPolicy</code>设定，可以为Max（最大值）、Min（最小值）、Disabled（关闭此方向扩缩容）。扩容时默认的策略为Max，缩容时默认的策略为Min。</p>
 <p><strong>伸缩策略</strong>类型可以选择Pods、Percent。</p>
 <p><strong>稳定时间：</strong></p>
 <p>支持在配置文件中指定稳定窗口时间，示例指定稳定窗口为300s：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">scaleDown</span>:
-  <span style="color:#66d9ef">stabilizationWindowSeconds</span>: <span style="color:#ae81ff">300</span>
-</code></pre></div><p>默认的扩缩容行为yaml：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">behavior</span>:
-  <span style="color:#66d9ef">scaleDown</span>:
-    <span style="color:#66d9ef">stabilizationWindowSeconds</span>: <span style="color:#ae81ff">300</span>
-    <span style="color:#66d9ef">policies</span>:
-    - <span style="color:#66d9ef">type</span>: Percent
-      <span style="color:#66d9ef">value</span>: <span style="color:#ae81ff">100</span>
-      <span style="color:#66d9ef">periodSeconds</span>: <span style="color:#ae81ff">15</span>
-  <span style="color:#66d9ef">scaleUp</span>:
-    <span style="color:#66d9ef">stabilizationWindowSeconds</span>: <span style="color:#ae81ff">0</span>
-    <span style="color:#66d9ef">policies</span>:
-    - <span style="color:#66d9ef">type</span>: Percent
-      <span style="color:#66d9ef">value</span>: <span style="color:#ae81ff">100</span>
-      <span style="color:#66d9ef">periodSeconds</span>: <span style="color:#ae81ff">15</span>
-    - <span style="color:#66d9ef">type</span>: Pods
-      <span style="color:#66d9ef">value</span>: <span style="color:#ae81ff">4</span>
-      <span style="color:#66d9ef">periodSeconds</span>: <span style="color:#ae81ff">15</span>
-    <span style="color:#66d9ef">selectPolicy</span>: Max
-</code></pre></div><h4 id="可配置参数说明">可配置参数说明</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">scaleDown</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">stabilizationWindowSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">300</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>默认的扩缩容行为yaml：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">behavior</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">scaleDown</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">stabilizationWindowSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">300</span><span class="w">
+</span><span class="w">    </span><span class="k">policies</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="k">type</span><span class="p">:</span><span class="w"> </span>Percent<span class="w">
+</span><span class="w">      </span><span class="k">value</span><span class="p">:</span><span class="w"> </span><span class="m">100</span><span class="w">
+</span><span class="w">      </span><span class="k">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">15</span><span class="w">
+</span><span class="w">  </span><span class="k">scaleUp</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">stabilizationWindowSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span><span class="w">    </span><span class="k">policies</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="k">type</span><span class="p">:</span><span class="w"> </span>Percent<span class="w">
+</span><span class="w">      </span><span class="k">value</span><span class="p">:</span><span class="w"> </span><span class="m">100</span><span class="w">
+</span><span class="w">      </span><span class="k">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">15</span><span class="w">
+</span><span class="w">    </span>- <span class="k">type</span><span class="p">:</span><span class="w"> </span>Pods<span class="w">
+</span><span class="w">      </span><span class="k">value</span><span class="p">:</span><span class="w"> </span><span class="m">4</span><span class="w">
+</span><span class="w">      </span><span class="k">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">15</span><span class="w">
+</span><span class="w">    </span><span class="k">selectPolicy</span><span class="p">:</span><span class="w"> </span>Max<span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="可配置参数说明">可配置参数说明</h4>
 <table>
 <thead>
 <tr>
@@ -546,8 +605,8 @@
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="http://flyingfang.github.io/tags/kubernetes/">kubernetes</a>
-          <a href="http://flyingfang.github.io/tags/autoscaling/">autoscaling</a>
+          <a href="http://localhost:1313/tags/kubernetes/">kubernetes</a>
+          <a href="http://localhost:1313/tags/autoscaling/">autoscaling</a>
           
         </div>
 
@@ -668,7 +727,7 @@
     </a>
 
 
-<a href="http://flyingfang.github.io/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+<a href="http://localhost:1313/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
     class="iconfont" title="rss" target="_blank">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"

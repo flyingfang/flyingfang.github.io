@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
-<head>
+<head><script src="/livereload.js?port=1313&mindelay=10&v=2" data-no-instant defer></script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>【源码分析】docker（一）之dockerd、containerd、shim、runc各组件关系 - FlyingFang的自留地</title>
@@ -35,7 +35,7 @@
 <meta name="generator" content="Hugo 0.68.3" />
 
 
-<link rel="canonical" href="http://flyingfang.github.io/post/docker-reading-01/" />
+<link rel="canonical" href="http://localhost:1313/post/docker-reading-01/" />
 
 
 
@@ -62,14 +62,14 @@
 <meta property="og:title" content="【源码分析】docker（一）之dockerd、containerd、shim、runc各组件关系" />
 <meta property="og:description" content="通过阅读源码理清dockerd、containerd、shim和runc之间的关系。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://flyingfang.github.io/post/docker-reading-01/" />
+<meta property="og:url" content="http://localhost:1313/post/docker-reading-01/" />
 <meta property="article:published_time" content="2019-09-16T21:38:53+08:00" />
 <meta property="article:modified_time" content="2019-09-16T21:38:53+08:00" />
 <meta itemprop="name" content="【源码分析】docker（一）之dockerd、containerd、shim、runc各组件关系">
 <meta itemprop="description" content="通过阅读源码理清dockerd、containerd、shim和runc之间的关系。">
 <meta itemprop="datePublished" content="2019-09-16T21:38:53&#43;08:00" />
 <meta itemprop="dateModified" content="2019-09-16T21:38:53&#43;08:00" />
-<meta itemprop="wordCount" content="2175">
+<meta itemprop="wordCount" content="2314">
 
 
 
@@ -107,35 +107,35 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/">主页</a>
+            <a class="menu-item-link" href="http://localhost:1313/">主页</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/post/">归档</a>
+            <a class="menu-item-link" href="http://localhost:1313/post/">归档</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/tags/">标签</a>
+            <a class="menu-item-link" href="http://localhost:1313/tags/">标签</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/categories/">分类</a>
+            <a class="menu-item-link" href="http://localhost:1313/categories/">分类</a>
           
         
       </li><li class="mobile-menu-item">
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/about/">关于</a>
+            <a class="menu-item-link" href="http://localhost:1313/about/">关于</a>
           
         
       </li>
@@ -227,7 +227,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/">主页</a>
+            <a class="menu-item-link" href="http://localhost:1313/">主页</a>
           
 
         
@@ -238,7 +238,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/post/">归档</a>
+            <a class="menu-item-link" href="http://localhost:1313/post/">归档</a>
           
 
         
@@ -249,7 +249,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/tags/">标签</a>
+            <a class="menu-item-link" href="http://localhost:1313/tags/">标签</a>
           
 
         
@@ -260,7 +260,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/categories/">分类</a>
+            <a class="menu-item-link" href="http://localhost:1313/categories/">分类</a>
           
 
         
@@ -271,7 +271,7 @@
         
           
           
-            <a class="menu-item-link" href="http://flyingfang.github.io/about/">关于</a>
+            <a class="menu-item-link" href="http://localhost:1313/about/">关于</a>
           
 
         
@@ -302,7 +302,7 @@
           2019-09-16
         </time>
         <div class="post-category">
-            <a href="http://flyingfang.github.io/categories/docker/"> docker </a>
+            <a href="http://localhost:1313/categories/docker/"> docker </a>
             
           </div>
         
@@ -349,196 +349,413 @@
 </ul>
 <h1 id="dockerd的进程结构">dockerd的进程结构</h1>
 <p>dockerd的进程模型如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">dockerd -&gt; docker-containerd ---&gt; docker-containerd-shim -&gt; docker-runc -&gt; runc init -&gt; process
-                      			|-- &gt; docker-containerd-shim -&gt; docker-runc -&gt; runc init -&gt; process
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">dockerd -&gt; docker-containerd ---&gt; docker-containerd-shim -&gt; docker-runc -&gt; runc init -&gt; process
+                      			<span class="p">|</span>-- &gt; docker-containerd-shim -&gt; docker-runc -&gt; runc init -&gt; process
                       			+-- &gt; docker-containerd-shim -&gt; docker-runc -&gt; runc init -&gt; process
-</code></pre></div><p><img src="https://xflying-blog.cdn.bcebos.com/xflying-blog%2Fcontainerd.png" alt="containerd"></p>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://xflying-blog.cdn.bcebos.com/xflying-blog%2Fcontainerd.png" alt="containerd"></p>
 <p>可以通过<code>pstree</code>查看：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ pstree -lAa <span style="color:#ae81ff">13570</span>
-dockerd --bip<span style="color:#f92672">=</span>192.168.200.1/24 --host<span style="color:#f92672">=</span>unix:///var/run/docker.sock --config-file<span style="color:#f92672">=</span>./conf/daemon.json
-  |-docker-containe -l unix:///var/run/docker/libcontainerd/docker-containerd.sock --shim docker-containerd-shim --metrics-interval<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> --start-timeout 2m --state-dir /var/run/docker/libcontainerd/containerd --runtime docker-runc
-  |   |-docker-containe 05aa1aa49a6a41768d4d0faa1b96412c73298b118609a72a2ae7002ffc993f59 /var/run/docker/libcontainerd/05aa1aa49a6a41768d4d0faa1b96412c73298b118609a72a2ae7002ffc993f59 docker-runc
-  |   |   |-pause
-  |   |   |   <span style="color:#e6db74">`</span>-3*<span style="color:#f92672">[{</span>pause<span style="color:#f92672">}]</span>
-  |   |   <span style="color:#e6db74">`</span>-10*<span style="color:#f92672">[{</span>docker-containe<span style="color:#f92672">}]</span>
-  |   |-docker-containe 9d66703c7d900d1cba3aa48b1c0d2a04d1c5fe95383890277b3793eaaaa5be66 /var/run/docker/libcontainerd/9d66703c7d900d1cba3aa48b1c0d2a04d1c5fe95383890277b3793eaaaa5be66 docker-runc
-  |   |   |-pause
-  |   |   |   <span style="color:#e6db74">`</span>-3*<span style="color:#f92672">[{</span>pause<span style="color:#f92672">}]</span>
-  |   |   <span style="color:#e6db74">`</span>-10*<span style="color:#f92672">[{</span>docker-containe<span style="color:#f92672">}]</span>
-</code></pre></div><h1 id="docker源码分析">docker源码分析</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ pstree -lAa <span class="m">13570</span>
+dockerd --bip<span class="o">=</span>192.168.200.1/24 --host<span class="o">=</span>unix:///var/run/docker.sock --config-file<span class="o">=</span>./conf/daemon.json
+  <span class="p">|</span>-docker-containe -l unix:///var/run/docker/libcontainerd/docker-containerd.sock --shim docker-containerd-shim --metrics-interval<span class="o">=</span><span class="m">0</span> --start-timeout 2m --state-dir /var/run/docker/libcontainerd/containerd --runtime docker-runc
+  <span class="p">|</span>   <span class="p">|</span>-docker-containe 05aa1aa49a6a41768d4d0faa1b96412c73298b118609a72a2ae7002ffc993f59 /var/run/docker/libcontainerd/05aa1aa49a6a41768d4d0faa1b96412c73298b118609a72a2ae7002ffc993f59 docker-runc
+  <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-pause
+  <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-3*<span class="o">[{</span>pause<span class="o">}]</span>
+  <span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-10*<span class="o">[{</span>docker-containe<span class="o">}]</span>
+  <span class="p">|</span>   <span class="p">|</span>-docker-containe 9d66703c7d900d1cba3aa48b1c0d2a04d1c5fe95383890277b3793eaaaa5be66 /var/run/docker/libcontainerd/9d66703c7d900d1cba3aa48b1c0d2a04d1c5fe95383890277b3793eaaaa5be66 docker-runc
+  <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>-pause
+  <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-3*<span class="o">[{</span>pause<span class="o">}]</span>
+  <span class="p">|</span>   <span class="p">|</span>   <span class="sb">`</span>-10*<span class="o">[{</span>docker-containe<span class="o">}]</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="docker源码分析">docker源码分析</h1>
 <h2 id="dockerd启动containerd过程">dockerd启动containerd过程</h2>
 <ol>
 <li>main函数启动daemon进程</li>
 </ol>
 <p>代码：<code>github.com/docker/docker/cmd/dockerd/docker.go::main()</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-	<span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 初始化参数等
-</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">daemonCli</span>.<span style="color:#a6e22e">start</span>()
-}
-</code></pre></div><ol start="2">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="c1">// ...
+</span><span class="c1"></span>	<span class="c1">// 初始化参数等
+</span><span class="c1"></span>	<span class="nx">daemonCli</span><span class="p">.</span><span class="nf">start</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol start="2">
 <li>start方法主要做两件事：启动server，准备接收client的请求；创建<code>containerd</code>子进程。</li>
 </ol>
 <p>代码：<code>github.com/docker/docker/cmd/dockerd/daemon.go::start()</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">cli</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DaemonCli</span>) <span style="color:#a6e22e">start</span>() (<span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// 初始化相关配置信息
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; len(<span style="color:#a6e22e">cli</span>.<span style="color:#a6e22e">Config</span>.<span style="color:#a6e22e">Hosts</span>); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-  	<span style="color:#a6e22e">ls</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">listeners</span>.<span style="color:#a6e22e">Init</span>(<span style="color:#a6e22e">proto</span>, <span style="color:#a6e22e">addr</span>, <span style="color:#a6e22e">serverConfig</span>.<span style="color:#a6e22e">SocketGroup</span>, <span style="color:#a6e22e">serverConfig</span>.<span style="color:#a6e22e">TLSConfig</span>)
-	  <span style="color:#a6e22e">api</span>.<span style="color:#a6e22e">Accept</span>(<span style="color:#a6e22e">protoAddrParts</span>[<span style="color:#ae81ff">1</span>], <span style="color:#a6e22e">ls</span><span style="color:#f92672">...</span>)
-  }
-  <span style="color:#a6e22e">containerdRemote</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">libcontainerd</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">cli</span>.<span style="color:#a6e22e">getLibcontainerdRoot</span>(), <span style="color:#a6e22e">cli</span>.<span style="color:#a6e22e">getPlatformRemoteOptions</span>()<span style="color:#f92672">...</span>)
-  <span style="color:#a6e22e">d</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">daemon</span>.<span style="color:#a6e22e">NewDaemon</span>(<span style="color:#a6e22e">cli</span>.<span style="color:#a6e22e">Config</span>, <span style="color:#a6e22e">registryService</span>, <span style="color:#a6e22e">containerdRemote</span>)
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>}
-</code></pre></div><ol start="3">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">cli</span> <span class="o">*</span><span class="nx">DaemonCli</span><span class="p">)</span> <span class="nf">start</span><span class="p">()</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// ...
+</span><span class="c1"></span>  <span class="c1">// 初始化相关配置信息
+</span><span class="c1"></span>  <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">cli</span><span class="p">.</span><span class="nx">Config</span><span class="p">.</span><span class="nx">Hosts</span><span class="p">);</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+  	<span class="nx">ls</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">listeners</span><span class="p">.</span><span class="nf">Init</span><span class="p">(</span><span class="nx">proto</span><span class="p">,</span> <span class="nx">addr</span><span class="p">,</span> <span class="nx">serverConfig</span><span class="p">.</span><span class="nx">SocketGroup</span><span class="p">,</span> <span class="nx">serverConfig</span><span class="p">.</span><span class="nx">TLSConfig</span><span class="p">)</span>
+	  <span class="nx">api</span><span class="p">.</span><span class="nf">Accept</span><span class="p">(</span><span class="nx">protoAddrParts</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">ls</span><span class="o">...</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">containerdRemote</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">libcontainerd</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="nx">cli</span><span class="p">.</span><span class="nf">getLibcontainerdRoot</span><span class="p">(),</span> <span class="nx">cli</span><span class="p">.</span><span class="nf">getPlatformRemoteOptions</span><span class="p">()</span><span class="o">...</span><span class="p">)</span>
+  <span class="nx">d</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">daemon</span><span class="p">.</span><span class="nf">NewDaemon</span><span class="p">(</span><span class="nx">cli</span><span class="p">.</span><span class="nx">Config</span><span class="p">,</span> <span class="nx">registryService</span><span class="p">,</span> <span class="nx">containerdRemote</span><span class="p">)</span>
+  <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol start="3">
 <li>dockerd创建containerd子进程过程：</li>
 </ol>
 <p>代码：<code>github.com/docker/docker/libcontainerd/remote_linux.go::New()</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">stateDir</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">options</span> <span style="color:#f92672">...</span><span style="color:#a6e22e">RemoteOption</span>) (<span style="color:#a6e22e">_</span> <span style="color:#a6e22e">Remote</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// 初始化相关配置
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// 启动containerd daemon进程
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">runContainerdDaemon</span>(); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
-	}
-  <span style="color:#75715e">// 准备grpc连接客户端
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">apiClient</span> = <span style="color:#a6e22e">containerd</span>.<span style="color:#a6e22e">NewAPIClient</span>(<span style="color:#a6e22e">conn</span>)
-  <span style="color:#75715e">// 连接管理
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">handleConnectionChange</span>()
-  <span style="color:#75715e">// 事件监控
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">startEventsMonitor</span>()
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>}
-</code></pre></div><ol start="4">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">New</span><span class="p">(</span><span class="nx">stateDir</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">options</span> <span class="o">...</span><span class="nx">RemoteOption</span><span class="p">)</span> <span class="p">(</span><span class="nx">_</span> <span class="nx">Remote</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// ...
+</span><span class="c1"></span>  <span class="c1">// 初始化相关配置
+</span><span class="c1"></span>  <span class="c1">// 启动containerd daemon进程
+</span><span class="c1"></span>  <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">runContainerdDaemon</span><span class="p">();</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+	<span class="p">}</span>
+  <span class="c1">// 准备grpc连接客户端
+</span><span class="c1"></span>  <span class="nx">r</span><span class="p">.</span><span class="nx">apiClient</span> <span class="p">=</span> <span class="nx">containerd</span><span class="p">.</span><span class="nf">NewAPIClient</span><span class="p">(</span><span class="nx">conn</span><span class="p">)</span>
+  <span class="c1">// 连接管理
+</span><span class="c1"></span>  <span class="k">go</span> <span class="nx">r</span><span class="p">.</span><span class="nf">handleConnectionChange</span><span class="p">()</span>
+  <span class="c1">// 事件监控
+</span><span class="c1"></span>  <span class="nx">r</span><span class="p">.</span><span class="nf">startEventsMonitor</span><span class="p">()</span>
+  <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol start="4">
 <li>启动containerd进程：</li>
 </ol>
 <p>代码：<code>github.com/docker/docker/libcontainerd/remote_linux.go::runContainerdDaemon() </code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">remote</span>) <span style="color:#a6e22e">runContainerdDaemon</span>() <span style="color:#66d9ef">error</span> {
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// 参数处理等
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// containerd启动参数
-</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">args</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">string</span>{
-		<span style="color:#e6db74">&#34;-l&#34;</span>, <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;unix://%s&#34;</span>, <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">rpcAddr</span>),
-		<span style="color:#e6db74">&#34;--shim&#34;</span>, <span style="color:#e6db74">&#34;docker-containerd-shim&#34;</span>,
-		<span style="color:#e6db74">&#34;--metrics-interval=0&#34;</span>,
-		<span style="color:#e6db74">&#34;--start-timeout&#34;</span>, <span style="color:#e6db74">&#34;2m&#34;</span>,
-		<span style="color:#e6db74">&#34;--state-dir&#34;</span>, <span style="color:#a6e22e">filepath</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">stateDir</span>, <span style="color:#a6e22e">containerdStateDir</span>),
-	}
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// containerd启动命令
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">cmd</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">exec</span>.<span style="color:#a6e22e">Command</span>(<span style="color:#a6e22e">containerdBinary</span>, <span style="color:#a6e22e">args</span><span style="color:#f92672">...</span>)
-  <span style="color:#75715e">// 启动containerd进程
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Start</span>()
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>}
-</code></pre></div><h2 id="containerd启动shim的过程">containerd启动shim的过程</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">r</span> <span class="o">*</span><span class="nx">remote</span><span class="p">)</span> <span class="nf">runContainerdDaemon</span><span class="p">()</span> <span class="kt">error</span> <span class="p">{</span>
+  <span class="c1">// ...
+</span><span class="c1"></span>  <span class="c1">// 参数处理等
+</span><span class="c1"></span>  <span class="c1">// containerd启动参数
+</span><span class="c1"></span>	<span class="nx">args</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+		<span class="s">&#34;-l&#34;</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;unix://%s&#34;</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">rpcAddr</span><span class="p">),</span>
+		<span class="s">&#34;--shim&#34;</span><span class="p">,</span> <span class="s">&#34;docker-containerd-shim&#34;</span><span class="p">,</span>
+		<span class="s">&#34;--metrics-interval=0&#34;</span><span class="p">,</span>
+		<span class="s">&#34;--start-timeout&#34;</span><span class="p">,</span> <span class="s">&#34;2m&#34;</span><span class="p">,</span>
+		<span class="s">&#34;--state-dir&#34;</span><span class="p">,</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">stateDir</span><span class="p">,</span> <span class="nx">containerdStateDir</span><span class="p">),</span>
+	<span class="p">}</span>
+  <span class="c1">// ...
+</span><span class="c1"></span>  <span class="c1">// containerd启动命令
+</span><span class="c1"></span>  <span class="nx">cmd</span> <span class="o">:=</span> <span class="nx">exec</span><span class="p">.</span><span class="nf">Command</span><span class="p">(</span><span class="nx">containerdBinary</span><span class="p">,</span> <span class="nx">args</span><span class="o">...</span><span class="p">)</span>
+  <span class="c1">// 启动containerd进程
+</span><span class="c1"></span>  <span class="nx">cmd</span><span class="p">.</span><span class="nf">Start</span><span class="p">()</span>
+  <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="containerd启动shim的过程">containerd启动shim的过程</h2>
 <ol>
 <li>main函数启动containerd进程</li>
 </ol>
 <p>代码：<code>github.com/containerd/containerd/containerd/main.go::main()</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 初始化相关参数
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// 启动containerd
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">daemon</span>()
-}
-</code></pre></div><ol start="2">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// ...
+</span><span class="c1"></span>	<span class="c1">// 初始化相关参数
+</span><span class="c1"></span>  <span class="c1">// 启动containerd
+</span><span class="c1"></span><span class="nf">daemon</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol start="2">
 <li>daemon函数初始化容器任务处理模块<code>supervisor</code>。</li>
 </ol>
 <p>代码：<code>github.com/containerd/containerd/containerd/main.go::daemon()</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">daemon</span>(<span style="color:#a6e22e">context</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">cli</span>.<span style="color:#a6e22e">Context</span>) <span style="color:#66d9ef">error</span> {
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// 创建容器任务server模块supervisor
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">supervisor</span>.<span style="color:#a6e22e">New</span>(
-		<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">String</span>(<span style="color:#e6db74">&#34;state-dir&#34;</span>),
-		<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">String</span>(<span style="color:#e6db74">&#34;runtime&#34;</span>),
-		<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">String</span>(<span style="color:#e6db74">&#34;shim&#34;</span>),
-		<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">StringSlice</span>(<span style="color:#e6db74">&#34;runtime-args&#34;</span>),
-		<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Duration</span>(<span style="color:#e6db74">&#34;start-timeout&#34;</span>),
-		<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Int</span>(<span style="color:#e6db74">&#34;retain-count&#34;</span>))
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// 准备容器任务worker
-</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">10</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-		<span style="color:#a6e22e">w</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">supervisor</span>.<span style="color:#a6e22e">NewWorker</span>(<span style="color:#a6e22e">sv</span>, <span style="color:#a6e22e">wg</span>)
-    <span style="color:#75715e">// 容器任务worker开始工作
-</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">go</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Start</span>()
-	}
-  <span style="color:#75715e">// supervisor开始处理任务
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">sv</span>.<span style="color:#a6e22e">Start</span>()
-  <span style="color:#a6e22e">server</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">startServer</span>(<span style="color:#a6e22e">listenParts</span>[<span style="color:#ae81ff">0</span>], <span style="color:#a6e22e">listenParts</span>[<span style="color:#ae81ff">1</span>], <span style="color:#a6e22e">sv</span>)
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>}
-</code></pre></div><ol start="3">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">daemon</span><span class="p">(</span><span class="nx">context</span> <span class="o">*</span><span class="nx">cli</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+  <span class="c1">// ...
+</span><span class="c1"></span>  <span class="c1">// 创建容器任务server模块supervisor
+</span><span class="c1"></span>  <span class="nx">supervisor</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span>
+		<span class="nx">context</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="s">&#34;state-dir&#34;</span><span class="p">),</span>
+		<span class="nx">context</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="s">&#34;runtime&#34;</span><span class="p">),</span>
+		<span class="nx">context</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="s">&#34;shim&#34;</span><span class="p">),</span>
+		<span class="nx">context</span><span class="p">.</span><span class="nf">StringSlice</span><span class="p">(</span><span class="s">&#34;runtime-args&#34;</span><span class="p">),</span>
+		<span class="nx">context</span><span class="p">.</span><span class="nf">Duration</span><span class="p">(</span><span class="s">&#34;start-timeout&#34;</span><span class="p">),</span>
+		<span class="nx">context</span><span class="p">.</span><span class="nf">Int</span><span class="p">(</span><span class="s">&#34;retain-count&#34;</span><span class="p">))</span>
+  <span class="c1">// ...
+</span><span class="c1"></span>  <span class="c1">// 准备容器任务worker
+</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="nx">w</span> <span class="o">:=</span> <span class="nx">supervisor</span><span class="p">.</span><span class="nf">NewWorker</span><span class="p">(</span><span class="nx">sv</span><span class="p">,</span> <span class="nx">wg</span><span class="p">)</span>
+    <span class="c1">// 容器任务worker开始工作
+</span><span class="c1"></span>		<span class="k">go</span> <span class="nx">w</span><span class="p">.</span><span class="nf">Start</span><span class="p">()</span>
+	<span class="p">}</span>
+  <span class="c1">// supervisor开始处理任务
+</span><span class="c1"></span>  <span class="nx">sv</span><span class="p">.</span><span class="nf">Start</span><span class="p">()</span>
+  <span class="nx">server</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nf">startServer</span><span class="p">(</span><span class="nx">listenParts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">listenParts</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">sv</span><span class="p">)</span>
+  <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol start="3">
 <li><code>supervisor.Worker</code> 负责监听容器管道，启动<code>docker-container-shim</code>。</li>
 </ol>
 <p>代码：<code>github.com/docker/containerd/supervisor/worker.go::Start()</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">w</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">worker</span>) <span style="color:#a6e22e">Start</span>() {
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">startTasks</span> {
-    <span style="color:#75715e">// 新建容器
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Container</span>.<span style="color:#a6e22e">Start</span>()
-  }
-  <span style="color:#75715e">// 将容器加入oom监听列表
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">monitor</span>.<span style="color:#a6e22e">MonitorOOM</span>(<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Container</span>)
-  <span style="color:#75715e">// 将进程加入监听列表
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">monitorProcess</span>(<span style="color:#a6e22e">process</span>)
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>}
-</code></pre></div><ol start="4">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">w</span> <span class="o">*</span><span class="nx">worker</span><span class="p">)</span> <span class="nf">Start</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// ...
+</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">t</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">w</span><span class="p">.</span><span class="nx">s</span><span class="p">.</span><span class="nx">startTasks</span> <span class="p">{</span>
+    <span class="c1">// 新建容器
+</span><span class="c1"></span>    <span class="nx">t</span><span class="p">.</span><span class="nx">Container</span><span class="p">.</span><span class="nf">Start</span><span class="p">()</span>
+  <span class="p">}</span>
+  <span class="c1">// 将容器加入oom监听列表
+</span><span class="c1"></span>  <span class="nx">w</span><span class="p">.</span><span class="nx">s</span><span class="p">.</span><span class="nx">monitor</span><span class="p">.</span><span class="nf">MonitorOOM</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">Container</span><span class="p">)</span>
+  <span class="c1">// 将进程加入监听列表
+</span><span class="c1"></span>  <span class="nx">w</span><span class="p">.</span><span class="nx">s</span><span class="p">.</span><span class="nf">monitorProcess</span><span class="p">(</span><span class="nx">process</span><span class="p">)</span>
+  <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol start="4">
 <li>通过<code>docker-container-shim</code>启动容器。</li>
 </ol>
 <p>代码：<code>github.com/docker/containerd/runtime/container.go::Start()</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">container</span>) <span style="color:#a6e22e">Start</span>(<span style="color:#a6e22e">checkpointPath</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">s</span> <span style="color:#a6e22e">Stdio</span>) (<span style="color:#a6e22e">Process</span>, <span style="color:#66d9ef">error</span>) {
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// 准备shim启动命令
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">cmd</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">exec</span>.<span style="color:#a6e22e">Command</span>(<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">shim</span>,
-		<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">bundle</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">runtime</span>,
-	)
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">p</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">newProcess</span>(<span style="color:#a6e22e">config</span>)
-  <span style="color:#75715e">// 启动shim进程
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">createCmd</span>(<span style="color:#a6e22e">pid</span>, <span style="color:#a6e22e">cmd</span>, <span style="color:#a6e22e">p</span>)
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>}
-</code></pre></div><h2 id="shim启动runc的过程">shim启动runc的过程</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">container</span><span class="p">)</span> <span class="nf">Start</span><span class="p">(</span><span class="nx">checkpointPath</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">s</span> <span class="nx">Stdio</span><span class="p">)</span> <span class="p">(</span><span class="nx">Process</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// ...
+</span><span class="c1"></span>  <span class="c1">// 准备shim启动命令
+</span><span class="c1"></span>  <span class="nx">cmd</span> <span class="o">:=</span> <span class="nx">exec</span><span class="p">.</span><span class="nf">Command</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">shim</span><span class="p">,</span>
+		<span class="nx">c</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">bundle</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">runtime</span><span class="p">,</span>
+	<span class="p">)</span>
+  <span class="c1">// ...
+</span><span class="c1"></span>  <span class="nx">p</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nf">newProcess</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+  <span class="c1">// 启动shim进程
+</span><span class="c1"></span>  <span class="nx">c</span><span class="p">.</span><span class="nf">createCmd</span><span class="p">(</span><span class="nx">pid</span><span class="p">,</span> <span class="nx">cmd</span><span class="p">,</span> <span class="nx">p</span><span class="p">)</span>
+  <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="shim启动runc的过程">shim启动runc的过程</h2>
 <ol>
 <li>main函数启动shim进程，启动参数args[0]为containerID，args[1]为容器路径，args[2]为启动runtime的二进制进程</li>
 </ol>
 <p>代码：<code>github.com/containerd/containerd/containerd-shim/main.go::main()</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// 启动shim进程
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">start</span>(<span style="color:#a6e22e">f</span>)
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>}
-</code></pre></div><ol start="2">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// ...
+</span><span class="c1"></span>  <span class="c1">// 启动shim进程
+</span><span class="c1"></span>  <span class="nf">start</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span>
+  <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol start="2">
 <li>shim启动函数</li>
 </ol>
 <p>代码：<code>github.com/containerd/containerd/containerd-shim/main.go::start()</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">start</span>(<span style="color:#a6e22e">log</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">File</span>) <span style="color:#66d9ef">error</span> {
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>	<span style="color:#75715e">// 读取进程信息和checkpoint信息等，准备I/O
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">newProcess</span>(<span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Arg</span>(<span style="color:#ae81ff">0</span>), <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Arg</span>(<span style="color:#ae81ff">1</span>), <span style="color:#a6e22e">flag</span>.<span style="color:#a6e22e">Arg</span>(<span style="color:#ae81ff">2</span>))
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// 根据检查点配置，通过runc启动容器
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">create</span>()
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>}
-</code></pre></div><ol start="3">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">start</span><span class="p">(</span><span class="nx">log</span> <span class="o">*</span><span class="nx">os</span><span class="p">.</span><span class="nx">File</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+  <span class="c1">// ...
+</span><span class="c1"></span>	<span class="c1">// 读取进程信息和checkpoint信息等，准备I/O
+</span><span class="c1"></span>  <span class="nf">newProcess</span><span class="p">(</span><span class="nx">flag</span><span class="p">.</span><span class="nf">Arg</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="nx">flag</span><span class="p">.</span><span class="nf">Arg</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="nx">flag</span><span class="p">.</span><span class="nf">Arg</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+  <span class="c1">// ...
+</span><span class="c1"></span>  <span class="c1">// 根据检查点配置，通过runc启动容器
+</span><span class="c1"></span>  <span class="nx">p</span><span class="p">.</span><span class="nf">create</span><span class="p">()</span>
+  <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol start="3">
 <li>通过runc启动容器</li>
 </ol>
 <p>代码：<code>github.com/containerd/containerd/containerd-shim/process.go::create()</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">p</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">process</span>) <span style="color:#a6e22e">create</span>() <span style="color:#66d9ef">error</span> {
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// 准备容器相关配置，准备runc启动参数
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">// runc启动命令
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">cmd</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">exec</span>.<span style="color:#a6e22e">Command</span>(<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">runtime</span>, <span style="color:#a6e22e">args</span><span style="color:#f92672">...</span>)
-  <span style="color:#75715e">// 执行命令
-</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Start</span>()
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>}
-</code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">process</span><span class="p">)</span> <span class="nf">create</span><span class="p">()</span> <span class="kt">error</span> <span class="p">{</span>
+  <span class="c1">// ...
+</span><span class="c1"></span>  <span class="c1">// 准备容器相关配置，准备runc启动参数
+</span><span class="c1"></span>  <span class="c1">// runc启动命令
+</span><span class="c1"></span>  <span class="nx">cmd</span> <span class="o">:=</span> <span class="nx">exec</span><span class="p">.</span><span class="nf">Command</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">runtime</span><span class="p">,</span> <span class="nx">args</span><span class="o">...</span><span class="p">)</span>
+  <span class="c1">// 执行命令
+</span><span class="c1"></span>  <span class="nx">cmd</span><span class="p">.</span><span class="nf">Start</span><span class="p">()</span>
+  <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div>
     </div>
 
     
@@ -568,8 +785,8 @@ dockerd --bip<span style="color:#f92672">=</span>192.168.200.1/24 --host<span st
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="http://flyingfang.github.io/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">源码阅读</a>
-          <a href="http://flyingfang.github.io/tags/docker/">docker</a>
+          <a href="http://localhost:1313/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">源码阅读</a>
+          <a href="http://localhost:1313/tags/docker/">docker</a>
           
         </div>
 
@@ -703,7 +920,7 @@ dockerd --bip<span style="color:#f92672">=</span>192.168.200.1/24 --host<span st
     </a>
 
 
-<a href="http://flyingfang.github.io/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+<a href="http://localhost:1313/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
     class="iconfont" title="rss" target="_blank">
     <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"

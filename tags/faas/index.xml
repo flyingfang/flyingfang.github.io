@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>faas on FlyingFang的自留地</title>
-    <link>http://flyingfang.github.io/tags/faas/</link>
+    <link>http://localhost:1313/tags/faas/</link>
     <description>Recent content in faas on FlyingFang的自留地</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sun, 23 Dec 2018 21:38:13 +0800</lastBuildDate>
     
-	<atom:link href="http://flyingfang.github.io/tags/faas/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://localhost:1313/tags/faas/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>初探FaaS（一）——Serverless架构</title>
-      <link>http://flyingfang.github.io/post/seek-faas-01/</link>
+      <link>http://localhost:1313/post/seek-faas-01/</link>
       <pubDate>Sun, 23 Dec 2018 21:38:13 +0800</pubDate>
       
-      <guid>http://flyingfang.github.io/post/seek-faas-01/</guid>
+      <guid>http://localhost:1313/post/seek-faas-01/</guid>
       <description>本系列是对最近初探FaaS领域的一个总结，希望达到输出是最好的吸收的目的吧。</description>
     </item>
     

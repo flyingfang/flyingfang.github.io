@@ -2,48 +2,48 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>SRE on FlyingFang的自留地</title>
-    <link>http://localhost:1313/categories/sre/</link>
+    <link>http://flyingfang.github.io/categories/sre/</link>
     <description>Recent content in SRE on FlyingFang的自留地</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Tue, 23 Oct 2018 18:38:40 +0800</lastBuildDate>
     
-	<atom:link href="http://localhost:1313/categories/sre/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://flyingfang.github.io/categories/sre/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>[网络工具进阶] - tcpdump详解</title>
-      <link>http://localhost:1313/post/tcpdump/</link>
+      <link>http://flyingfang.github.io/post/tcpdump/</link>
       <pubDate>Tue, 23 Oct 2018 18:38:40 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/tcpdump/</guid>
+      <guid>http://flyingfang.github.io/post/tcpdump/</guid>
       <description>网络相关工具进阶系列之tcpdump详解</description>
     </item>
     
     <item>
       <title>[每日一个Linux命令]——ps详解</title>
-      <link>http://localhost:1313/post/ps/</link>
+      <link>http://flyingfang.github.io/post/ps/</link>
       <pubDate>Wed, 04 Apr 2018 00:16:50 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/ps/</guid>
+      <guid>http://flyingfang.github.io/post/ps/</guid>
       <description>记录一下常用的linux命令的用法和实例。第二篇 —— ps。</description>
     </item>
     
     <item>
       <title>[每日一个Linux命令]——lsof详解</title>
-      <link>http://localhost:1313/post/lsof/</link>
+      <link>http://flyingfang.github.io/post/lsof/</link>
       <pubDate>Tue, 03 Apr 2018 00:33:58 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/lsof/</guid>
+      <guid>http://flyingfang.github.io/post/lsof/</guid>
       <description>记录一下常用的linux命令的用法和实例。第一篇 —— lsof。</description>
     </item>
     
     <item>
       <title>性能测试- [腾讯云 2核4G]</title>
-      <link>http://localhost:1313/post/performance-test/</link>
+      <link>http://flyingfang.github.io/post/performance-test/</link>
       <pubDate>Sat, 24 Mar 2018 15:27:25 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/performance-test/</guid>
+      <guid>http://flyingfang.github.io/post/performance-test/</guid>
       <description>前几天腾讯云活动，买了一台服务器用来折腾玩。也想乘机再次开个博客，再次记录一下自己的学习和娱乐。某日再回头看看自己走过的坑，也可能也是一种别样的乐趣。</description>
     </item>
     

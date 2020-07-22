@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>FlyingFang的自留地</title>
-    <link>http://localhost:1313/</link>
+    <link>http://flyingfang.github.io/</link>
     <description>Recent content on FlyingFang的自留地</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Thu, 22 Feb 2018 15:40:05 +0800</lastBuildDate>
     
-        <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://flyingfang.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>基于Kubernetes的动态扩缩容（一）：HPA源码分析</title>
-      <link>http://localhost:1313/post/kubernetes-autoscaling-01/</link>
+      <link>http://flyingfang.github.io/post/kubernetes-autoscaling-01/</link>
       <pubDate>Tue, 09 Jun 2020 15:21:48 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/kubernetes-autoscaling-01/</guid>
+      <guid>http://flyingfang.github.io/post/kubernetes-autoscaling-01/</guid>
       
         <description>&lt;h2 id=&#34;hpa&#34;&gt;HPA&lt;/h2&gt;
 &lt;p&gt;HPA（Horizontal Pod Autoscaler）：自动水平扩缩容模块。&lt;/p&gt;
@@ -262,10 +262,10 @@
     
     <item>
       <title>容器存储驱动Device Mapper系列（一）：原理解析</title>
-      <link>http://localhost:1313/post/devicemapper-theory/</link>
+      <link>http://flyingfang.github.io/post/devicemapper-theory/</link>
       <pubDate>Wed, 25 Dec 2019 13:24:37 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/devicemapper-theory/</guid>
+      <guid>http://flyingfang.github.io/post/devicemapper-theory/</guid>
       
         <description>&lt;h2 id=&#34;device-mapper简介&#34;&gt;Device Mapper简介&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;Device Mapper&lt;/code&gt;是linux内核将物理块设备映射到虚拟块设备的一种框架，它是当下LVM (Linux Volume Manager 2 version) 、EVMS (Enterprise Volume Management System)、dmraid (Device Mapper Raid Tool) 等技术的基础。因此，&lt;code&gt;Device Mapper&lt;/code&gt;是工作于块级别（block），并不是工作在文件级别（file）。&lt;/p&gt;
@@ -329,10 +329,10 @@
     
     <item>
       <title>runc简明命令指南</title>
-      <link>http://localhost:1313/post/runc-cheat-sheet/</link>
+      <link>http://flyingfang.github.io/post/runc-cheat-sheet/</link>
       <pubDate>Wed, 18 Sep 2019 01:17:53 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/runc-cheat-sheet/</guid>
+      <guid>http://flyingfang.github.io/post/runc-cheat-sheet/</guid>
       
         <description>&lt;h1 id=&#34;runc是什么&#34;&gt;runc是什么&lt;/h1&gt;
 &lt;p&gt;&lt;code&gt;OCI&lt;/code&gt;（Open Container Initiative）是由多家公司共同成立的项目，并由linux基金会进行管理，致力于容器运行时的标准的制定和runc的开发等工作。&lt;/p&gt;
@@ -559,10 +559,10 @@ $ runc &lt;span class=&#34;nb&#34;&gt;help&lt;/span&gt; subcommand // 查看子�
     
     <item>
       <title>【源码分析】docker（一）之dockerd、containerd、shim、runc各组件关系</title>
-      <link>http://localhost:1313/post/docker-reading-01/</link>
+      <link>http://flyingfang.github.io/post/docker-reading-01/</link>
       <pubDate>Mon, 16 Sep 2019 21:38:53 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/docker-reading-01/</guid>
+      <guid>http://flyingfang.github.io/post/docker-reading-01/</guid>
       
         <description>&lt;blockquote&gt;
 &lt;p&gt;以下代码分析基于docker server 1.12.5 版本。&lt;/p&gt;
@@ -993,10 +993,10 @@ dockerd --bip&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;192.168.200.1/24 --host
     
     <item>
       <title>使用Ngrok搭建内网穿透环境</title>
-      <link>http://localhost:1313/post/ngrok/</link>
+      <link>http://flyingfang.github.io/post/ngrok/</link>
       <pubDate>Thu, 05 Sep 2019 14:43:50 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/ngrok/</guid>
+      <guid>http://flyingfang.github.io/post/ngrok/</guid>
       
         <description>&lt;h1 id=&#34;ngrok简介&#34;&gt;ngrok简介&lt;/h1&gt;
 &lt;p&gt;&lt;a href=&#34;https://ngrok.com/&#34;&gt;Ngrok&lt;/a&gt;通过代理的方式实现两个不同的网络之间的通信。ngrok支持http隧道、tls隧道和tcp隧道，满足常用的隧道协议需求。并且它是一个跨平台产品，macOS、Linux、Windows都可使用。&lt;/p&gt;
@@ -1254,10 +1254,10 @@ environment=ASPNETCORE_ENVIRONMENT=&amp;#34;Development&amp;#34;
     
     <item>
       <title>Cgroup泄漏</title>
-      <link>http://localhost:1313/post/cgroup-leak/</link>
+      <link>http://flyingfang.github.io/post/cgroup-leak/</link>
       <pubDate>Tue, 23 Jul 2019 15:39:48 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/cgroup-leak/</guid>
+      <guid>http://flyingfang.github.io/post/cgroup-leak/</guid>
       
         <description>&lt;h2 id=&#34;现象&#34;&gt;现象&lt;/h2&gt;
 &lt;p&gt;docker新建容器时：&lt;/p&gt;
@@ -1481,10 +1481,10 @@ cat: memory.kmem.slabinfo: Input/output error
     
     <item>
       <title>Etcd Operator使用笔记</title>
-      <link>http://localhost:1313/post/etcd-operator/</link>
+      <link>http://flyingfang.github.io/post/etcd-operator/</link>
       <pubDate>Tue, 30 Apr 2019 20:24:47 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/etcd-operator/</guid>
+      <guid>http://flyingfang.github.io/post/etcd-operator/</guid>
       
         <description>&lt;h1 id=&#34;etcd-operator&#34;&gt;etcd-operator&lt;/h1&gt;
 &lt;h2 id=&#34;能力&#34;&gt;能力&lt;/h2&gt;
@@ -1850,10 +1850,10 @@ spec:
     
     <item>
       <title>初探FaaS（一）——Serverless架构</title>
-      <link>http://localhost:1313/post/seek-faas-01/</link>
+      <link>http://flyingfang.github.io/post/seek-faas-01/</link>
       <pubDate>Sun, 23 Dec 2018 21:38:13 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/seek-faas-01/</guid>
+      <guid>http://flyingfang.github.io/post/seek-faas-01/</guid>
       
         <description>&lt;h2 id=&#34;serverless是什么&#34;&gt;Serverless是什么&lt;/h2&gt;
 &lt;p&gt;AWS的官方介绍如下：&lt;/p&gt;
@@ -1915,10 +1915,10 @@ spec:
     
     <item>
       <title>白话TCP协议的三次握手和四次分手</title>
-      <link>http://localhost:1313/post/tcp-hello-bye/</link>
+      <link>http://flyingfang.github.io/post/tcp-hello-bye/</link>
       <pubDate>Wed, 31 Oct 2018 22:38:40 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/tcp-hello-bye/</guid>
+      <guid>http://flyingfang.github.io/post/tcp-hello-bye/</guid>
       
         <description>&lt;h2 id=&#34;什么是三次握手&#34;&gt;什么是三次握手？&lt;/h2&gt;
 &lt;p&gt;三次握手的实质就是两次请求+两次确认，从而保证了双工通信。&lt;/p&gt;
@@ -1947,10 +1947,10 @@ spec:
     
     <item>
       <title>[读书笔记] - 《软技能》</title>
-      <link>http://localhost:1313/post/soft-skills/</link>
+      <link>http://flyingfang.github.io/post/soft-skills/</link>
       <pubDate>Sun, 28 Oct 2018 22:38:40 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/soft-skills/</guid>
+      <guid>http://flyingfang.github.io/post/soft-skills/</guid>
       
         <description>&lt;h2 id=&#34;一简介&#34;&gt;一、简介&lt;/h2&gt;
 &lt;p&gt;《软技能》是一本面向程序员又不仅限于程序员的职业生活指南。本书不光从职业发展上给予读者指导，还涵盖自我营销、学习方法、任务管理、身心健康和理财相关等。是一本大纲式的清单类书籍，适合给迷茫阶段的人（对，是我），一点点指导和鸡汤。&lt;/p&gt;
@@ -1962,10 +1962,10 @@ spec:
     
     <item>
       <title>[网络工具进阶] - tcpdump详解</title>
-      <link>http://localhost:1313/post/tcpdump/</link>
+      <link>http://flyingfang.github.io/post/tcpdump/</link>
       <pubDate>Tue, 23 Oct 2018 18:38:40 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/tcpdump/</guid>
+      <guid>http://flyingfang.github.io/post/tcpdump/</guid>
       
         <description>&lt;h2 id=&#34;一简介&#34;&gt;一、简介&lt;/h2&gt;
 &lt;p&gt;tcpdump是一个在运行在命令行下的嗅探工具。它允许用户拦截和显示发送或收到过网络连接到该计算机的TCP/IP和其他数据包。&lt;/p&gt;
@@ -2408,10 +2408,10 @@ tcpdump -i eth1 icmp
     
     <item>
       <title>[读书笔记] - Google高效工作法</title>
-      <link>http://localhost:1313/post/google-works/</link>
+      <link>http://flyingfang.github.io/post/google-works/</link>
       <pubDate>Sat, 08 Sep 2018 20:23:09 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/google-works/</guid>
+      <guid>http://flyingfang.github.io/post/google-works/</guid>
       
         <description>&lt;h3 id=&#34;1--选择管理&#34;&gt;1.  选择管理&lt;/h3&gt;
 &lt;ul&gt;
@@ -2609,10 +2609,10 @@ tcpdump -i eth1 icmp
     
     <item>
       <title>设备唯一性标识知多少？</title>
-      <link>http://localhost:1313/post/uuid/</link>
+      <link>http://flyingfang.github.io/post/uuid/</link>
       <pubDate>Thu, 30 Aug 2018 13:05:14 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/uuid/</guid>
+      <guid>http://flyingfang.github.io/post/uuid/</guid>
       
         <description>&lt;h2 id=&#34;imei&#34;&gt;IMEI&lt;/h2&gt;
 &lt;h3 id=&#34;android&#34;&gt;Android：&lt;/h3&gt;
@@ -2668,10 +2668,10 @@ tcpdump -i eth1 icmp
     
     <item>
       <title>[每日一个Linux命令]——ps详解</title>
-      <link>http://localhost:1313/post/ps/</link>
+      <link>http://flyingfang.github.io/post/ps/</link>
       <pubDate>Wed, 04 Apr 2018 00:16:50 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/ps/</guid>
+      <guid>http://flyingfang.github.io/post/ps/</guid>
       
         <description>&lt;h2 id=&#34;1-ps&#34;&gt;1. ps&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;ps&lt;/code&gt;是&lt;code&gt;Process Status&lt;/code&gt;的简称，ps命令用来列出系统中当前运行的那些进程。ps命令列出的是当前那些进程的快照，就是执行ps命令的那个时刻的那些进程，如果想要动态的显示进程信息，就可以使用top命令。&lt;/p&gt;
@@ -2824,10 +2824,10 @@ tcpdump -i eth1 icmp
     
     <item>
       <title>[每日一个Linux命令]——lsof详解</title>
-      <link>http://localhost:1313/post/lsof/</link>
+      <link>http://flyingfang.github.io/post/lsof/</link>
       <pubDate>Tue, 03 Apr 2018 00:33:58 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/lsof/</guid>
+      <guid>http://flyingfang.github.io/post/lsof/</guid>
       
         <description>&lt;h2 id=&#34;1-lsof一切皆文件&#34;&gt;1. lsof一切皆文件&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;lsof&lt;/code&gt;是&lt;code&gt;list open files&lt;/code&gt;的简称，是一个查看当前系统文件的工具。乍一看不是一个特别强大的命令，但是由于unix系统的&lt;code&gt;everything is a file&lt;/code&gt;的哲学，它常常被运用于查看进程和查看进程所操作的文件，可以查看网络使用，设备信息等，实则非常强大。&lt;/p&gt;
@@ -3251,10 +3251,10 @@ $ lsof -i &lt;span class=&#34;m&#34;&gt;6&lt;/span&gt;
     
     <item>
       <title>性能测试- [腾讯云 2核4G]</title>
-      <link>http://localhost:1313/post/performance-test/</link>
+      <link>http://flyingfang.github.io/post/performance-test/</link>
       <pubDate>Sat, 24 Mar 2018 15:27:25 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/performance-test/</guid>
+      <guid>http://flyingfang.github.io/post/performance-test/</guid>
       
         <description>&lt;p&gt;前几天腾讯云活动，买了一台服务器用来折腾玩。也想乘机再次开个博客，再次记录一下自己的学习和娱乐。某日再回头看看自己走过的坑，也可能也是一种别样的乐趣。&lt;/p&gt;
 &lt;!-- raw HTML omitted --&gt;
@@ -3671,10 +3671,10 @@ System Benchmarks Index Score                                        2627.5
     
     <item>
       <title>About</title>
-      <link>http://localhost:1313/about/</link>
+      <link>http://flyingfang.github.io/about/</link>
       <pubDate>Thu, 22 Feb 2018 15:40:05 +0800</pubDate>
       
-      <guid>http://localhost:1313/about/</guid>
+      <guid>http://flyingfang.github.io/about/</guid>
       
         <description>&lt;h2 id=&#34;关于我&#34;&gt;关于我&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;占坑一则😜&lt;/code&gt;&lt;/p&gt;

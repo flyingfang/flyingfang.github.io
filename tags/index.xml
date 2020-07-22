@@ -2,192 +2,192 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on FlyingFang的自留地</title>
-    <link>http://localhost:1313/tags/</link>
+    <link>http://flyingfang.github.io/tags/</link>
     <description>Recent content in Tags on FlyingFang的自留地</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Tue, 09 Jun 2020 15:21:48 +0800</lastBuildDate>
     
-	<atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://flyingfang.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>autoscaling</title>
-      <link>http://localhost:1313/tags/autoscaling/</link>
+      <link>http://flyingfang.github.io/tags/autoscaling/</link>
       <pubDate>Tue, 09 Jun 2020 15:21:48 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/autoscaling/</guid>
+      <guid>http://flyingfang.github.io/tags/autoscaling/</guid>
       <description></description>
     </item>
     
     <item>
       <title>kubernetes</title>
-      <link>http://localhost:1313/tags/kubernetes/</link>
+      <link>http://flyingfang.github.io/tags/kubernetes/</link>
       <pubDate>Tue, 09 Jun 2020 15:21:48 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/kubernetes/</guid>
+      <guid>http://flyingfang.github.io/tags/kubernetes/</guid>
       <description></description>
     </item>
     
     <item>
       <title>devicemapper</title>
-      <link>http://localhost:1313/tags/devicemapper/</link>
+      <link>http://flyingfang.github.io/tags/devicemapper/</link>
       <pubDate>Wed, 25 Dec 2019 13:24:37 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/devicemapper/</guid>
+      <guid>http://flyingfang.github.io/tags/devicemapper/</guid>
       <description></description>
     </item>
     
     <item>
       <title>docker</title>
-      <link>http://localhost:1313/tags/docker/</link>
+      <link>http://flyingfang.github.io/tags/docker/</link>
       <pubDate>Wed, 25 Dec 2019 13:24:37 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/docker/</guid>
+      <guid>http://flyingfang.github.io/tags/docker/</guid>
       <description></description>
     </item>
     
     <item>
       <title>kernel</title>
-      <link>http://localhost:1313/tags/kernel/</link>
+      <link>http://flyingfang.github.io/tags/kernel/</link>
       <pubDate>Wed, 25 Dec 2019 13:24:37 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/kernel/</guid>
+      <guid>http://flyingfang.github.io/tags/kernel/</guid>
       <description></description>
     </item>
     
     <item>
       <title>runc</title>
-      <link>http://localhost:1313/tags/runc/</link>
+      <link>http://flyingfang.github.io/tags/runc/</link>
       <pubDate>Wed, 18 Sep 2019 01:17:53 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/runc/</guid>
+      <guid>http://flyingfang.github.io/tags/runc/</guid>
       <description></description>
     </item>
     
     <item>
       <title>源码阅读</title>
-      <link>http://localhost:1313/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</link>
+      <link>http://flyingfang.github.io/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</link>
       <pubDate>Mon, 16 Sep 2019 21:38:53 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</guid>
+      <guid>http://flyingfang.github.io/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ngrok</title>
-      <link>http://localhost:1313/tags/ngrok/</link>
+      <link>http://flyingfang.github.io/tags/ngrok/</link>
       <pubDate>Thu, 05 Sep 2019 14:43:50 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/ngrok/</guid>
+      <guid>http://flyingfang.github.io/tags/ngrok/</guid>
       <description></description>
     </item>
     
     <item>
       <title>内网穿透</title>
-      <link>http://localhost:1313/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</link>
+      <link>http://flyingfang.github.io/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</link>
       <pubDate>Thu, 05 Sep 2019 14:43:50 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</guid>
+      <guid>http://flyingfang.github.io/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</guid>
       <description></description>
     </item>
     
     <item>
       <title>cgroup</title>
-      <link>http://localhost:1313/tags/cgroup/</link>
+      <link>http://flyingfang.github.io/tags/cgroup/</link>
       <pubDate>Tue, 23 Jul 2019 15:39:48 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/cgroup/</guid>
+      <guid>http://flyingfang.github.io/tags/cgroup/</guid>
       <description></description>
     </item>
     
     <item>
       <title>etcd</title>
-      <link>http://localhost:1313/tags/etcd/</link>
+      <link>http://flyingfang.github.io/tags/etcd/</link>
       <pubDate>Tue, 30 Apr 2019 20:24:47 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/etcd/</guid>
+      <guid>http://flyingfang.github.io/tags/etcd/</guid>
       <description></description>
     </item>
     
     <item>
       <title>helm</title>
-      <link>http://localhost:1313/tags/helm/</link>
+      <link>http://flyingfang.github.io/tags/helm/</link>
       <pubDate>Tue, 30 Apr 2019 20:24:47 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/helm/</guid>
+      <guid>http://flyingfang.github.io/tags/helm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>cloud</title>
-      <link>http://localhost:1313/tags/cloud/</link>
+      <link>http://flyingfang.github.io/tags/cloud/</link>
       <pubDate>Sun, 23 Dec 2018 21:38:13 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/cloud/</guid>
+      <guid>http://flyingfang.github.io/tags/cloud/</guid>
       <description></description>
     </item>
     
     <item>
       <title>faas</title>
-      <link>http://localhost:1313/tags/faas/</link>
+      <link>http://flyingfang.github.io/tags/faas/</link>
       <pubDate>Sun, 23 Dec 2018 21:38:13 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/faas/</guid>
+      <guid>http://flyingfang.github.io/tags/faas/</guid>
       <description></description>
     </item>
     
     <item>
       <title>network</title>
-      <link>http://localhost:1313/tags/network/</link>
+      <link>http://flyingfang.github.io/tags/network/</link>
       <pubDate>Wed, 31 Oct 2018 22:38:40 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/network/</guid>
+      <guid>http://flyingfang.github.io/tags/network/</guid>
       <description></description>
     </item>
     
     <item>
       <title>booksNote</title>
-      <link>http://localhost:1313/tags/booksnote/</link>
+      <link>http://flyingfang.github.io/tags/booksnote/</link>
       <pubDate>Sun, 28 Oct 2018 22:38:40 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/booksnote/</guid>
+      <guid>http://flyingfang.github.io/tags/booksnote/</guid>
       <description></description>
     </item>
     
     <item>
       <title>career</title>
-      <link>http://localhost:1313/tags/career/</link>
+      <link>http://flyingfang.github.io/tags/career/</link>
       <pubDate>Sun, 28 Oct 2018 22:38:40 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/career/</guid>
+      <guid>http://flyingfang.github.io/tags/career/</guid>
       <description></description>
     </item>
     
     <item>
       <title>思维导图</title>
-      <link>http://localhost:1313/tags/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/</link>
+      <link>http://flyingfang.github.io/tags/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/</link>
       <pubDate>Sun, 28 Oct 2018 22:38:40 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/</guid>
+      <guid>http://flyingfang.github.io/tags/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Linux</title>
-      <link>http://localhost:1313/tags/linux/</link>
+      <link>http://flyingfang.github.io/tags/linux/</link>
       <pubDate>Tue, 23 Oct 2018 18:38:40 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/linux/</guid>
+      <guid>http://flyingfang.github.io/tags/linux/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Networking</title>
-      <link>http://localhost:1313/tags/networking/</link>
+      <link>http://flyingfang.github.io/tags/networking/</link>
       <pubDate>Tue, 23 Oct 2018 18:38:40 +0800</pubDate>
       
-      <guid>http://localhost:1313/tags/networking/</guid>
+      <guid>http://flyingfang.github.io/tags/networking/</guid>
       <description></description>
     </item>
     

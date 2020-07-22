@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>源码阅读 on FlyingFang的自留地</title>
-    <link>http://localhost:1313/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</link>
+    <link>http://flyingfang.github.io/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</link>
     <description>Recent content in 源码阅读 on FlyingFang的自留地</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Mon, 16 Sep 2019 21:38:53 +0800</lastBuildDate>
     
-	<atom:link href="http://localhost:1313/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://flyingfang.github.io/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>【源码分析】docker（一）之dockerd、containerd、shim、runc各组件关系</title>
-      <link>http://localhost:1313/post/docker-reading-01/</link>
+      <link>http://flyingfang.github.io/post/docker-reading-01/</link>
       <pubDate>Mon, 16 Sep 2019 21:38:53 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/docker-reading-01/</guid>
+      <guid>http://flyingfang.github.io/post/docker-reading-01/</guid>
       <description>通过阅读源码理清dockerd、containerd、shim和runc之间的关系。</description>
     </item>
     

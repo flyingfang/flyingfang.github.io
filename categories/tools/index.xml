@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>tools on FlyingFang的自留地</title>
-    <link>http://localhost:1313/categories/tools/</link>
+    <link>http://flyingfang.github.io/categories/tools/</link>
     <description>Recent content in tools on FlyingFang的自留地</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Thu, 05 Sep 2019 14:43:50 +0800</lastBuildDate>
     
-	<atom:link href="http://localhost:1313/categories/tools/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://flyingfang.github.io/categories/tools/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>使用Ngrok搭建内网穿透环境</title>
-      <link>http://localhost:1313/post/ngrok/</link>
+      <link>http://flyingfang.github.io/post/ngrok/</link>
       <pubDate>Thu, 05 Sep 2019 14:43:50 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/ngrok/</guid>
+      <guid>http://flyingfang.github.io/post/ngrok/</guid>
       <description>我们在工作学习生活中，难免有一些这样的需求：想要在外网访问家里的电脑/服务器；想要在家里访问公司的开发机&amp;hellip;这个时候，我们就需要采用内网穿透技术，而ngrok是一个老牌的内网穿透工具。</description>
     </item>
     

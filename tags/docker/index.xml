@@ -2,48 +2,48 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>docker on FlyingFang的自留地</title>
-    <link>http://localhost:1313/tags/docker/</link>
+    <link>http://flyingfang.github.io/tags/docker/</link>
     <description>Recent content in docker on FlyingFang的自留地</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 25 Dec 2019 13:24:37 +0800</lastBuildDate>
     
-	<atom:link href="http://localhost:1313/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://flyingfang.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>容器存储驱动Device Mapper系列（一）：原理解析</title>
-      <link>http://localhost:1313/post/devicemapper-theory/</link>
+      <link>http://flyingfang.github.io/post/devicemapper-theory/</link>
       <pubDate>Wed, 25 Dec 2019 13:24:37 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/devicemapper-theory/</guid>
+      <guid>http://flyingfang.github.io/post/devicemapper-theory/</guid>
       <description>devicemapper技术是一种块设备映射技术框架，也是docker存储驱动的一种。</description>
     </item>
     
     <item>
       <title>runc简明命令指南</title>
-      <link>http://localhost:1313/post/runc-cheat-sheet/</link>
+      <link>http://flyingfang.github.io/post/runc-cheat-sheet/</link>
       <pubDate>Wed, 18 Sep 2019 01:17:53 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/runc-cheat-sheet/</guid>
+      <guid>http://flyingfang.github.io/post/runc-cheat-sheet/</guid>
       <description>初探runc。</description>
     </item>
     
     <item>
       <title>【源码分析】docker（一）之dockerd、containerd、shim、runc各组件关系</title>
-      <link>http://localhost:1313/post/docker-reading-01/</link>
+      <link>http://flyingfang.github.io/post/docker-reading-01/</link>
       <pubDate>Mon, 16 Sep 2019 21:38:53 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/docker-reading-01/</guid>
+      <guid>http://flyingfang.github.io/post/docker-reading-01/</guid>
       <description>通过阅读源码理清dockerd、containerd、shim和runc之间的关系。</description>
     </item>
     
     <item>
       <title>Cgroup泄漏</title>
-      <link>http://localhost:1313/post/cgroup-leak/</link>
+      <link>http://flyingfang.github.io/post/cgroup-leak/</link>
       <pubDate>Tue, 23 Jul 2019 15:39:48 +0800</pubDate>
       
-      <guid>http://localhost:1313/post/cgroup-leak/</guid>
+      <guid>http://flyingfang.github.io/post/cgroup-leak/</guid>
       <description>记录一次线下环境遇到的cgroup泄漏问题，以及相关的解决方案。</description>
     </item>
     
